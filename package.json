@@ -1,0 +1,59 @@
+{
+  "name": "freshmart-backend",
+  "version": "1.0.0",
+  "description": "FreshMart backend microservices scaffold",
+  "main": "gateway/index.js",
+  "scripts": {
+    "dev:gateway": "nodemon gateway/index.js",
+    "dev:auth": "nodemon services/auth/index.js",
+    "dev:user": "nodemon services/user/index.js",
+    "dev:product": "nodemon services/product/index.js",
+    "dev:order": "nodemon services/order/index.js",
+    "dev:vendor": "nodemon services/vendor/index.js",
+    "dev:delivery": "nodemon services/delivery/index.js",
+    "dev:payment": "nodemon services/payment/index.js",
+    "dev:notification": "nodemon services/notification/index.js",
+    "dev:admin": "nodemon services/admin/index.js",
+    "dev:socket": "nodemon services/socket/index.js",
+    "dev": "concurrently \"npm:dev:gateway\" \"npm:dev:auth\" \"npm:dev:user\" \"npm:dev:product\" \"npm:dev:order\" \"npm:dev:vendor\" \"npm:dev:delivery\" \"npm:dev:payment\" \"npm:dev:notification\" \"npm:dev:admin\" \"npm:dev:socket\"",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "test": "echo \"No tests configured yet\""
+  },
+  "keywords": [
+    "freshmart",
+    "backend",
+    "express",
+    "microservices"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.16.0",
+    "bcryptjs": "^3.0.3",
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.1",
+    "firebase-admin": "^13.8.0",
+    "google-auth-library": "^9.15.1",
+    "helmet": "^8.1.0",
+    "http-proxy-middleware": "^3.0.5",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.6.1",
+    "morgan": "^1.10.1",
+    "redis": "^5.12.1",
+    "socket.io": "^4.8.3",
+    "winston": "^3.19.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "concurrently": "^9.2.1",
+    "eslint": "^10.3.0",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.8.3"
+  }
+}
