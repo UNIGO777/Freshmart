@@ -617,19 +617,19 @@ MAX_VENDOR_ATTEMPTS=3
 
 ---
 
-### Phase 8 — Ratings, Language & Polish
+### Phase 8 — Ratings, Language & Polish ✅
 **Duration: 2–3 days**
 
-| Task | Description | Days |
+| Task | Description | Status |
 |---|---|---|
-| Ratings system | Customer rates product (1–5) and rider (1–5) after delivery | 0.5 |
-| Hindi support | All product names have `nameHi` field, API returns based on `lang` header | 0.5 |
-| Error handling | Global error handler, structured error codes across all services | 0.5 |
-| Logging | Winston logger + request logs per service | 0.5 |
-| Security | Helmet, CORS config, input validation (Joi/Zod) on all routes | 0.5 |
-| API documentation | Postman collection export for all services | 0.5 |
+| Ratings system | Customer rates product (1–5) and rider (1–5) after delivery. Rider average updated atomically via aggregation pipeline. | ✅ Done |
+| Hindi support | `nameHi` on Product + Category. `langMiddleware` reads `?lang` / `Accept-Language`. `localiseProducts()` swaps name. | ✅ Done |
+| Error handling | Global `(err, req, res, next)` handler + structured 404 handler in all 10 services. | ✅ Done |
+| Logging | Winston logger (`shared/utils/logger.js`) + Morgan request logs (`dev` format) across all services. | ✅ Done |
+| Security | Helmet, CORS, `express.json({ limit: '10kb' })`, Zod validation, rate limiter at gateway. | ✅ Done |
+| API documentation | Postman Collection v2.1 — 60+ requests across 9 folders with pre-request scripts, variable auto-capture, and inline docs. | ✅ Done |
 
-**Deliverable:** Production-ready, secure, documented backend.
+**Deliverable:** Production-ready, secure, documented backend. 🎉
 
 ---
 

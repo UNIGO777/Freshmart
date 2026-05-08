@@ -1,0 +1,1315 @@
+{
+  "info": {
+    "_postman_id": "freshmart-backend-v1",
+    "name": "FreshMart Backend API",
+    "description": "Complete API collection for FreshMart — a multi-vendor grocery delivery platform.\n\n**Services:** API Gateway (3000) → Auth (3001) · User (3002) · Product (3003) · Order (3004) · Vendor (3005) · Delivery (3006) · Payment (3007) · Notification (3008) · Admin (3009) · Socket (3010)\n\n**Usage:**\n1. Set `baseUrl` collection variable to `http://localhost:3000`\n2. Run any Auth request and copy the `accessToken` from the response\n3. Set `authToken` collection variable to that token\n4. All protected routes use `Authorization: Bearer {{authToken}}`",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000", "type": "string" },
+    { "key": "authToken", "value": "", "type": "string" },
+    { "key": "refreshToken", "value": "", "type": "string" },
+    { "key": "orderId", "value": "", "type": "string" },
+    { "key": "productId", "value": "", "type": "string" },
+    { "key": "jobId", "value": "", "type": "string" },
+    { "key": "vendorId", "value": "", "type": "string" },
+    { "key": "riderId", "value": "", "type": "string" },
+    { "key": "customerId", "value": "", "type": "string" },
+    { "key": "couponId", "value": "", "type": "string" },
+    { "key": "transactionId", "value": "", "type": "string" },
+    { "key": "merchantTransactionId", "value": "", "type": "string" },
+    { "key": "addressId", "value": "", "type": "string" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "description": "Phone OTP, Email/password, Google and Apple Sign-In. All routes are public (no JWT required). Rate-limited to 10 req/15 min per IP.",
+      "item": [
+        {
+          "name": "Send OTP",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/send-otp", "host": ["{{baseUrl}}"], "path": ["api", "auth", "send-otp"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+919876543210\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Send a 6-digit OTP to the given phone number via FastToSms. OTP expires in 5 minutes."
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('authToken', res.data.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', res.data.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/verify-otp", "host": ["{{baseUrl}}"], "path": ["api", "auth", "verify-otp"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+919876543210\",\n  \"otp\": \"123456\",\n  \"role\": \"customer\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Verify OTP and receive access + refresh JWT tokens. `role` must be one of: `customer`, `vendor`, `rider`."
+          }
+        },
+        {
+          "name": "Register (Email)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('authToken', res.data.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', res.data.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/register-email", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register-email"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Customer\",\n  \"email\": \"customer@test.com\",\n  \"password\": \"Password@123\",\n  \"role\": \"customer\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Register a new account with email + password. Password must be ≥8 chars, contain uppercase, lowercase, digit, and symbol."
+          }
+        },
+        {
+          "name": "Login (Email)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('authToken', res.data.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', res.data.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/login-email", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login-email"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"customer@test.com\",\n  \"password\": \"Password@123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Google Login",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/google", "host": ["{{baseUrl}}"], "path": ["api", "auth", "google"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idToken\": \"<google-id-token-from-client>\",\n  \"role\": \"customer\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Exchange a Google ID token (from Google Sign-In on the mobile app) for a FreshMart JWT pair."
+          }
+        },
+        {
+          "name": "Apple Login",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/apple", "host": ["{{baseUrl}}"], "path": ["api", "auth", "apple"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identityToken\": \"<apple-identity-token>\",\n  \"role\": \"customer\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('authToken', res.data.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/refresh", "host": ["{{baseUrl}}"], "path": ["api", "auth", "refresh"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Exchange a valid refresh token for a new access token. Refresh tokens are valid for 30 days."
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/logout", "host": ["{{baseUrl}}"], "path": ["api", "auth", "logout"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Invalidate the refresh token server-side (stored in Redis). Access token will expire naturally after 15 minutes."
+          }
+        }
+      ]
+    },
+    {
+      "name": "👤 User",
+      "description": "Customer, vendor, and rider profile management. All routes require a valid JWT.",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/users/me", "host": ["{{baseUrl}}"], "path": ["api", "users", "me"] },
+            "description": "Returns the authenticated user's profile (Customer, Vendor, or Rider model depending on JWT role)."
+          }
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/users/me", "host": ["{{baseUrl}}"], "path": ["api", "users", "me"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\",\n  \"language\": \"hi\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Get Addresses (Customer)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/users/me/addresses", "host": ["{{baseUrl}}"], "path": ["api", "users", "me", "addresses"] },
+            "description": "List all saved delivery addresses for the authenticated customer."
+          }
+        },
+        {
+          "name": "Add Address (Customer)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/users/me/addresses", "host": ["{{baseUrl}}"], "path": ["api", "users", "me", "addresses"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Home\",\n  \"lat\": 28.6139,\n  \"lng\": 77.2090,\n  \"fullAddress\": \"123 Main Street, New Delhi, 110001\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete Address (Customer)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me/addresses/{{addressId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "me", "addresses", "{{addressId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🛒 Products",
+      "description": "Product catalogue, categories, and admin pricing. GET routes are public; write routes require ADMIN JWT.",
+      "item": [
+        {
+          "name": "List Products",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/products?lang=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"],
+              "query": [
+                { "key": "lang", "value": "en", "description": "hi | en — returns nameHi when lang=hi" },
+                { "key": "category", "value": "", "description": "fruits | vegetables | spices", "disabled": true },
+                { "key": "search", "value": "", "description": "Full-text search query (bypasses Redis cache)", "disabled": true }
+              ]
+            },
+            "description": "Returns today's available products. Results are cached in Redis (1 hr TTL). Use `?lang=hi` to get Hindi product names (`nameHi`)."
+          }
+        },
+        {
+          "name": "List Categories",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/products/categories?lang=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "categories"],
+              "query": [
+                { "key": "lang", "value": "en" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "{{productId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Stale Products (Admin)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/products/stale",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "stale"]
+            },
+            "description": "Returns products that have not been priced today (lastPricedAt < today). Used by admin dashboard."
+          }
+        },
+        {
+          "name": "Create Product (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data._id) pm.collectionVariables.set('productId', res.data._id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/products", "host": ["{{baseUrl}}"], "path": ["api", "products"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alphonso Mango\",\n  \"nameHi\": \"अलफांसो आम\",\n  \"category\": \"fruits\",\n  \"unit\": \"kg\",\n  \"buyingPrice\": 120,\n  \"sellingPrice\": 180,\n  \"isAvailableToday\": true,\n  \"image\": \"https://example.com/mango.jpg\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Update Product (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "{{productId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"buyingPrice\": 110,\n  \"sellingPrice\": 165\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Toggle Availability (Admin)",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}/toggle",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "{{productId}}", "toggle"]
+            },
+            "description": "Toggles `isAvailableToday`. The carry-forward model means whatever is set persists until admin explicitly changes it again."
+          }
+        },
+        {
+          "name": "Bulk Update Prices (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/products/bulk-prices", "host": ["{{baseUrl}}"], "path": ["api", "products", "bulk-prices"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"updates\": [\n    { \"id\": \"{{productId}}\", \"buyingPrice\": 100, \"sellingPrice\": 150 }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 Orders",
+      "description": "Full order lifecycle — stock check, placement, vendor routing, ratings. Customer routes require CUSTOMER role; vendor routes require VENDOR role.",
+      "item": [
+        {
+          "name": "Check Stock (Customer)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/orders/check-stock", "host": ["{{baseUrl}}"], "path": ["api", "orders", "check-stock"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    { \"productId\": \"{{productId}}\", \"quantity\": 2 }\n  ],\n  \"deliveryAddress\": {\n    \"lat\": 28.6139,\n    \"lng\": 77.2090,\n    \"fullAddress\": \"123 Main Street, New Delhi\"\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Pre-payment stock check. Geo-queries vendors within 5km radius. Returns `serviceable: true/false`. Only show payment options if serviceable."
+          }
+        },
+        {
+          "name": "Validate Coupon (Customer)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/orders/validate-coupon", "host": ["{{baseUrl}}"], "path": ["api", "orders", "validate-coupon"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"FRESH20\",\n  \"orderSubtotal\": 500\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Preview coupon discount without side effects. Shows `discountAmount` but does NOT mark coupon as used."
+          }
+        },
+        {
+          "name": "Place Order (Customer)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.orderId) pm.collectionVariables.set('orderId', res.data.orderId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/orders", "host": ["{{baseUrl}}"], "path": ["api", "orders"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    { \"productId\": \"{{productId}}\", \"quantity\": 2 }\n  ],\n  \"deliveryAddress\": {\n    \"lat\": 28.6139,\n    \"lng\": 77.2090,\n    \"fullAddress\": \"123 Main Street, New Delhi\",\n    \"label\": \"Home\"\n  },\n  \"paymentMethod\": \"cod\",\n  \"couponCode\": \"FRESH20\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Place an order. For `cod`: vendor routing starts immediately. For `upi`: routing starts after payment confirmation. Price is snapshotted at order time."
+          }
+        },
+        {
+          "name": "Get Order History (Customer)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/orders?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "status", "value": "", "disabled": true, "description": "delivered | confirmed | cancelled | failed" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Order by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/{{orderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "{{orderId}}"]
+            },
+            "description": "Accessible by customer (own orders), vendor (assigned sub-orders), and rider (assigned deliveries)."
+          }
+        },
+        {
+          "name": "Cancel Order (Customer)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/{{orderId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "{{orderId}}", "cancel"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Changed my mind\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Cancel an order. Only allowed if no sub-order has been picked up yet."
+          }
+        },
+        {
+          "name": "Rate Order (Customer)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/{{orderId}}/rate",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "{{orderId}}", "rate"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product\": 5,\n  \"rider\": 4,\n  \"comment\": \"Fresh vegetables, rider was on time!\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Rate product (1–5) and rider (1–5) after delivery. Rider rating average is updated atomically using aggregation pipeline. Can only rate once per order."
+          }
+        },
+        {
+          "name": "Get Incoming Orders (Vendor)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/vendor/incoming",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "vendor", "incoming"]
+            },
+            "description": "Returns orders currently in the routing offer window for this vendor."
+          }
+        },
+        {
+          "name": "Accept Order (Vendor)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/vendor/{{orderId}}/accept",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "vendor", "{{orderId}}", "accept"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"acceptedItems\": [\n    { \"productId\": \"{{productId}}\", \"quantity\": 2, \"category\": \"fruits\" }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Vendor accepts with specific items (may be partial). If all items across vendors are covered, sub-orders are built and rider assignment starts."
+          }
+        },
+        {
+          "name": "Reject Order (Vendor)",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/vendor/{{orderId}}/reject",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "vendor", "{{orderId}}", "reject"]
+            },
+            "description": "Vendor rejects the order. Routing engine cascades to the next batch of vendors."
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏪 Vendor",
+      "description": "Vendor inventory management and earnings. Requires VENDOR or ADMIN JWT.",
+      "item": [
+        {
+          "name": "Get Inventory",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/vendors/inventory", "host": ["{{baseUrl}}"], "path": ["api", "vendors", "inventory"] }
+          }
+        },
+        {
+          "name": "Upsert Inventory Item",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/vendors/inventory/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vendors", "inventory", "{{productId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantityAvailable\": 50,\n  \"isAvailable\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Create or update stock for a product. Uses upsert — safe to call on new or existing inventory items."
+          }
+        },
+        {
+          "name": "Toggle Inventory Availability",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/api/vendors/inventory/{{productId}}/toggle",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vendors", "inventory", "{{productId}}", "toggle"]
+            }
+          }
+        },
+        {
+          "name": "Bulk Update Inventory",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/vendors/inventory/bulk", "host": ["{{baseUrl}}"], "path": ["api", "vendors", "inventory", "bulk"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"updates\": [\n    { \"productId\": \"{{productId}}\", \"quantityAvailable\": 30, \"isAvailable\": true }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Get Earnings",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/vendors/earnings?period=today",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vendors", "earnings"],
+              "query": [
+                { "key": "period", "value": "today", "description": "today | week | all" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🛵 Delivery",
+      "description": "Rider availability, job management, and live location. All routes require RIDER JWT.",
+      "item": [
+        {
+          "name": "Toggle Online Status",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/delivery/rider/status", "host": ["{{baseUrl}}"], "path": ["api", "delivery", "rider", "status"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isOnline\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Toggle rider online/offline. Riders must be online to receive delivery job requests."
+          }
+        },
+        {
+          "name": "Get Rider Jobs",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/delivery/rider/orders", "host": ["{{baseUrl}}"], "path": ["api", "delivery", "rider", "orders"] },
+            "description": "Returns current active job and pending offered jobs for the rider."
+          }
+        },
+        {
+          "name": "Accept Job",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/api/delivery/rider/accept/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "delivery", "rider", "accept", "{{jobId}}"]
+            },
+            "description": "Accept a delivery job within the 30-second offer window. First rider to accept gets the job; others are automatically declined."
+          }
+        },
+        {
+          "name": "Reject Job",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/api/delivery/rider/reject/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "delivery", "rider", "reject", "{{jobId}}"]
+            }
+          }
+        },
+        {
+          "name": "Mark Picked Up",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/api/delivery/rider/pickup/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "delivery", "rider", "pickup", "{{jobId}}"]
+            },
+            "description": "Rider marks items as picked up from vendor. Order sub-status transitions to `picked`. Customer receives push notification."
+          }
+        },
+        {
+          "name": "Mark Delivered",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/api/delivery/rider/deliver/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "delivery", "rider", "deliver", "{{jobId}}"]
+            },
+            "description": "Rider marks order as delivered. Rider earnings are incremented (80% of delivery fee). If all sub-orders delivered, parent order becomes `delivered`."
+          }
+        },
+        {
+          "name": "Update Location",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/delivery/rider/location", "host": ["{{baseUrl}}"], "path": ["api", "delivery", "rider", "location"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lat\": 28.6150,\n  \"lng\": 77.2080,\n  \"orderId\": \"{{orderId}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Called by rider app every 5 seconds. Upserts RiderLocation + Rider.currentLocation and broadcasts `rider:location` event to customer via Socket Server."
+          }
+        },
+        {
+          "name": "Get Rider Earnings",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/delivery/rider/earnings", "host": ["{{baseUrl}}"], "path": ["api", "delivery", "rider", "earnings"] },
+            "description": "Returns today / thisWeek / total earnings for the authenticated rider."
+          }
+        }
+      ]
+    },
+    {
+      "name": "💳 Payments",
+      "description": "PhonePe UPI, COD, refunds, and vendor payouts. PhonePe callback is public (server-to-server); all others require auth.",
+      "item": [
+        {
+          "name": "Create Payment Order (UPI)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.merchantTransactionId) {",
+                  "  pm.collectionVariables.set('merchantTransactionId', res.data.merchantTransactionId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/payments/create-order", "host": ["{{baseUrl}}"], "path": ["api", "payments", "create-order"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"{{orderId}}\",\n  \"amount\": 36000,\n  \"redirectUrl\": \"https://your-app.com/payment/result\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Initiates a PhonePe UPI payment. Amount is in paise (₹360 = 36000). Returns a `paymentUrl` to redirect the customer to PhonePe's payment page."
+          }
+        },
+        {
+          "name": "PhonePe Callback (Webhook)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Verify", "value": "<sha256_checksum>###<saltIndex>", "description": "PhonePe server-to-server checksum" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/payments/callback", "host": ["{{baseUrl}}"], "path": ["api", "payments", "callback"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"response\": \"<base64-encoded-payload-from-phonepe>\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "⚠️ This endpoint is called by PhonePe servers, not by the mobile app. Verifies X-Verify checksum, decodes payload, and on PAYMENT_SUCCESS triggers vendor routing."
+          }
+        },
+        {
+          "name": "Check Payment Status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/payments/status/{{merchantTransactionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payments", "status", "{{merchantTransactionId}}"]
+            },
+            "description": "Poll PhonePe API for payment status. Use this if the callback was not received or to confirm status before showing order confirmation screen."
+          }
+        },
+        {
+          "name": "Confirm COD Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/payments/cod-confirm", "host": ["{{baseUrl}}"], "path": ["api", "payments", "cod-confirm"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"{{orderId}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Initiate Refund (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/payments/refund/{{transactionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payments", "refund", "{{transactionId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 36000,\n  \"reason\": \"customer_request\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Admin-triggered refund via PhonePe Refund API. Amount in paise."
+          }
+        },
+        {
+          "name": "List Vendor Payouts (Admin)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/payments/vendor/payouts", "host": ["{{baseUrl}}"], "path": ["api", "payments", "vendor", "payouts"] }
+          }
+        },
+        {
+          "name": "Trigger Vendor Payout (Admin)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/payments/vendor/payout/{{vendorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payments", "vendor", "payout", "{{vendorId}}"]
+            },
+            "description": "Marks all pending VendorEarning records for this vendor as `paid`. Idempotent — safe to call multiple times."
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔔 Notifications",
+      "description": "FCM token management and admin bulk push notifications.",
+      "item": [
+        {
+          "name": "Update FCM Token",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/notifications/fcm-token", "host": ["{{baseUrl}}"], "path": ["api", "notifications", "fcm-token"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fcmToken\": \"<firebase-cloud-messaging-device-token>\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Called by mobile apps on startup to register/refresh the FCM device token. Updates the token on the user's Customer, Vendor, or Rider document."
+          }
+        },
+        {
+          "name": "Send Promo Push (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/notifications/promo", "host": ["{{baseUrl}}"], "path": ["api", "notifications", "promo"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Weekend Sale!\",\n  \"body\": \"Get 20% off on all fruits this weekend. Use code FRESH20.\",\n  \"data\": {\n    \"screen\": \"products\",\n    \"category\": \"fruits\"\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Admin-triggered bulk push to ALL customers. Sent in chunks of 500 tokens using FCM multicast. Requires ADMIN role."
+          }
+        }
+      ]
+    },
+    {
+      "name": "⚙️ Admin",
+      "description": "Admin dashboard, analytics, vendor/rider/customer management, order overrides, payouts, and coupons. All routes require ADMIN JWT.",
+      "item": [
+        {
+          "name": "Dashboard",
+          "item": [
+            {
+              "name": "Get Dashboard",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{baseUrl}}/api/admin/dashboard", "host": ["{{baseUrl}}"], "path": ["api", "admin", "dashboard"] },
+                "description": "Returns live metrics: ordersToday, revenueToday, totalRevenue, pendingOrders, activeRiders, onlineRiders, activeVendors, totalCustomers, newCustomersToday. All queries run in parallel."
+              }
+            },
+            {
+              "name": "Get Analytics",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/analytics?period=week",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "analytics"],
+                  "query": [{ "key": "period", "value": "week", "description": "day | week | month | year" }]
+                },
+                "description": "Revenue timeline, top products, top vendors, orders-by-status, and payment method breakdown."
+              }
+            },
+            {
+              "name": "Get Pricing Overview",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{baseUrl}}/api/admin/pricing", "host": ["{{baseUrl}}"], "path": ["api", "admin", "pricing"] },
+                "description": "Shows stale products (not priced today), unavailable products, and per-category summary."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Vendor Management",
+          "item": [
+            {
+              "name": "List Vendors",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/vendors?approved=true&page=1&limit=20",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "vendors"],
+                  "query": [
+                    { "key": "approved", "value": "true", "description": "true | false" },
+                    { "key": "active", "value": "", "disabled": true },
+                    { "key": "search", "value": "", "disabled": true },
+                    { "key": "page", "value": "1" },
+                    { "key": "limit", "value": "20" }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Vendor Detail",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/vendors/{{vendorId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "vendors", "{{vendorId}}"]
+                }
+              }
+            },
+            {
+              "name": "Approve Vendor",
+              "request": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/vendors/{{vendorId}}/approve",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "vendors", "{{vendorId}}", "approve"]
+                }
+              }
+            },
+            {
+              "name": "Block Vendor",
+              "request": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/vendors/{{vendorId}}/block",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "vendors", "{{vendorId}}", "block"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Rider Management",
+          "item": [
+            {
+              "name": "List Riders",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/riders?page=1&limit=20",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "riders"],
+                  "query": [
+                    { "key": "page", "value": "1" },
+                    { "key": "limit", "value": "20" },
+                    { "key": "isOnline", "value": "", "disabled": true }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Rider Detail",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/riders/{{riderId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "riders", "{{riderId}}"]
+                }
+              }
+            },
+            {
+              "name": "Approve Rider",
+              "request": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/riders/{{riderId}}/approve",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "riders", "{{riderId}}", "approve"]
+                }
+              }
+            },
+            {
+              "name": "Block Rider",
+              "request": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/riders/{{riderId}}/block",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "riders", "{{riderId}}", "block"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Customer Management",
+          "item": [
+            {
+              "name": "List Customers",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/customers?page=1&limit=20",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "customers"],
+                  "query": [
+                    { "key": "page", "value": "1" },
+                    { "key": "limit", "value": "20" },
+                    { "key": "search", "value": "", "disabled": true }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Customer Detail",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/customers/{{customerId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "customers", "{{customerId}}"]
+                }
+              }
+            },
+            {
+              "name": "Block Customer",
+              "request": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/customers/{{customerId}}/block",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "customers", "{{customerId}}", "block"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Order Management",
+          "item": [
+            {
+              "name": "List All Orders",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/orders?page=1&limit=20",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "orders"],
+                  "query": [
+                    { "key": "page", "value": "1" },
+                    { "key": "limit", "value": "20" },
+                    { "key": "status", "value": "", "disabled": true, "description": "confirmed | delivered | failed | cancelled" },
+                    { "key": "paymentMethod", "value": "", "disabled": true, "description": "upi | cod" },
+                    { "key": "paymentStatus", "value": "", "disabled": true, "description": "paid | pending | failed" },
+                    { "key": "dateFrom", "value": "", "disabled": true, "description": "ISO date string" },
+                    { "key": "dateTo", "value": "", "disabled": true }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Order Detail (Admin)",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/orders/{{orderId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "orders", "{{orderId}}"]
+                }
+              }
+            },
+            {
+              "name": "Override Order Status (Admin)",
+              "request": {
+                "method": "PATCH",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/orders/{{orderId}}/status",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "orders", "{{orderId}}", "status"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"cancelled\",\n  \"cancelReason\": \"admin_manual_cancel\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Payouts",
+          "item": [
+            {
+              "name": "List Payouts (All Vendors)",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{baseUrl}}/api/admin/payouts", "host": ["{{baseUrl}}"], "path": ["api", "admin", "payouts"] },
+                "description": "Aggregated payout summary grouped by vendor: total pending amount, total paid amount, earning count."
+              }
+            },
+            {
+              "name": "Get Vendor Payout History",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/payouts/{{vendorId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "payouts", "{{vendorId}}"]
+                }
+              }
+            },
+            {
+              "name": "Trigger Payout",
+              "request": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/payouts/{{vendorId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "payouts", "{{vendorId}}"]
+                },
+                "description": "Marks all pending VendorEarning records for this vendor as `paid`. Idempotent."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Coupons",
+          "item": [
+            {
+              "name": "Create Coupon",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const res = pm.response.json();",
+                      "if (res.data && res.data._id) pm.collectionVariables.set('couponId', res.data._id);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "url": { "raw": "{{baseUrl}}/api/admin/coupons", "host": ["{{baseUrl}}"], "path": ["api", "admin", "coupons"] },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"FRESH20\",\n  \"discountType\": \"percent\",\n  \"discountValue\": 20,\n  \"maxDiscountAmount\": 100,\n  \"minOrderValue\": 300,\n  \"maxUses\": 500,\n  \"maxUsesPerUser\": 1,\n  \"validFrom\": \"2026-05-01T00:00:00.000Z\",\n  \"validTo\": \"2026-05-31T23:59:59.000Z\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "description": "Create a new coupon. `discountType: flat` deducts a fixed amount; `percent` deducts a percentage (capped at `maxDiscountAmount`)."
+              }
+            },
+            {
+              "name": "List Coupons",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{baseUrl}}/api/admin/coupons", "host": ["{{baseUrl}}"], "path": ["api", "admin", "coupons"] }
+              }
+            },
+            {
+              "name": "Update Coupon",
+              "request": {
+                "method": "PATCH",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/coupons/{{couponId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "coupons", "{{couponId}}"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"maxUses\": 1000,\n  \"isActive\": true\n}",
+                  "options": { "raw": { "language": "json" } }
+                }
+              }
+            },
+            {
+              "name": "Disable Coupon",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/api/admin/coupons/{{couponId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "admin", "coupons", "{{couponId}}"]
+                },
+                "description": "Sets `isActive: false` on the coupon (soft delete — coupon remains in DB for audit)."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "🏥 Health Checks",
+      "description": "Health endpoints for all services. No auth required. Useful for monitoring and Docker health checks.",
+      "item": [
+        {
+          "name": "Gateway",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "Auth Service",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "http://localhost:3001/health", "host": ["http://localhost:3001"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "User Service",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "http://localhost:3002/health", "host": ["http://localhost:3002"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "Product Service",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "http://localhost:3003/health", "host": ["http://localhost:3003"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "Order Service",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "http://localhost:3004/health", "host": ["http://localhost:3004"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "Vendor Service",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "http://localhost:3005/health", "host": ["http://localhost:3005"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "Delivery Service",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "http://localhost:3006/health", "host": ["http://localhost:3006"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "Payment Service",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "http://localhost:3007/health", "host": ["http://localhost:3007"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "Notification Service",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "http://localhost:3008/health", "host": ["http://localhost:3008"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "Admin Service",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "http://localhost:3009/health", "host": ["http://localhost:3009"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "Socket Server",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "http://localhost:3010/health", "host": ["http://localhost:3010"], "path": ["health"] }
+          }
+        }
+      ]
+    }
+  ]
+}
