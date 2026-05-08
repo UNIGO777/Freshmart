@@ -23,6 +23,8 @@ app.get('/health', (_req, res) => {
 // All user routes require a valid JWT — the gateway forwards the Authorization header
 app.use('/', authenticate, userRoutes);
 
+app.use((_req, res) => res.status(404).json({ success: false, message: 'Route not found', errorCode: 'NOT_FOUND' }));
+
 app.use((err, _req, res, _next) => {
   logger.error('Unhandled user service error:', err);
   res.status(500).json({ success: false, message: 'Internal server error' });

@@ -1,7 +1,9 @@
 require('dotenv').config();
 const { z } = require('zod');
+const axios = require('axios');
 const Order = require('../models/Order.model');
 const Product = require('../../product/models/Product.model');
+const Vendor = require('../../user/models/Vendor.model');
 const { checkStock } = require('../logic/stockChecker');
 const { validateCoupon, markCouponUsed } = require('../logic/couponEngine');
 const {
@@ -12,10 +14,12 @@ const {
   emitToCustomer,
 } = require('../logic/vendorRouter');
 const { buildSubOrders } = require('../logic/orderSplitter');
+const Rider = require('../../user/models/Rider.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const { ORDER_STATUS, SUB_ORDER_STATUS } = require('../../../shared/constants/orderStatus');
 const ROLES = require('../../../shared/constants/roles');
+const { triggerNotification } = require('../../../shared/utils/notify');
 const logger = require('../../../shared/utils/logger');
 
 // ── POST /api/orders/check-stock ──────────────────────────────────
@@ -295,7 +299,40 @@ const rateOrder = async (req, res) => {
     order.ratings = { ...parsed.data, ratedAt: new Date() };
     await order.save();
 
-    // TODO Phase 8: update rider.rating aggregate
+    // Update Rider.rating aggregate for all riders on this order.
+    // Uses an aggregation-pipeline update for an atomic incremental average:
+    //   newAverage = (oldAverage × oldCount + newScore) / (oldCount + 1)
+    if (parsed.data.rider != null) {
+      const riderIds = order.subOrders
+        .filter((so) => so.riderId)
+        .map((so) => so.riderId);
+
+      if (riderIds.length > 0) {
+        const score = parsed.data.rider;
+        await Rider.updateMany(
+          { _id: { $in: riderIds } },
+          [
+            {
+              $set: {
+                'rating.count':   { $add: ['$rating.count', 1] },
+                'rating.average': {
+                  $round: [
+                    {
+                      $divide: [
+                        { $add: [{ $multiply: ['$rating.average', '$rating.count'] }, score] },
+                        { $add: ['$rating.count', 1] },
+                      ],
+                    },
+                    2,
+                  ],
+                },
+              },
+            },
+          ],
+        );
+      }
+    }
+
     return sendSuccess(res, 200, 'Rating submitted', order.ratings);
   } catch (err) {
     logger.error('rateOrder error:', err);
@@ -355,22 +392,61 @@ const vendorAcceptOrder = async (req, res) => {
     if (allCovered) {
       // Build sub-orders for all accepting vendors
       const subOrders = buildSubOrders(coverageState, order.deliveryAddress);
-      order.subOrders = subOrders.map((so) => ({
-        ...so,
-        vendorId: so.vendorId,
-        status: SUB_ORDER_STATUS.VENDOR_ACCEPTED,
-        vendorAcceptedAt: new Date(),
-        dropLocation: order.deliveryAddress,
-      }));
+
+      // Fetch vendor locations to populate pickupLocation on each sub-order
+      const vendorIds = subOrders.map((so) => so.vendorId);
+      const vendors = await Vendor.find({ _id: { $in: vendorIds } })
+        .select('location businessName')
+        .lean();
+      const vendorMap = Object.fromEntries(vendors.map((v) => [v._id.toString(), v]));
+
+      order.subOrders = subOrders.map((so) => {
+        const vendor = vendorMap[so.vendorId.toString()];
+        const [vendorLng = 0, vendorLat = 0] = vendor?.location?.coordinates || [];
+        return {
+          ...so,
+          vendorId: so.vendorId,
+          status: SUB_ORDER_STATUS.VENDOR_ACCEPTED,
+          vendorAcceptedAt: new Date(),
+          dropLocation: order.deliveryAddress,
+          pickupLocation: {
+            lat: vendorLat,
+            lng: vendorLng,
+            fullAddress: vendor?.businessName || '',
+          },
+        };
+      });
       order.status = ORDER_STATUS.CONFIRMED;
 
       await order.save();
       await clearRoutingState(order._id);
 
-      // Notify customer
+      // Notify customer via Socket and FCM push
       await emitToCustomer(order.customerId.toString(), 'order:confirmed', { orderId: order._id });
+      triggerNotification('order:confirmed', order.customerId.toString(), 'customer', {
+        orderId: order._id.toString(),
+      });
 
-      // TODO Phase 5: trigger riderAssigner for each sub-order
+      // Phase 5: trigger rider assignment for each sub-order (fire-and-forget)
+      for (const subOrder of order.subOrders) {
+        axios
+          .post(
+            `http://localhost:${process.env.PORT_DELIVERY || 3006}/internal/assign-rider`,
+            {
+              orderId:        order._id.toString(),
+              subOrderId:     subOrder._id.toString(),
+              vendorId:       subOrder.vendorId.toString(),
+              customerId:     order.customerId.toString(),
+              pickupLocation: subOrder.pickupLocation,
+              dropLocation:   subOrder.dropLocation,
+              deliveryFee:    order.deliveryFee,
+            },
+            { timeout: 5000 },
+          )
+          .catch((err) =>
+            logger.warn(`assign-rider call failed for subOrder ${subOrder._id}: ${err.message}`),
+          );
+      }
 
       return sendSuccess(res, 200, 'Order accepted — all items covered', { orderId: order._id });
     }

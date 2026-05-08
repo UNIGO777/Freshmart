@@ -50,6 +50,8 @@ router.use(
 router.use('/api/orders', authenticate, proxy(SERVICE_URLS.order));
 router.use('/api/payments', authenticate, proxy(SERVICE_URLS.payment));
 router.use('/api/delivery', authenticate, proxy(SERVICE_URLS.delivery));
+// Promo push requires ADMIN; FCM token update is open to any authenticated role
+router.use('/api/notifications/promo', authenticate, requireRole(ROLES.ADMIN), proxy(SERVICE_URLS.notification));
 router.use('/api/notifications', authenticate, proxy(SERVICE_URLS.notification));
 
 router.use(

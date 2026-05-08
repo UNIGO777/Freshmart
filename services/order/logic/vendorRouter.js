@@ -3,6 +3,7 @@ const Vendor = require('../../user/models/Vendor.model');
 const Inventory = require('../../vendor/models/Inventory.model');
 const { redisClient } = require('../../../shared/db/redis');
 const { initCoverageState, getUncoveredItems } = require('./orderSplitter');
+const { triggerNotification } = require('../../../shared/utils/notify');
 const logger = require('../../../shared/utils/logger');
 
 const BATCH_SIZE = Number(process.env.MAX_VENDOR_ATTEMPTS) || 3;
@@ -153,6 +154,9 @@ const offerToBatch = async (order, sortedVendors, batchIndex) => {
       expiresIn: VENDOR_OFFER_TTL,
     });
 
+    // FCM push to vendor (non-blocking)
+    triggerNotification('order:incoming', vid, 'vendor', { orderId, expiresIn: VENDOR_OFFER_TTL });
+
     logger.info(`Order ${orderId} offered to vendor ${vid} (batch ${batchIndex})`);
   }
 };
@@ -207,6 +211,10 @@ const handleVendorResponse = async (order, vendorId) => {
       await redisClient.del(routingKey(orderId));
 
       await emitToCustomer(order.customerId.toString(), 'order:failed', {
+        orderId,
+        reason: 'No vendor could fulfil your order. Please try again.',
+      });
+      triggerNotification('order:failed', order.customerId.toString(), 'customer', {
         orderId,
         reason: 'No vendor could fulfil your order. Please try again.',
       });

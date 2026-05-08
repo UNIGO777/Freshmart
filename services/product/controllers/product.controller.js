@@ -44,7 +44,8 @@ const invalidateProductCache = async () => {
 // Public. Supports ?category=fruits|vegetables|spices and ?lang=hi|en
 const getProducts = async (req, res) => {
   try {
-    const { category, lang = 'en', search } = req.query;
+    const { category, search } = req.query;
+    const lang = req.lang || 'en'; // set by langMiddleware (query param > Accept-Language header)
 
     // Search bypasses cache
     if (search) {
@@ -84,7 +85,7 @@ const getProducts = async (req, res) => {
 // ── GET /api/products/categories ─────────────────────────────────
 const getCategories = async (req, res) => {
   try {
-    const { lang = 'en' } = req.query;
+    const lang = req.lang || 'en';
     const cached = await getFromCache('categories');
     if (cached) return sendSuccess(res, 200, 'Categories fetched (cache)', cached);
 

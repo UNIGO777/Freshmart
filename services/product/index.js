@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const connectDB = require('../../shared/db/mongoose');
 const { connectRedis } = require('../../shared/db/redis');
 const productRoutes = require('./routes/product.routes');
+const { langMiddleware } = require('../../shared/middleware/lang.middleware');
 const logger = require('../../shared/utils/logger');
 
 const app = express();
@@ -20,7 +21,10 @@ app.get('/health', (_req, res) => {
   res.json({ success: true, service: 'product', timestamp: new Date().toISOString() });
 });
 
+app.use(langMiddleware);   // sets req.lang from ?lang query or Accept-Language header
 app.use('/', productRoutes);
+
+app.use((_req, res) => res.status(404).json({ success: false, message: 'Route not found', errorCode: 'NOT_FOUND' }));
 
 app.use((err, _req, res, _next) => {
   logger.error('Unhandled product service error:', err);

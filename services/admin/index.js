@@ -21,6 +21,8 @@ app.get('/health', (_req, res) => {
 
 app.use('/', adminRoutes);
 
+app.use((_req, res) => res.status(404).json({ success: false, message: 'Route not found', errorCode: 'NOT_FOUND' }));
+
 app.use((err, _req, res, _next) => {
   logger.error('Unhandled admin service error:', err);
   res.status(500).json({ success: false, message: 'Internal server error' });
