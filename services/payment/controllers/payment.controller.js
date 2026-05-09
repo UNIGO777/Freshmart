@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const axios = require('axios');
 const Transaction = require('../models/Transaction.model');
 const Order = require('../../order/models/Order.model');
+const Customer = require('../../user/models/Customer.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const { PAYMENT_STATUS, ORDER_STATUS } = require('../../../shared/constants/orderStatus');
@@ -42,11 +43,15 @@ const buildChecksum = (base64Payload, apiPath) => {
   return `${hash}###${SALT_INDEX}`;
 };
 
-/** Verify a PhonePe callback/webhook checksum */
+/**
+ * Verify a PhonePe callback/webhook checksum.
+ * Per PhonePe docs the callback hash is: SHA256(base64Response + saltKey)
+ * No API path is included in the callback hash (unlike outgoing requests).
+ */
 const verifyChecksum = (base64Response, receivedChecksum) => {
   const hash = crypto
     .createHash('sha256')
-    .update(base64Response + '/pg/v1/status' + SALT_KEY)
+    .update(base64Response + SALT_KEY)
     .digest('hex');
   const expected = `${hash}###${SALT_INDEX}`;
   return expected === receivedChecksum;
@@ -65,6 +70,19 @@ const createPaymentOrder = async (req, res) => {
       return sendError(res, 400, 'orderId and amount are required', ERROR_CODES.MISSING_FIELDS);
     }
 
+    // BUG-019: Idempotency — if a 'created' transaction already exists for this
+    // order, return it instead of creating a duplicate and charging twice.
+    const existing = await Transaction.findOne({ orderId, status: 'created' });
+    if (existing) {
+      return sendSuccess(res, 200, 'Payment already initiated', {
+        merchantTransactionId: existing.merchantTransactionId,
+        paymentUrl: null, // client should re-poll /status or use stored URL
+      });
+    }
+
+    // BUG-005: req.user only carries { id, role }. Fetch phone from DB.
+    const customer = await Customer.findById(req.user.id).select('phone').lean();
+
     const merchantTransactionId = `TXN_${crypto.randomUUID().replace(/-/g, '').slice(0, 34)}`;
     const amountInPaise = Math.round(amount * 100);
 
@@ -76,7 +94,7 @@ const createPaymentOrder = async (req, res) => {
       redirectUrl: redirectUrl || `${process.env.APP_BASE_URL}/payment/status`,
       redirectMode: 'REDIRECT',
       callbackUrl: callbackUrl || `${process.env.APP_BASE_URL}/api/payments/callback`,
-      mobileNumber: req.user.phone,
+      mobileNumber: customer?.phone,
       paymentInstrument: { type: 'PAY_PAGE' },
     };
 
@@ -218,6 +236,15 @@ const confirmCod = async (req, res) => {
     if (!order) return sendError(res, 404, 'Order not found', ERROR_CODES.NOT_FOUND);
     if (order.paymentMethod !== 'cod') {
       return sendError(res, 400, 'Order payment method is not COD', ERROR_CODES.VALIDATION_ERROR);
+    }
+    // BUG-015: Only allow confirmation for orders in CONFIRMED state
+    if (order.status !== ORDER_STATUS.CONFIRMED) {
+      return sendError(res, 400, 'Order is not in a confirmable state', ERROR_CODES.VALIDATION_ERROR);
+    }
+    // BUG-015: Prevent duplicate COD transaction records
+    const existingTxn = await Transaction.findOne({ orderId });
+    if (existingTxn) {
+      return sendSuccess(res, 200, 'COD order already confirmed', { transactionId: existingTxn._id });
     }
 
     const txn = await Transaction.create({

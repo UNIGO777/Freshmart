@@ -1,4 +1,13 @@
 require('dotenv').config();
+
+process.on('unhandledRejection', (reason) => {
+  require('../../shared/utils/logger').error('Unhandled rejection:', reason);
+  process.exit(1);
+});
+process.on('uncaughtException', (err) => {
+  require('../../shared/utils/logger').error('Uncaught exception:', err);
+  process.exit(1);
+});
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -51,7 +60,7 @@ const createVendorEarning = async (order, subOrder) => {
 
 app.use(helmet());
 app.use(cors());
-app.use(morgan('dev'));
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '10kb' }));
 
 app.get('/health', (_req, res) => {
@@ -138,8 +147,37 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ success: false, message: 'Internal server error' });
 });
 
+// ── Startup recovery: resume routing for orders stuck mid-routing ─
+// If the Order Service crashed while vendors were being offered a batch,
+// Redis state is gone but the order is still in 'confirmed' with non-empty
+// offeredVendorIds. Re-trigger routing for each such order.
+const resumeStuckOrders = async () => {
+  try {
+    const stuckOrders = await Order.find({
+      status: { $in: [ORDER_STATUS.CONFIRMED, ORDER_STATUS.AWAITING_PAYMENT] },
+      'routingMeta.offeredVendorIds.0': { $exists: true },
+    }).lean();
+
+    if (stuckOrders.length === 0) return;
+
+    logger.info(`[recovery] Found ${stuckOrders.length} orders stuck mid-routing — resuming`);
+    for (const o of stuckOrders) {
+      const order = await Order.findById(o._id);
+      const productIds      = order.items.map((i) => i.productId.toString());
+      const requiredCategories = [...new Set(order.items.map((i) => i.category).filter(Boolean))];
+      initiateRouting(order, order.deliveryAddress, productIds, requiredCategories)
+        .catch((err) => logger.error(`[recovery] Routing failed for order ${o._id}:`, err));
+    }
+  } catch (err) {
+    logger.error('[recovery] resumeStuckOrders error:', err);
+  }
+};
+
 Promise.all([connectDB(), connectRedis()]).then(() => {
-  app.listen(PORT, () => logger.info(`Order Service running on port ${PORT}`));
+  app.listen(PORT, () => {
+    logger.info(`Order Service running on port ${PORT}`);
+    resumeStuckOrders();
+  });
 });
 
 module.exports = app;

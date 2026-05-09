@@ -1,4 +1,13 @@
 require('dotenv').config();
+
+process.on('unhandledRejection', (reason) => {
+  require('../../shared/utils/logger').error('Unhandled rejection:', reason);
+  process.exit(1);
+});
+process.on('uncaughtException', (err) => {
+  require('../../shared/utils/logger').error('Uncaught exception:', err);
+  process.exit(1);
+});
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -17,8 +26,14 @@ app.use(express.json({ limit: '10kb' }));
 const httpServer = http.createServer(app);
 
 // ── Socket.io server ──────────────────────────────────────────────
+// ALLOWED_ORIGINS env var: comma-separated list of trusted origins.
+// Falls back to '*' only in development so local clients can connect.
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim())
+  : (process.env.NODE_ENV === 'production' ? [] : '*');
+
 const io = new Server(httpServer, {
-  cors: { origin: '*', methods: ['GET', 'POST'] },
+  cors: { origin: allowedOrigins, methods: ['GET', 'POST'], credentials: true },
   transports: ['websocket', 'polling'],
 });
 

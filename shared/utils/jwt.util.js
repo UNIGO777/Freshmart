@@ -3,6 +3,17 @@ const jwt = require('jsonwebtoken');
 
 const ACCESS_SECRET = process.env.JWT_SECRET;
 const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+
+// Guard: refuse to start with known-insecure placeholder secrets
+const WEAK_SECRETS = ['change_me', 'secret', 'jwt_secret', 'your_secret'];
+if (!ACCESS_SECRET || WEAK_SECRETS.includes(ACCESS_SECRET)) {
+  console.error('[FATAL] JWT_SECRET is missing or insecure. Set a strong random value in .env');
+  process.exit(1);
+}
+if (!REFRESH_SECRET || WEAK_SECRETS.includes(REFRESH_SECRET)) {
+  console.error('[FATAL] JWT_REFRESH_SECRET is missing or insecure. Set a strong random value in .env');
+  process.exit(1);
+}
 const ACCESS_EXPIRY = process.env.JWT_EXPIRY || '15m';
 const REFRESH_EXPIRY = process.env.JWT_REFRESH_EXPIRY || '30d';
 

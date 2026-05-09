@@ -77,15 +77,26 @@ const toggleInventoryAvailability = async (req, res) => {
   }
 };
 
+const bulkInventorySchema = z.object({
+  items: z.array(
+    z.object({
+      productId: z.string().min(1),
+      quantityAvailable: z.number().min(0).max(99999),
+      isAvailable: z.boolean().optional(),
+    }),
+  ).min(1).max(500),
+});
+
 // ── PUT /api/vendors/inventory/bulk ──────────────────────────────
 // Vendor: bulk update stock for multiple products at once
 // Body: { items: [{ productId, quantityAvailable, isAvailable? }] }
 const bulkUpdateInventory = async (req, res) => {
   try {
-    const { items } = req.body;
-    if (!Array.isArray(items) || items.length === 0) {
-      return sendError(res, 400, 'items array is required', ERROR_CODES.MISSING_FIELDS);
+    const parsed = bulkInventorySchema.safeParse(req.body);
+    if (!parsed.success) {
+      return sendError(res, 400, 'Validation failed', ERROR_CODES.VALIDATION_ERROR, parsed.error.flatten());
     }
+    const { items } = parsed.data;
 
     const ops = items.map(({ productId, quantityAvailable, isAvailable }) => ({
       updateOne: {
@@ -159,9 +170,17 @@ const getEarnings = async (req, res) => {
 // ── GET /api/vendors/inventory/available ──────────────────────────
 // Internal helper used by Order Service (Phase 3) to check vendor stock.
 // Returns vendors with available inventory for a given set of productIds.
+// BUG-016: VENDOR role may only query their own inventory, not competitors'.
 const getAvailableInventory = async (req, res) => {
   try {
-    const { productIds, vendorId } = req.query;
+    const ROLES = require('../../../shared/constants/roles');
+    const { productIds } = req.query;
+    let { vendorId } = req.query;
+
+    // Enforce scope: a VENDOR can only query their own stock
+    if (req.user && req.user.role === ROLES.VENDOR) {
+      vendorId = req.user.id;
+    }
 
     const filter = {
       isAvailable: true,

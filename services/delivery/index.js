@@ -1,8 +1,18 @@
 require('dotenv').config();
+
+process.on('unhandledRejection', (reason) => {
+  require('../../shared/utils/logger').error('Unhandled rejection:', reason);
+  process.exit(1);
+});
+process.on('uncaughtException', (err) => {
+  require('../../shared/utils/logger').error('Uncaught exception:', err);
+  process.exit(1);
+});
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
+const cron = require('node-cron');
 const connectDB = require('../../shared/db/mongoose');
 const { connectRedis } = require('../../shared/db/redis');
 const deliveryRoutes = require('./routes/delivery.routes');
@@ -16,7 +26,7 @@ const PORT = process.env.PORT_DELIVERY || 3006;
 
 app.use(helmet());
 app.use(cors());
-app.use(morgan('dev'));
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '10kb' }));
 
 // ── Health ────────────────────────────────────────────────────────
@@ -104,6 +114,28 @@ Promise.all([connectDB(), connectRedis()]).then(() => {
         logger.error('sweepExpiredOffers error:', err),
       );
     }, 15_000);
+
+    // Reset earnings.today for all riders at midnight every day (IST = UTC+5:30)
+    // Cron: 30 18 * * *  →  00:00 IST
+    cron.schedule('30 18 * * *', async () => {
+      try {
+        const result = await Rider.updateMany({}, { $set: { 'earnings.today': 0 } });
+        logger.info(`[cron] Reset earnings.today for ${result.modifiedCount} riders`);
+      } catch (err) {
+        logger.error('[cron] Reset earnings.today failed:', err);
+      }
+    });
+
+    // Reset earnings.thisWeek for all riders every Monday midnight IST
+    // Cron: 30 18 * * 0  →  00:00 IST on Sunday (UTC Sun = IST Mon)
+    cron.schedule('30 18 * * 0', async () => {
+      try {
+        const result = await Rider.updateMany({}, { $set: { 'earnings.thisWeek': 0 } });
+        logger.info(`[cron] Reset earnings.thisWeek for ${result.modifiedCount} riders`);
+      } catch (err) {
+        logger.error('[cron] Reset earnings.thisWeek failed:', err);
+      }
+    });
   });
 });
 

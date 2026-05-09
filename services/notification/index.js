@@ -1,4 +1,13 @@
 require('dotenv').config();
+
+process.on('unhandledRejection', (reason) => {
+  require('../../shared/utils/logger').error('Unhandled rejection:', reason);
+  process.exit(1);
+});
+process.on('uncaughtException', (err) => {
+  require('../../shared/utils/logger').error('Uncaught exception:', err);
+  process.exit(1);
+});
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -12,7 +21,7 @@ const PORT = process.env.PORT_NOTIFICATION || 3008;
 
 app.use(helmet());
 app.use(cors());
-app.use(morgan('dev'));
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '10kb' }));
 
 // ── Health ─────────────────────────────────────────────────────────

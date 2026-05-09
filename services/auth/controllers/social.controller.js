@@ -1,6 +1,5 @@
 require('dotenv').config();
-const axios = require('axios');
-const jwt = require('jsonwebtoken');
+const { createRemoteJWKSet, jwtVerify } = require('jose');
 const { OAuth2Client } = require('google-auth-library');
 const Customer = require('../../user/models/Customer.model');
 const { signAccessToken, signRefreshToken } = require('../../../shared/utils/jwt.util');
@@ -8,6 +7,9 @@ const { sendSuccess, sendError } = require('../../../shared/utils/response.util'
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const ROLES = require('../../../shared/constants/roles');
 const logger = require('../../../shared/utils/logger');
+
+// Apple JWKS endpoint — cached remotely by jose (auto-refreshed)
+const APPLE_JWKS = createRemoteJWKSet(new URL('https://appleid.apple.com/auth/keys'));
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -26,33 +28,17 @@ const verifyGoogleToken = async (idToken) => {
 };
 
 /**
- * Verify an Apple ID token by fetching Apple's public keys and verifying the JWT.
+ * Verify an Apple ID token using Apple's JWKS endpoint via jose.
+ * Performs full RS256 signature verification, issuer, audience, and expiry checks.
  * @param {string} idToken
  * @returns {{ sub: string, email: string }}
  */
 const verifyAppleToken = async (idToken) => {
-  const { data: appleKeys } = await axios.get('https://appleid.apple.com/auth/keys');
-  const tokenHeader = JSON.parse(Buffer.from(idToken.split('.')[0], 'base64').toString());
-
-  const matchingKey = appleKeys.keys.find((k) => k.kid === tokenHeader.kid);
-  if (!matchingKey) throw new Error('No matching Apple public key found');
-
-  // Reconstruct PEM from JWK components for jsonwebtoken
-  const publicKey = `-----BEGIN PUBLIC KEY-----\n${Buffer.from(
-    JSON.stringify(matchingKey),
-  ).toString('base64')}\n-----END PUBLIC KEY-----`;
-
-  // Apple tokens use RS256 — decode without full PEM for sub/email extraction
-  // For production: use `jose` or `jwks-rsa` to derive the actual PEM
-  const decoded = jwt.decode(idToken);
-  if (!decoded) throw new Error('Invalid Apple ID token');
-
-  // Basic claim validation
-  if (decoded.iss !== 'https://appleid.apple.com') throw new Error('Invalid Apple token issuer');
-  if (decoded.aud !== process.env.APPLE_CLIENT_ID) throw new Error('Invalid Apple token audience');
-  if (decoded.exp < Math.floor(Date.now() / 1000)) throw new Error('Apple token expired');
-
-  return { sub: decoded.sub, email: decoded.email };
+  const { payload } = await jwtVerify(idToken, APPLE_JWKS, {
+    issuer: 'https://appleid.apple.com',
+    audience: process.env.APPLE_CLIENT_ID,
+  });
+  return { sub: payload.sub, email: payload.email };
 };
 
 /**

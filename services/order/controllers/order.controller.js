@@ -226,9 +226,17 @@ const getOrderById = async (req, res) => {
 
     if (!order) return sendError(res, 404, 'Order not found', ERROR_CODES.NOT_FOUND);
 
-    // Customers can only view their own orders; vendors/riders see assigned orders only
+    // Role-based access: each role may only view orders they are part of
     if (req.user.role === ROLES.CUSTOMER && order.customerId.toString() !== req.user.id) {
       return sendError(res, 403, 'Access denied', ERROR_CODES.FORBIDDEN);
+    }
+    if (req.user.role === ROLES.VENDOR) {
+      const isAssigned = order.subOrders.some((so) => so.vendorId?.toString() === req.user.id);
+      if (!isAssigned) return sendError(res, 403, 'Access denied', ERROR_CODES.FORBIDDEN);
+    }
+    if (req.user.role === ROLES.RIDER) {
+      const isAssigned = order.subOrders.some((so) => so.riderId?.toString() === req.user.id);
+      if (!isAssigned) return sendError(res, 403, 'Access denied', ERROR_CODES.FORBIDDEN);
     }
 
     return sendSuccess(res, 200, 'Order fetched', order);
@@ -264,7 +272,13 @@ const cancelOrder = async (req, res) => {
 
     await clearRoutingState(order._id);
 
-    // TODO Phase 4: trigger refund if already paid
+    // Trigger refund if the order was already paid via UPI
+    if (order.paymentStatus === 'paid') {
+      const paymentServiceUrl = `http://localhost:${process.env.PORT_PAYMENT || 3007}`;
+      axios
+        .post(`${paymentServiceUrl}/internal/refund-by-order`, { orderId: order._id.toString() })
+        .catch((err) => logger.error(`Refund trigger failed for order ${order._id}:`, err.message));
+    }
 
     return sendSuccess(res, 200, 'Order cancelled', { orderId: order._id });
   } catch (err) {
@@ -490,12 +504,17 @@ const vendorRejectOrder = async (req, res) => {
 // Customer: preview coupon discount before placing order (no side-effects)
 const validateCouponController = async (req, res) => {
   try {
-    const { code, orderSubtotal } = req.body;
-    if (!code || !orderSubtotal) {
-      return sendError(res, 400, 'code and orderSubtotal are required', ERROR_CODES.MISSING_FIELDS);
+    const couponPreviewSchema = z.object({
+      code: z.string().min(1).max(50),
+      orderSubtotal: z.number().positive().max(1_000_000),
+    });
+    const parsed = couponPreviewSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return sendError(res, 400, 'Validation failed', ERROR_CODES.VALIDATION_ERROR, parsed.error.flatten());
     }
+    const { code, orderSubtotal } = parsed.data;
 
-    const result = await validateCoupon(code, Number(orderSubtotal), req.user.id);
+    const result = await validateCoupon(code, orderSubtotal, req.user.id);
 
     if (!result.valid) {
       return sendError(res, 400, result.reason, ERROR_CODES.VALIDATION_ERROR);

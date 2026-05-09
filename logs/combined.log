@@ -1,0 +1,419 @@
+2026-05-09 16:34:29 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-09 16:52:26 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-09 16:52:26 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-09 16:52:38 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:52:38 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:52:38 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:52:38 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:52:38 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:52:39 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:52:43 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:52:43 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:52:43 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:52:44 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:52:44 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:52:44 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:52:48 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:52:49 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:52:49 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:52:49 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:52:49 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:52:49 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:52:54 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:52:54 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:52:54 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:52:54 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:52:54 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:52:55 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:52:59 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:00 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:00 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:00 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:00 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:01 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:05 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:05 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:06 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:07 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:07 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:07 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:12 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:12 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:12 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:14 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:14 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:15 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:19 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:19 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:20 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:22 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:22 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:22 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:27 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:27 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:27 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:29 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:29 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:29 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:34 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:34 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:34 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:36 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:36 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:36 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:41 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:41 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:41 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:43 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:43 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:43 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:48 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:48 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:48 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:50 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:50 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:50 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:55 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:55 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:55 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:53:57 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:57 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:53:57 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:54:02 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:54:02 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:54:03 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:54:04 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:54:04 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:54:05 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:54:09 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:54:10 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:54:10 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:54:12 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:54:12 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:54:12 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:54:17 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:54:17 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:54:17 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:54:18 [[33mwarn[39m]: MongoDB disconnected
+2026-05-09 16:54:19 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:54:19 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:54:21 [[33mwarn[39m]: MongoDB disconnected
+2026-05-09 16:54:24 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:54:24 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:54:25 [[33mwarn[39m]: MongoDB disconnected
+2026-05-09 16:54:26 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:54:26 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:54:28 [[33mwarn[39m]: MongoDB disconnected
+2026-05-09 16:54:29 [[33mwarn[39m]: MongoDB disconnected
+2026-05-09 16:54:31 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/FreshmartBackend/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:638:28)
+    at TLSSocket.emit (node:events:524:28)
+    at Socket._onTimeout (node:net:609:8)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+2026-05-09 16:54:31 [[33mwarn[39m]: MongoDB disconnected
+2026-05-09 16:54:33 [[33mwarn[39m]: Redis reconnecting…
+2026-05-09 16:54:33 [[33mwarn[39m]: MongoDB disconnected
+2026-05-09 16:54:38 [[33mwarn[39m]: MongoDB disconnected
+2026-05-09 16:54:38 [[33mwarn[39m]: MongoDB disconnected

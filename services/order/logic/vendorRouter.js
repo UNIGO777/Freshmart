@@ -134,8 +134,13 @@ const offerToBatch = async (order, sortedVendors, batchIndex) => {
 
   if (batch.length === 0) return;
 
-  // Track which vendors are currently being offered
-  order.routingMeta.offeredVendorIds = batch.map((v) => v._id);
+  // Append new batch to offeredVendorIds (don't replace — vendors from previous
+  // batches may still attempt a late accept, and the incoming-orders query
+  // filters by this array so their ID must remain present).
+  const newIds = batch.map((v) => v._id.toString());
+  const existing = order.routingMeta.offeredVendorIds.map((id) => id.toString());
+  const merged = [...new Set([...existing, ...newIds])];
+  order.routingMeta.offeredVendorIds = merged;
   order.routingMeta.batchIndex = batchIndex;
   await order.save();
 

@@ -48,6 +48,9 @@ router.use(
 );
 
 router.use('/api/orders', authenticate, proxy(SERVICE_URLS.order));
+
+// PhonePe server-to-server webhook carries no JWT — must be before the authenticated block
+router.post('/api/payments/callback', proxy(SERVICE_URLS.payment));
 router.use('/api/payments', authenticate, proxy(SERVICE_URLS.payment));
 router.use('/api/delivery', authenticate, proxy(SERVICE_URLS.delivery));
 // Promo push requires ADMIN; FCM token update is open to any authenticated role

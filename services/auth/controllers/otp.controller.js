@@ -29,14 +29,8 @@ const sendOtp = async (req, res) => {
     const otp = generateOtp();
     const expiresAt = new Date(Date.now() + OTP_EXPIRY_MS);
 
-    // Upsert OTP session
-    await OtpSession.findOneAndUpdate(
-      { phone },
-      { otp, expiresAt, attempts: 0 },
-      { upsert: true, new: true },
-    );
-
-    // Send via Fast2SMS
+    // Send SMS FIRST — only persist the session if delivery succeeds.
+    // This prevents a phantom OTP sitting in DB that the user never received.
     await axios.get('https://www.fast2sms.com/dev/bulkV2', {
       params: {
         authorization: process.env.FASTTOSMS_AUTH_TOKEN,
@@ -44,7 +38,15 @@ const sendOtp = async (req, res) => {
         route: 'otp',
         numbers: phone.replace(/^\+91/, ''),
       },
+      timeout: 8000,
     });
+
+    // Upsert OTP session only after successful delivery
+    await OtpSession.findOneAndUpdate(
+      { phone },
+      { otp, expiresAt, attempts: 0 },
+      { upsert: true, new: true },
+    );
 
     logger.info(`OTP sent to ${phone}`);
     return sendSuccess(res, 200, 'OTP sent successfully');
@@ -60,7 +62,7 @@ const sendOtp = async (req, res) => {
  */
 const verifyOtp = async (req, res) => {
   try {
-    const { phone, otp, role = ROLES.CUSTOMER } = req.body;
+    const { phone, otp } = req.body;
 
     if (!phone || !otp) {
       return sendError(res, 400, 'Phone and OTP are required', ERROR_CODES.MISSING_FIELDS);
