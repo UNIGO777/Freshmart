@@ -34,7 +34,7 @@ const listPayouts = async (req, res) => {
           as:           'vendor',
         },
       },
-      { $unwind: { path: '$vendor', preserveNullAndEmpty: true } },
+      { $unwind: { path: '$vendor', preserveNullAndEmptyArrays: true } },
       {
         $project: {
           pendingAmount: 1, paidAmount: 1,
@@ -43,7 +43,6 @@ const listPayouts = async (req, res) => {
           'vendor.businessName': 1,
           'vendor.phone':        1,
           'vendor.bankDetails':  1,
-          'vendor.commissionPercent': 1,
         },
       },
     ]);
@@ -67,7 +66,7 @@ const getVendorPayoutHistory = async (req, res) => {
     if (req.query.status) filter.status = req.query.status;
 
     const [vendor, earnings, total] = await Promise.all([
-      Vendor.findById(req.params.vendorId).select('businessName phone bankDetails commissionPercent').lean(),
+      Vendor.findById(req.params.vendorId).select('businessName phone bankDetails').lean(),
       VendorEarning.find(filter)
         .sort({ earningDate: -1 })
         .skip(skip)
@@ -130,4 +129,50 @@ const triggerPayout = async (req, res) => {
   }
 };
 
-module.exports = { listPayouts, getVendorPayoutHistory, triggerPayout };
+// ── GET /payouts/history ──────────────────────────────────────────
+// All paid payout records across all vendors (for the History tab)
+const getPayoutHistory = async (req, res) => {
+  try {
+    const page  = Math.max(1, parseInt(req.query.page)  || 1);
+    const limit = Math.min(100, parseInt(req.query.limit) || 50);
+    const skip  = (page - 1) * limit;
+
+    const [records, total] = await Promise.all([
+      VendorEarning.aggregate([
+        { $match: { status: 'paid' } },
+        {
+          $group: {
+            _id:          { vendorId: '$vendorId', paidAt: { $dateToString: { format: '%Y-%m-%dT%H:%M:%S', date: '$paidAt' } } },
+            payoutAmount: { $sum: '$netAmount' },
+            earningCount: { $sum: 1 },
+            paidAt:       { $first: '$paidAt' },
+            vendorId:     { $first: '$vendorId' },
+          },
+        },
+        { $sort: { paidAt: -1 } },
+        { $skip: skip },
+        { $limit: limit },
+        { $lookup: { from: 'vendors', localField: 'vendorId', foreignField: '_id', as: 'vendor' } },
+        { $unwind: { path: '$vendor', preserveNullAndEmptyArrays: true } },
+        {
+          $project: {
+            _id: 0,
+            vendorId: 1,
+            payoutAmount: 1,
+            earningCount: 1,
+            paidAt: 1,
+            'vendor.businessName': 1,
+          },
+        },
+      ]),
+      VendorEarning.countDocuments({ status: 'paid' }),
+    ]);
+
+    return sendSuccess(res, 200, 'Payout history', { data: records, total, page, limit });
+  } catch (err) {
+    logger.error('getPayoutHistory error:', err);
+    return sendError(res, 500, 'Failed to fetch payout history', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+module.exports = { listPayouts, getPayoutHistory, getVendorPayoutHistory, triggerPayout };

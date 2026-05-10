@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { sendOtp, verifyOtp } = require('../controllers/otp.controller');
-const { registerEmail, loginEmail, refreshToken, logout } = require('../controllers/email.controller');
+const { registerEmail, loginEmail, loginAdmin, refreshToken, logout } = require('../controllers/email.controller');
 const { googleLogin, appleLogin } = require('../controllers/social.controller');
 
 const router = Router();
@@ -12,6 +12,7 @@ router.post('/verify-otp', verifyOtp);
 // Email / password
 router.post('/register-email', registerEmail);
 router.post('/login-email', loginEmail);
+router.post('/login-admin', loginAdmin);
 
 // Social
 router.post('/google', googleLogin);

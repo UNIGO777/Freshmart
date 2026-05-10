@@ -63,12 +63,14 @@ const getProducts = async (req, res) => {
     const cached = await getFromCache(key);
     if (cached) return sendSuccess(res, 200, 'Products fetched (cache)', cached);
 
+    const VALID_CATEGORIES = ['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other'];
     const filter = { isAvailableToday: true };
     if (category) {
-      if (!['fruits', 'vegetables', 'spices'].includes(category)) {
+      const normalised = category.toLowerCase();
+      if (!VALID_CATEGORIES.includes(normalised)) {
         return sendError(res, 400, 'Invalid category', ERROR_CODES.VALIDATION_ERROR);
       }
-      filter.category = category;
+      filter.category = normalised;
     }
 
     const products = await Product.find(filter).sort({ category: 1, name: 1 }).lean();
@@ -120,7 +122,7 @@ const getProductById = async (req, res) => {
 const createProductSchema = z.object({
   name: z.string().min(1),
   nameHi: z.string().optional(),
-  category: z.enum(['fruits', 'vegetables', 'spices']),
+  category: z.enum(['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other']),
   unit: z.enum(['kg', 'g', 'piece', 'dozen']),
   image: z.string().url().optional(),
   buyingPrice: z.number().min(0),
@@ -148,7 +150,7 @@ const createProduct = async (req, res) => {
 const updateProductSchema = z.object({
   name: z.string().min(1).optional(),
   nameHi: z.string().optional(),
-  category: z.enum(['fruits', 'vegetables', 'spices']).optional(),
+  category: z.enum(['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other']).optional(),
   unit: z.enum(['kg', 'g', 'piece', 'dozen']).optional(),
   image: z.string().url().optional(),
   buyingPrice: z.number().min(0).optional(),

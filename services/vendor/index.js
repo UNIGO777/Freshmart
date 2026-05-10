@@ -5,6 +5,7 @@ process.on('unhandledRejection', (reason) => {
   process.exit(1);
 });
 process.on('uncaughtException', (err) => {
+  if (err.type === 'request.aborted' || err.message === 'request aborted') return;
   require('../../shared/utils/logger').error('Uncaught exception:', err);
   process.exit(1);
 });

@@ -1,9 +1,12 @@
 require('dotenv').config();
 const crypto = require('crypto');
 const axios = require('axios');
+const mongoose = require('mongoose');
 const Transaction = require('../models/Transaction.model');
 const Order = require('../../order/models/Order.model');
 const Customer = require('../../user/models/Customer.model');
+const VendorEarning = require('../../vendor/models/VendorEarning.model');
+const Vendor = require('../../user/models/Vendor.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const { PAYMENT_STATUS, ORDER_STATUS } = require('../../../shared/constants/orderStatus');
@@ -320,20 +323,95 @@ const initiateRefund = async (req, res) => {
 
 /**
  * GET /api/payments/vendor/payouts
- * Admin: list pending vendor payouts.
+ * Admin: list pending vendor payouts aggregated by vendor.
+ * Optional filters: ?vendorId=, ?status=pending|paid
  */
 const listVendorPayouts = async (req, res) => {
-  // Placeholder — full implementation in Phase 7 (Admin Service)
-  return sendSuccess(res, 200, 'Vendor payouts (placeholder)', []);
+  try {
+    const matchStage = {};
+    if (req.query.status) matchStage.status = req.query.status;
+    if (req.query.vendorId) matchStage.vendorId = new mongoose.Types.ObjectId(req.query.vendorId);
+
+    const payouts = await VendorEarning.aggregate([
+      { $match: matchStage },
+      {
+        $group: {
+          _id:           '$vendorId',
+          pendingAmount: { $sum: { $cond: [{ $eq: ['$status', 'pending'] }, '$netAmount', 0] } },
+          paidAmount:    { $sum: { $cond: [{ $eq: ['$status', 'paid'] },    '$netAmount', 0] } },
+          pendingCount:  { $sum: { $cond: [{ $eq: ['$status', 'pending'] }, 1, 0] } },
+          paidCount:     { $sum: { $cond: [{ $eq: ['$status', 'paid'] },    1, 0] } },
+          lastEarning:   { $max: '$earningDate' },
+        },
+      },
+      { $sort: { pendingAmount: -1 } },
+      {
+        $lookup: {
+          from: 'vendors', localField: '_id', foreignField: '_id', as: 'vendor',
+        },
+      },
+      { $unwind: { path: '$vendor', preserveNullAndEmptyArrays: true } },
+      {
+        $project: {
+          pendingAmount: 1, paidAmount: 1,
+          pendingCount: 1, paidCount: 1,
+          lastEarning: 1,
+          'vendor.businessName': 1,
+          'vendor.phone': 1,
+          'vendor.bankDetails': 1,
+        },
+      },
+    ]);
+
+    return sendSuccess(res, 200, 'Vendor payouts fetched', payouts);
+  } catch (err) {
+    logger.error('listVendorPayouts error:', err);
+    return sendError(res, 500, 'Failed to fetch vendor payouts', ERROR_CODES.INTERNAL_ERROR);
+  }
 };
 
 /**
  * POST /api/payments/vendor/payout/:vendorId
- * Admin: trigger a PhonePe payout to vendor UPI.
+ * Admin: mark all pending earnings for a vendor as paid.
  */
 const triggerVendorPayout = async (req, res) => {
-  // Placeholder — full implementation in Phase 7
-  return sendSuccess(res, 200, 'Payout triggered (placeholder)', { vendorId: req.params.vendorId });
+  try {
+    const vendor = await Vendor.findById(req.params.vendorId)
+      .select('businessName bankDetails')
+      .lean();
+    if (!vendor) return sendError(res, 404, 'Vendor not found', ERROR_CODES.NOT_FOUND);
+
+    const summary = await VendorEarning.aggregate([
+      { $match: { vendorId: new mongoose.Types.ObjectId(req.params.vendorId), status: 'pending' } },
+      { $group: { _id: null, total: { $sum: '$netAmount' }, count: { $sum: 1 } } },
+    ]);
+
+    if (!summary.length || summary[0].count === 0) {
+      return sendError(res, 400, 'No pending earnings for this vendor', ERROR_CODES.VALIDATION_ERROR);
+    }
+
+    const { total: payoutAmount, count: earningCount } = summary[0];
+    const paidAt = new Date();
+
+    await VendorEarning.updateMany(
+      { vendorId: req.params.vendorId, status: 'pending' },
+      { $set: { status: 'paid', paidAt } },
+    );
+
+    logger.info(`Payout of ₹${payoutAmount} triggered for vendor ${vendor.businessName} (${req.params.vendorId})`);
+
+    return sendSuccess(res, 200, 'Payout processed', {
+      vendorId:    req.params.vendorId,
+      vendor:      vendor.businessName,
+      payoutAmount,
+      earningCount,
+      paidAt,
+      bankDetails: vendor.bankDetails,
+    });
+  } catch (err) {
+    logger.error('triggerVendorPayout error:', err);
+    return sendError(res, 500, 'Failed to process payout', ERROR_CODES.INTERNAL_ERROR);
+  }
 };
 
 module.exports = {

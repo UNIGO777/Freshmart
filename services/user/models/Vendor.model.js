@@ -32,7 +32,11 @@ const vendorSchema = new mongoose.Schema(
       upiId: { type: String },
     },
 
-    commissionPercent: { type: Number, default: 10 },
+    kyc: {
+      aadhaarUrl: { type: String },
+      panUrl:     { type: String },
+      status:     { type: String, enum: ['pending', 'verified', 'rejected'], default: 'pending' },
+    },
   },
   { timestamps: true },
 );

@@ -148,8 +148,8 @@ const getEarnings = async (req, res) => {
         {
           $group: {
             _id: null,
-            totalGross: { $sum: '$grossAmount' },
-            totalCommission: { $sum: '$commissionAmount' },
+            totalSales: { $sum: '$salesAmount' },
+            totalMargin: { $sum: '$marginAmount' },
             totalNet: { $sum: '$netAmount' },
             count: { $sum: 1 },
           },
@@ -158,7 +158,7 @@ const getEarnings = async (req, res) => {
     ]);
 
     return sendSuccess(res, 200, 'Earnings fetched', {
-      summary: totals[0] || { totalGross: 0, totalCommission: 0, totalNet: 0, count: 0 },
+      summary: totals[0] || { totalSales: 0, totalMargin: 0, totalNet: 0, count: 0 },
       records,
     });
   } catch (err) {

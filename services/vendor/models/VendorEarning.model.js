@@ -19,15 +19,14 @@ const vendorEarningSchema = new mongoose.Schema(
       required: true,
     },
 
-    // Gross earning = sum of (buyingPrice * qty) for items vendor fulfilled
-    grossAmount: { type: Number, required: true },
+    // Customer-side sale total for the vendor's fulfilled items.
+    salesAmount: { type: Number, required: true },
 
-    // Platform commission deducted
-    commissionPercent: { type: Number, required: true },
-    commissionAmount: { type: Number, required: true },
-
-    // Net payout = grossAmount - commissionAmount
+    // Vendor payout is based on buying price, not a commission deduction.
     netAmount: { type: Number, required: true },
+
+    // Platform margin = salesAmount - netAmount.
+    marginAmount: { type: Number, required: true },
 
     status: {
       type: String,

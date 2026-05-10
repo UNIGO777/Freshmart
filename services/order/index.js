@@ -5,6 +5,7 @@ process.on('unhandledRejection', (reason) => {
   process.exit(1);
 });
 process.on('uncaughtException', (err) => {
+  if (err.type === 'request.aborted' || err.message === 'request aborted') return;
   require('../../shared/utils/logger').error('Uncaught exception:', err);
   process.exit(1);
 });
@@ -17,7 +18,6 @@ const { connectRedis } = require('../../shared/db/redis');
 const orderRoutes = require('./routes/order.routes');
 const Order         = require('./models/Order.model');
 const Product       = require('../product/models/Product.model');
-const Vendor        = require('../user/models/Vendor.model');
 const VendorEarning = require('../vendor/models/VendorEarning.model');
 const { initiateRouting } = require('./logic/vendorRouter');
 const { SUB_ORDER_STATUS, ORDER_STATUS } = require('../../shared/constants/orderStatus');
@@ -28,16 +28,16 @@ const PORT = process.env.PORT_ORDER || 3004;
 
 // ── Helper: create VendorEarning when sub-order is delivered ──────
 const createVendorEarning = async (order, subOrder) => {
-  const vendor = await Vendor.findById(subOrder.vendorId).select('commissionPercent').lean();
-  const commissionPercent = vendor?.commissionPercent ?? 10;
-
-  // Gross = sum of (buyingPrice * qty) for items this vendor fulfilled
-  const grossAmount = subOrder.items.reduce(
+  // Payout to vendor = sum of buyingPrice * qty for fulfilled items.
+  const netAmount = subOrder.items.reduce(
     (sum, item) => sum + (item.buyingPrice ?? 0) * item.quantity,
     0,
   );
-  const commissionAmount = Math.round((grossAmount * commissionPercent) / 100);
-  const netAmount = grossAmount - commissionAmount;
+  const salesAmount = subOrder.items.reduce(
+    (sum, item) => sum + (item.sellingPrice ?? 0) * item.quantity,
+    0,
+  );
+  const marginAmount = Math.max(0, salesAmount - netAmount);
 
   // Idempotent: skip if already recorded for this sub-order
   const exists = await VendorEarning.exists({ subOrderId: subOrder._id });
@@ -47,15 +47,14 @@ const createVendorEarning = async (order, subOrder) => {
     vendorId:         subOrder.vendorId,
     orderId:          order._id,
     subOrderId:       subOrder._id,
-    grossAmount,
-    commissionPercent,
-    commissionAmount,
+    salesAmount,
     netAmount,
+    marginAmount,
     status:           'pending',
     earningDate:      new Date(),
   });
 
-  logger.info(`VendorEarning created: vendor ${subOrder.vendorId} earned ₹${netAmount} (net) for subOrder ${subOrder._id}`);
+  logger.info(`VendorEarning created: vendor ${subOrder.vendorId} payout ₹${netAmount}, margin ₹${marginAmount} for subOrder ${subOrder._id}`);
 };
 
 app.use(helmet());

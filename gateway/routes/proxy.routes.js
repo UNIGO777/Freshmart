@@ -20,10 +20,11 @@ const SERVICE_URLS = {
   admin: `http://localhost:${process.env.PORT_ADMIN || 3009}`,
 };
 
-const proxy = (target) =>
+const proxy = (target, stripPrefix) =>
   createProxyMiddleware({
     target,
     changeOrigin: true,
+    pathRewrite: stripPrefix ? { [`^${stripPrefix}`]: '' } : undefined,
     on: {
       error: (err, req, res) => {
         res.status(502).json({ success: false, message: 'Service unavailable', errorCode: 'SERVICE_UNAVAILABLE' });
@@ -32,10 +33,12 @@ const proxy = (target) =>
   });
 
 // ── Public routes (no auth required) ──────────────────────────────
-router.use('/api/auth', authLimiter, proxy(SERVICE_URLS.auth));
+// Skip rate limiter in development/test so repeated login attempts don't get blocked.
+const isDev = process.env.NODE_ENV !== 'production';
+router.use('/api/auth', ...(isDev ? [] : [authLimiter]), proxy(SERVICE_URLS.auth, '/api/auth'));
 
 // ── Protected routes ───────────────────────────────────────────────
-router.use('/api/users', authenticate, proxy(SERVICE_URLS.user));
+router.use('/api/users', authenticate, proxy(SERVICE_URLS.user, '/api/users'));
 
 router.use(
   '/api/products',
@@ -44,31 +47,31 @@ router.use(
     if (req.method === 'GET') return next();
     authenticate(req, res, next);
   },
-  proxy(SERVICE_URLS.product),
+  proxy(SERVICE_URLS.product, '/api/products'),
 );
 
-router.use('/api/orders', authenticate, proxy(SERVICE_URLS.order));
+router.use('/api/orders', authenticate, proxy(SERVICE_URLS.order, '/api/orders'));
 
 // PhonePe server-to-server webhook carries no JWT — must be before the authenticated block
-router.post('/api/payments/callback', proxy(SERVICE_URLS.payment));
-router.use('/api/payments', authenticate, proxy(SERVICE_URLS.payment));
-router.use('/api/delivery', authenticate, proxy(SERVICE_URLS.delivery));
+router.post('/api/payments/callback', proxy(SERVICE_URLS.payment, '/api/payments'));
+router.use('/api/payments', authenticate, proxy(SERVICE_URLS.payment, '/api/payments'));
+router.use('/api/delivery', authenticate, proxy(SERVICE_URLS.delivery, '/api/delivery'));
 // Promo push requires ADMIN; FCM token update is open to any authenticated role
-router.use('/api/notifications/promo', authenticate, requireRole(ROLES.ADMIN), proxy(SERVICE_URLS.notification));
-router.use('/api/notifications', authenticate, proxy(SERVICE_URLS.notification));
+router.use('/api/notifications/promo', authenticate, requireRole(ROLES.ADMIN), proxy(SERVICE_URLS.notification, '/api/notifications'));
+router.use('/api/notifications', authenticate, proxy(SERVICE_URLS.notification, '/api/notifications'));
 
 router.use(
   '/api/vendors',
   authenticate,
   requireRole(ROLES.VENDOR, ROLES.ADMIN),
-  proxy(SERVICE_URLS.vendor),
+  proxy(SERVICE_URLS.vendor, '/api/vendors'),
 );
 
 router.use(
   '/api/admin',
   authenticate,
   requireRole(ROLES.ADMIN),
-  proxy(SERVICE_URLS.admin),
+  proxy(SERVICE_URLS.admin, '/api/admin'),
 );
 
 module.exports = router;

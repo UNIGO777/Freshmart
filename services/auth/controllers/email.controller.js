@@ -2,6 +2,7 @@ require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const { z } = require('zod');
 const Customer = require('../../user/models/Customer.model');
+const Admin = require('../../admin/models/Admin.model');
 const { signAccessToken, signRefreshToken, verifyRefreshToken } = require('../../../shared/utils/jwt.util');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
@@ -134,4 +135,46 @@ const logout = async (_req, res) => {
   return sendSuccess(res, 200, 'Logged out successfully');
 };
 
-module.exports = { registerEmail, loginEmail, refreshToken, logout };
+/**
+ * POST /api/auth/login-admin
+ * Body: { email, password }
+ */
+const loginAdmin = async (req, res) => {
+  try {
+    const parsed = loginSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return sendError(res, 400, 'Validation failed', ERROR_CODES.VALIDATION_ERROR, parsed.error.flatten());
+    }
+
+    const { email, password } = parsed.data;
+
+    const admin = await Admin.findOne({ email: email.toLowerCase() }).select('+passwordHash');
+    if (!admin || !admin.passwordHash) {
+      return sendError(res, 401, 'Invalid email or password', ERROR_CODES.INVALID_CREDENTIALS);
+    }
+
+    const match = await bcrypt.compare(password, admin.passwordHash);
+    if (!match) {
+      return sendError(res, 401, 'Invalid email or password', ERROR_CODES.INVALID_CREDENTIALS);
+    }
+
+    if (!admin.isActive) {
+      return sendError(res, 403, 'Admin account is inactive', ERROR_CODES.FORBIDDEN);
+    }
+
+    const tokenPayload = { id: admin._id.toString(), role: ROLES.ADMIN };
+    const accessToken = signAccessToken(tokenPayload);
+    const refreshToken = signRefreshToken(tokenPayload);
+
+    return sendSuccess(res, 200, 'Admin login successful', {
+      accessToken,
+      refreshToken,
+      user: { id: admin._id, name: admin.name, email: admin.email, role: ROLES.ADMIN },
+    });
+  } catch (err) {
+    logger.error('loginAdmin error:', err);
+    return sendError(res, 500, 'Login failed', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+module.exports = { registerEmail, loginEmail, loginAdmin, refreshToken, logout };

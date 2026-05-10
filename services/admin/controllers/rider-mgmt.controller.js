@@ -103,4 +103,41 @@ const blockRider = async (req, res) => {
   }
 };
 
-module.exports = { listRiders, getRiderDetail, approveRider, blockRider };
+// ── POST /riders ──────────────────────────────────────────────────
+const createRider = async (req, res) => {
+  try {
+    const {
+      name, phone, password, vehicleType,
+      aadhaarUrl, panUrl,
+    } = req.body;
+
+    if (!name || !phone || !password) {
+      return sendError(res, 400, 'name, phone and password are required', ERROR_CODES.MISSING_FIELDS);
+    }
+
+    const existing = await Rider.findOne({ phone });
+    if (existing) return sendError(res, 409, 'Phone number already registered', ERROR_CODES.ALREADY_EXISTS);
+
+    const bcrypt = require('bcryptjs');
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    const rider = await Rider.create({
+      name,
+      phone,
+      passwordHash,
+      vehicleType: vehicleType || 'bike',
+      isApproved: true,
+      isActive: true,
+      kyc: { aadhaarUrl: aadhaarUrl || '', panUrl: panUrl || '', status: 'pending' },
+    });
+
+    const r = rider.toObject();
+    delete r.passwordHash;
+    return sendSuccess(res, 201, 'Rider created', r);
+  } catch (err) {
+    logger.error('createRider error:', err);
+    return sendError(res, 500, 'Failed to create rider', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+module.exports = { listRiders, getRiderDetail, approveRider, blockRider, createRider };

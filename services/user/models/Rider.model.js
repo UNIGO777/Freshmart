@@ -29,6 +29,12 @@ const riderSchema = new mongoose.Schema(
       average: { type: Number, default: 0 },
       count: { type: Number, default: 0 },
     },
+
+    kyc: {
+      aadhaarUrl: { type: String },
+      panUrl:     { type: String },
+      status:     { type: String, enum: ['pending', 'verified', 'rejected'], default: 'pending' },
+    },
   },
   { timestamps: true },
 );

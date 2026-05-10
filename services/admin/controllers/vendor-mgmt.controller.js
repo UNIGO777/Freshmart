@@ -109,4 +109,47 @@ const blockVendor = async (req, res) => {
   }
 };
 
-module.exports = { listVendors, getVendorDetail, approveVendor, blockVendor };
+// ── POST /vendors ─────────────────────────────────────────────────
+const createVendor = async (req, res) => {
+  try {
+    const {
+      businessName, ownerName, phone, email, password,
+      lat, lng, serviceRadiusKm, categories,
+      bankDetails,
+      aadhaarUrl, panUrl,
+    } = req.body;
+
+    if (!businessName || !ownerName || !phone || !password) {
+      return sendError(res, 400, 'businessName, ownerName, phone and password are required', ERROR_CODES.MISSING_FIELDS);
+    }
+    if (!lat || !lng) {
+      return sendError(res, 400, 'Shop location (lat, lng) is required', ERROR_CODES.MISSING_FIELDS);
+    }
+
+    const existing = await Vendor.findOne({ phone });
+    if (existing) return sendError(res, 409, 'Phone number already registered', ERROR_CODES.ALREADY_EXISTS);
+
+    const bcrypt = require('bcryptjs');
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    const vendor = await Vendor.create({
+      businessName, ownerName, phone, email,
+      passwordHash,
+      location: { type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] },
+      serviceRadiusKm: serviceRadiusKm ? parseFloat(serviceRadiusKm) : 5,
+      categories: Array.isArray(categories) ? categories : [],
+      bankDetails: bankDetails || {},
+      isApproved: true,
+      kyc: { aadhaarUrl: aadhaarUrl || '', panUrl: panUrl || '', status: aadhaarUrl && panUrl ? 'pending' : 'pending' },
+    });
+
+    const v = vendor.toObject();
+    delete v.passwordHash;
+    return sendSuccess(res, 201, 'Vendor created', v);
+  } catch (err) {
+    logger.error('createVendor error:', err);
+    return sendError(res, 500, 'Failed to create vendor', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+module.exports = { listVendors, getVendorDetail, approveVendor, blockVendor, createVendor };
