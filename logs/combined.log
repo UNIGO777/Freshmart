@@ -2379,3 +2379,217 @@
 2026-05-10 23:54:38 [[32minfo[39m]: Socket disconnected: vD1le4mFuQJMU7miAAAE (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
 2026-05-11 00:45:05 [[32minfo[39m]: Socket connected: shemiL1trDMfVrVXAAAH (admin:6a0000d3b8b024f8eff26d15)
 2026-05-11 00:46:10 [[32minfo[39m]: Socket disconnected: shemiL1trDMfVrVXAAAH (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 01:02:17 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 01:02:17 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 01:18:01 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 01:18:01 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 01:35:20 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 01:35:20 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 01:53:32 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 01:53:32 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 02:09:37 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 02:09:37 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 02:25:22 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 02:25:22 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 02:51:41 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 02:51:41 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 03:02:40 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 03:02:40 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 03:49:09 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 03:49:09 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 03:54:09 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 03:54:09 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 04:03:42 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 04:03:42 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 04:20:53 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 04:20:53 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 04:40:06 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 05:01:51 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 05:01:51 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 05:49:04 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 05:49:04 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 06:52:34 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 06:52:34 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 07:04:43 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 07:04:43 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 07:37:48 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 07:37:48 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 08:26:41 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 12:21:54 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 12:39:12 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 13:23:36 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 13:36:28 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 18:03:55 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 20:05:23 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 20:15:59 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 20:31:10 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 20:46:25 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 20:53:00 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 21:26:21 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 21:27:11 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 21:43:01 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 21:44:21 [[32minfo[39m]: Redis connected
+2026-05-11 21:44:21 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-11 21:44:21 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-11 21:44:35 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-11 21:44:36 [[32minfo[39m]: Redis connected
+2026-05-11 21:44:36 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-11 21:44:36 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-11 21:44:36 [[32minfo[39m]: Redis connected
+2026-05-11 21:44:36 [[32minfo[39m]: Redis connected
+2026-05-11 21:44:36 [[32minfo[39m]: Redis connected
+2026-05-11 21:44:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 21:44:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 21:44:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 21:44:37 [[32minfo[39m]: Vendor Service running on port 3005
+2026-05-11 21:44:37 [[32minfo[39m]: Admin Service running on port 3009
+2026-05-11 21:44:37 [[32minfo[39m]: Payment Service running on port 3007
+2026-05-11 21:44:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 21:44:37 [[32minfo[39m]: User Service running on port 3002
+2026-05-11 21:44:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 21:44:37 [[32minfo[39m]: Product Service running on port 3003
+2026-05-11 21:44:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 21:44:37 [[32minfo[39m]: Delivery Service running on port 3006
+2026-05-11 21:44:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 21:44:37 [[32minfo[39m]: Auth Service running on port 3001
+2026-05-11 21:44:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 21:44:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 21:44:37 [[32minfo[39m]: Notification Service running on port 3008
+2026-05-11 21:44:37 [[32minfo[39m]: Order Service running on port 3004
+2026-05-11 21:45:35 [[32minfo[39m]: Socket connected: xswixAo2EIRpmV51AAAC (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 21:45:44 [[32minfo[39m]: Socket disconnected: xswixAo2EIRpmV51AAAC (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 22:19:58 [[32minfo[39m]: Socket connected: UmtSJTaYG9FLrmYkAAAE (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 22:20:09 [[32minfo[39m]: Socket disconnected: UmtSJTaYG9FLrmYkAAAE (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 22:28:53 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-11 22:28:55 [[32minfo[39m]: Redis connected
+2026-05-11 22:28:55 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-11 22:28:55 [[32minfo[39m]: Redis connected
+2026-05-11 22:28:55 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-11 22:28:55 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-11 22:28:55 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-11 22:28:56 [[32minfo[39m]: Redis connected
+2026-05-11 22:28:56 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:28:56 [[32minfo[39m]: Redis connected
+2026-05-11 22:28:56 [[32minfo[39m]: Payment Service running on port 3007
+2026-05-11 22:28:56 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:28:56 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:28:56 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:28:56 [[32minfo[39m]: User Service running on port 3002
+2026-05-11 22:28:56 [[32minfo[39m]: Vendor Service running on port 3005
+2026-05-11 22:28:56 [[32minfo[39m]: Admin Service running on port 3009
+2026-05-11 22:28:56 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:28:56 [[32minfo[39m]: Redis connected
+2026-05-11 22:28:56 [[32minfo[39m]: Notification Service running on port 3008
+2026-05-11 22:28:57 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:28:57 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:28:57 [[32minfo[39m]: Product Service running on port 3003
+2026-05-11 22:28:57 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:28:57 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:28:57 [[32minfo[39m]: Auth Service running on port 3001
+2026-05-11 22:28:57 [[32minfo[39m]: Order Service running on port 3004
+2026-05-11 22:28:57 [[32minfo[39m]: Delivery Service running on port 3006
+2026-05-11 22:29:15 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-11 22:29:17 [[32minfo[39m]: Redis connected
+2026-05-11 22:29:17 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-11 22:29:17 [[32minfo[39m]: Redis connected
+2026-05-11 22:29:17 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-11 22:29:18 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-11 22:29:18 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-11 22:29:19 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:19 [[32minfo[39m]: Admin Service running on port 3009
+2026-05-11 22:29:19 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:19 [[32minfo[39m]: Notification Service running on port 3008
+2026-05-11 22:29:19 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:19 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:19 [[32minfo[39m]: Payment Service running on port 3007
+2026-05-11 22:29:19 [[32minfo[39m]: User Service running on port 3002
+2026-05-11 22:29:19 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:19 [[32minfo[39m]: Vendor Service running on port 3005
+2026-05-11 22:29:20 [[32minfo[39m]: Redis connected
+2026-05-11 22:29:20 [[32minfo[39m]: Redis connected
+2026-05-11 22:29:20 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:20 [[32minfo[39m]: Auth Service running on port 3001
+2026-05-11 22:29:20 [[32minfo[39m]: Redis connected
+2026-05-11 22:29:26 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-11 22:29:33 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-11 22:29:34 [[32minfo[39m]: Redis connected
+2026-05-11 22:29:34 [[32minfo[39m]: Redis connected
+2026-05-11 22:29:34 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-11 22:29:34 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-11 22:29:35 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-11 22:29:35 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-11 22:29:36 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:36 [[32minfo[39m]: Notification Service running on port 3008
+2026-05-11 22:29:36 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:36 [[32minfo[39m]: User Service running on port 3002
+2026-05-11 22:29:36 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:36 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:36 [[32minfo[39m]: Vendor Service running on port 3005
+2026-05-11 22:29:36 [[32minfo[39m]: Payment Service running on port 3007
+2026-05-11 22:29:36 [[32minfo[39m]: Redis connected
+2026-05-11 22:29:36 [[32minfo[39m]: Redis connected
+2026-05-11 22:29:36 [[32minfo[39m]: Redis connected
+2026-05-11 22:29:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:37 [[32minfo[39m]: Auth Service running on port 3001
+2026-05-11 22:29:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:37 [[32minfo[39m]: Admin Service running on port 3009
+2026-05-11 22:29:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:37 [[32minfo[39m]: Order Service running on port 3004
+2026-05-11 22:29:37 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:29:37 [[32minfo[39m]: Product Service running on port 3003
+2026-05-11 22:29:37 [[32minfo[39m]: Delivery Service running on port 3006
+2026-05-11 22:32:04 [[32minfo[39m]: Redis connected
+2026-05-11 22:32:04 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-11 22:32:05 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-11 22:32:15 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-11 22:32:17 [[32minfo[39m]: Redis connected
+2026-05-11 22:32:17 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-11 22:32:17 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-11 22:32:19 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:32:19 [[32minfo[39m]: Vendor Service running on port 3005
+2026-05-11 22:32:19 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:32:19 [[32minfo[39m]: Notification Service running on port 3008
+2026-05-11 22:32:19 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:32:19 [[32minfo[39m]: User Service running on port 3002
+2026-05-11 22:32:19 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:32:19 [[32minfo[39m]: Payment Service running on port 3007
+2026-05-11 22:32:19 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:32:19 [[32minfo[39m]: Admin Service running on port 3009
+2026-05-11 22:32:19 [[32minfo[39m]: Redis connected
+2026-05-11 22:32:19 [[32minfo[39m]: Redis connected
+2026-05-11 22:32:20 [[32minfo[39m]: Redis connected
+2026-05-11 22:32:20 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:32:20 [[32minfo[39m]: Auth Service running on port 3001
+2026-05-11 22:32:20 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:32:20 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:32:20 [[32minfo[39m]: Product Service running on port 3003
+2026-05-11 22:32:20 [[32minfo[39m]: Delivery Service running on port 3006
+2026-05-11 22:32:20 [[32minfo[39m]: MongoDB connected
+2026-05-11 22:32:20 [[32minfo[39m]: Order Service running on port 3004
+2026-05-11 22:38:29 [[32minfo[39m]: Socket connected: C0BnNj5_30Hyt_xxAAAC (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 22:38:32 [[32minfo[39m]: Socket disconnected: C0BnNj5_30Hyt_xxAAAC (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 22:55:30 [[32minfo[39m]: Socket connected: _1lA3ub_kiQRShFUAAAE (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 22:55:33 [[32minfo[39m]: Socket disconnected: _1lA3ub_kiQRShFUAAAE (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 23:00:31 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 23:00:41 [[33mwarn[39m]: MongoDB disconnected
+2026-05-11 23:01:10 [[32minfo[39m]: Socket connected: LvxEICUG7gIncn8tAAAG (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 23:01:36 [[32minfo[39m]: Socket disconnected: LvxEICUG7gIncn8tAAAG (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 23:10:07 [[32minfo[39m]: Socket connected: __Aj6zEmroRF-O8dAAAL (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 23:10:14 [[32minfo[39m]: Socket disconnected: __Aj6zEmroRF-O8dAAAL (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 23:11:26 [[32minfo[39m]: Socket connected: IhxDwacLa8-DD-bwAAAO (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 23:11:28 [[32minfo[39m]: Socket disconnected: IhxDwacLa8-DD-bwAAAO (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 23:11:28 [[32minfo[39m]: Socket connected: LCJFuXz45qVLyB1RAAAR (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 23:11:45 [[32minfo[39m]: Socket disconnected: LCJFuXz45qVLyB1RAAAR (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 23:21:57 [[32minfo[39m]: Socket connected: nj-XL-NPxkHoyFcBAAAU (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 23:22:03 [[32minfo[39m]: Socket disconnected: nj-XL-NPxkHoyFcBAAAU (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 23:22:06 [[32minfo[39m]: Socket connected: VslVXLri0Ph3o_nxAAAX (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 23:22:09 [[32minfo[39m]: Socket disconnected: VslVXLri0Ph3o_nxAAAX (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 23:25:07 [[32minfo[39m]: Socket connected: gZo5bIwois2dxH3zAAAa (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 23:25:09 [[32minfo[39m]: Socket disconnected: gZo5bIwois2dxH3zAAAa (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 23:25:10 [[32minfo[39m]: Socket connected: 5M9yKC_21GHhkknbAAAd (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 23:25:20 [[32minfo[39m]: Socket disconnected: 5M9yKC_21GHhkknbAAAd (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 23:25:22 [[32minfo[39m]: Socket connected: 8AT0ZxPf1py5LjQrAAAg (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 23:25:27 [[32minfo[39m]: Socket disconnected: 8AT0ZxPf1py5LjQrAAAg (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect
+2026-05-11 23:34:33 [[32minfo[39m]: Socket connected: jP6xmRrxfi679PhWAAAj (admin:6a0000d3b8b024f8eff26d15)
+2026-05-11 23:34:36 [[32minfo[39m]: Socket disconnected: jP6xmRrxfi679PhWAAAj (admin:6a0000d3b8b024f8eff26d15) — client namespace disconnect

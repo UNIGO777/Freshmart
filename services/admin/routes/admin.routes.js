@@ -21,6 +21,7 @@ const { listPayouts, getPayoutHistory,
 const { getPricingOverview }                        = require('../controllers/pricing.controller');
 const { createCoupon, listCoupons,
         updateCoupon, disableCoupon }               = require('../controllers/coupon.controller');
+const { uploadFile }                                = require('../controllers/upload.controller');
 
 // Auth (double-checked inside the service — gateway already enforces ADMIN)
 const { authenticate } = require('../../../gateway/middleware/auth.middleware');
@@ -31,6 +32,9 @@ const router = Router();
 
 // All admin routes require a valid JWT + ADMIN role
 router.use(authenticate, requireRole(ROLES.ADMIN));
+
+// ── File Upload (Cloudinary via backend) ─────────────────────────
+router.post('/upload', uploadFile);
 
 // ── Dashboard & Analytics ─────────────────────────────────────────
 router.get('/dashboard',                    getDashboard);
