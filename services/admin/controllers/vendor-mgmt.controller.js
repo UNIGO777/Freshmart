@@ -14,8 +14,19 @@ const listVendors = async (req, res) => {
     const skip  = (page - 1) * limit;
 
     const filter = {};
+    // Support legacy approved/active params
     if (req.query.approved !== undefined) filter.isApproved = req.query.approved === 'true';
     if (req.query.active   !== undefined) filter.isActive   = req.query.active   === 'true';
+    // Support status param: pending | approved | blocked
+    if (req.query.status) {
+      if (req.query.status === 'approved') { filter.isApproved = true; filter.isActive = true; }
+      else if (req.query.status === 'blocked') { filter.isActive = false; }
+      else if (req.query.status === 'pending') { filter.isApproved = false; filter.isActive = true; }
+    }
+    // Support category filter
+    if (req.query.category) {
+      filter.categories = req.query.category;
+    }
     if (req.query.search) {
       const re = new RegExp(req.query.search, 'i');
       filter.$or = [{ businessName: re }, { ownerName: re }, { phone: re }];
@@ -114,7 +125,7 @@ const createVendor = async (req, res) => {
   try {
     const {
       businessName, ownerName, phone, email, password,
-      lat, lng, serviceRadiusKm, categories,
+      lat, lng, address, serviceRadiusKm, categories,
       bankDetails,
       aadhaarUrl, panUrl,
     } = req.body;
@@ -136,6 +147,7 @@ const createVendor = async (req, res) => {
       businessName, ownerName, phone, email,
       passwordHash,
       location: { type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] },
+      address: address || '',
       serviceRadiusKm: serviceRadiusKm ? parseFloat(serviceRadiusKm) : 5,
       categories: Array.isArray(categories) ? categories : [],
       bankDetails: bankDetails || {},

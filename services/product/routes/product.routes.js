@@ -6,6 +6,7 @@ const {
   createProduct,
   updateProduct,
   toggleAvailability,
+  toggleActive,
   bulkUpdatePrices,
   getStaleProducts,
 } = require('../controllers/product.controller');
@@ -27,5 +28,6 @@ router.post('/', ...adminOnly, createProduct);
 router.put('/bulk-prices', ...adminOnly, bulkUpdatePrices);
 router.put('/:id', ...adminOnly, updateProduct);
 router.patch('/:id/toggle', ...adminOnly, toggleAvailability);
+router.patch('/:id/active', ...adminOnly, toggleActive);
 
 module.exports = router;

@@ -13,6 +13,8 @@ const vendorSchema = new mongoose.Schema(
       coordinates: { type: [Number], required: true }, // [lng, lat]
     },
 
+    address: { type: String, default: '' },
+
     serviceRadiusKm: { type: Number, default: 5 },
 
     categories: {

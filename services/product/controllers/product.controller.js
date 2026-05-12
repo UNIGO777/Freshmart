@@ -124,10 +124,14 @@ const createProductSchema = z.object({
   nameHi: z.string().optional(),
   category: z.enum(['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other']),
   unit: z.enum(['kg', 'g', 'piece', 'dozen']),
-  image: z.string().url().optional(),
-  buyingPrice: z.number().min(0),
-  sellingPrice: z.number().min(0),
-  isAvailableToday: z.boolean().optional(),
+  images: z.array(z.string().url()).optional().default([]),
+  coverImage: z.string().optional().default(''),
+  buyingPrice: z.coerce.number().min(0),
+  sellingPrice: z.coerce.number().min(0),
+  isAvailableToday: z.preprocess(
+    (v) => (v === 'true' ? true : v === 'false' ? false : v),
+    z.boolean().optional().default(true),
+  ),
 });
 
 const createProduct = async (req, res) => {
@@ -152,10 +156,14 @@ const updateProductSchema = z.object({
   nameHi: z.string().optional(),
   category: z.enum(['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other']).optional(),
   unit: z.enum(['kg', 'g', 'piece', 'dozen']).optional(),
-  image: z.string().url().optional(),
-  buyingPrice: z.number().min(0).optional(),
-  sellingPrice: z.number().min(0).optional(),
-  isAvailableToday: z.boolean().optional(),
+  images: z.array(z.string().url()).optional(),
+  coverImage: z.string().optional(),
+  buyingPrice: z.coerce.number().min(0).optional(),
+  sellingPrice: z.coerce.number().min(0).optional(),
+  isAvailableToday: z.preprocess(
+    (v) => (v === 'true' ? true : v === 'false' ? false : v),
+    z.boolean().optional(),
+  ),
 });
 
 const updateProduct = async (req, res) => {
@@ -186,8 +194,7 @@ const updateProduct = async (req, res) => {
 };
 
 // ── PATCH /api/products/:id/toggle  (Admin) ───────────────────────
-// Toggle isAvailableToday — the carry-forward model means whatever is set
-// persists until admin explicitly changes it again.
+// Toggle isAvailableToday
 const toggleAvailability = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -204,6 +211,27 @@ const toggleAvailability = async (req, res) => {
   } catch (err) {
     logger.error('toggleAvailability error:', err);
     return sendError(res, 500, 'Failed to toggle availability', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── PATCH /api/products/:id/active  (Admin) ───────────────────────
+// Toggle active — activates or deactivates a product from the catalogue entirely
+const toggleActive = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) return sendError(res, 404, 'Product not found', ERROR_CODES.NOT_FOUND);
+
+    product.active = !product.active;
+    await product.save();
+
+    await invalidateProductCache();
+    return sendSuccess(res, 200, `Product ${product.active ? 'activated' : 'deactivated'}`, {
+      id: product._id,
+      active: product.active,
+    });
+  } catch (err) {
+    logger.error('toggleActive error:', err);
+    return sendError(res, 500, 'Failed to toggle active status', ERROR_CODES.INTERNAL_ERROR);
   }
 };
 
@@ -277,6 +305,7 @@ module.exports = {
   createProduct,
   updateProduct,
   toggleAvailability,
+  toggleActive,
   bulkUpdatePrices,
   getStaleProducts,
 };

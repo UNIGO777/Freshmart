@@ -18,7 +18,10 @@ const productSchema = new mongoose.Schema(
       enum: ['kg', 'g', 'piece', 'dozen'],
     },
 
-    image: { type: String },
+    availableSeason: { type: String, enum: ['summer', 'winter', 'rain', 'all'] },
+
+    images: [{ type: String }],
+    coverImage: { type: String, default: '' },
 
     // Admin-managed pricing
     buyingPrice: {
@@ -33,6 +36,7 @@ const productSchema = new mongoose.Schema(
       min: 0,
       // Visible to customers — what they pay
     },
+    active: { type: Boolean, default: true, index: true },
 
     // Admin toggles this daily; if not touched it carries forward from prior day
     isAvailableToday: { type: Boolean, default: true, index: true },
