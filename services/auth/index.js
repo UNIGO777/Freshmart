@@ -29,7 +29,10 @@ app.get('/health', (_req, res) => {
   res.json({ success: true, service: 'auth', timestamp: new Date().toISOString() });
 });
 
+// Support both direct service paths (/login-admin) and prefixed paths (/api/auth/login-admin)
+// so clients continue working even if gateway rewrite behavior changes.
 app.use('/', authRoutes);
+app.use('/api/auth', authRoutes);
 
 app.use((_req, res) => res.status(404).json({ success: false, message: 'Route not found', errorCode: 'NOT_FOUND' }));
 
