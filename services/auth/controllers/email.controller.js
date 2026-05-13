@@ -7,6 +7,7 @@ const { signAccessToken, signRefreshToken, verifyRefreshToken } = require('../..
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const ROLES = require('../../../shared/constants/roles');
+const { notifyAdmin } = require('../../../shared/utils/notifyAdmin');
 const logger = require('../../../shared/utils/logger');
 
 const registerSchema = z.object({
@@ -49,6 +50,13 @@ const registerEmail = async (req, res) => {
     const tokenPayload = { id: user._id.toString(), role: ROLES.CUSTOMER };
     const accessToken = signAccessToken(tokenPayload);
     const refreshToken = signRefreshToken(tokenPayload);
+
+    notifyAdmin(
+      'new_customer',
+      'New Customer Registered',
+      `${user.name} (${user.email}) just signed up`,
+      { customerId: user._id.toString(), name: user.name, email: user.email },
+    );
 
     return sendSuccess(res, 201, 'Account created', {
       accessToken,

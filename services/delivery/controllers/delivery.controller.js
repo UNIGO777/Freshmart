@@ -9,6 +9,7 @@ const { handleRiderAccept, handleRiderReject } = require('../logic/riderAssigner
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const { triggerNotification } = require('../../../shared/utils/notify');
+const { notifyAdmin } = require('../../../shared/utils/notifyAdmin');
 const logger = require('../../../shared/utils/logger');
 
 // ── PATCH /rider/status ───────────────────────────────────────────
@@ -164,6 +165,13 @@ const markDelivered = async (req, res) => {
     triggerNotification('order:delivered', job.customerId.toString(), 'customer', {
       orderId: job.orderId.toString(),
     });
+
+    notifyAdmin(
+      'order_delivered',
+      `Order Delivered — ₹${job.riderEarnings ?? 0}`,
+      `Order #${job.orderId.toString().slice(-6).toUpperCase()} delivered successfully`,
+      { jobId: job._id.toString(), orderId: job.orderId.toString() },
+    );
 
     return sendSuccess(res, 200, 'Delivery marked complete', {
       jobId:    job._id,

@@ -7,10 +7,10 @@ const { getAnalytics, getRevenueOverTime, getOrdersOverTime,
         getOrdersByHour }                           = require('../controllers/analytics.controller');
 const { listVendors, getVendorDetail,
         approveVendor, blockVendor,
-        createVendor }                              = require('../controllers/vendor-mgmt.controller');
+        createVendor, getVendorEarnings }           = require('../controllers/vendor-mgmt.controller');
 const { listRiders, getRiderDetail,
         approveRider, blockRider,
-        createRider }                               = require('../controllers/rider-mgmt.controller');
+        createRider, getRiderEarnings }             = require('../controllers/rider-mgmt.controller');
 const { listCustomers, getCustomerDetail,
         blockCustomer }                             = require('../controllers/customer-mgmt.controller');
 const { listOrders, getOrderDetail,
@@ -22,6 +22,9 @@ const { getPricingOverview }                        = require('../controllers/pr
 const { createCoupon, listCoupons,
         updateCoupon, disableCoupon }               = require('../controllers/coupon.controller');
 const { uploadFile }                                = require('../controllers/upload.controller');
+const { listBanners, createBanner, updateBanner,
+        deleteBanner, toggleBanner,
+        reorderBanners }                            = require('../controllers/banner.controller');
 
 // Auth (double-checked inside the service — gateway already enforces ADMIN)
 const { authenticate } = require('../../../gateway/middleware/auth.middleware');
@@ -51,6 +54,7 @@ router.get('/pricing',                      getPricingOverview);
 router.get('/vendors',                listVendors);
 router.post('/vendors',               createVendor);
 router.get('/vendors/:id',            getVendorDetail);
+router.get('/vendors/:id/earnings',   getVendorEarnings);
 router.patch('/vendors/:id/approve',  approveVendor);
 router.patch('/vendors/:id/block',    blockVendor);
 
@@ -58,6 +62,7 @@ router.patch('/vendors/:id/block',    blockVendor);
 router.get('/riders',                 listRiders);
 router.post('/riders',                createRider);
 router.get('/riders/:id',             getRiderDetail);
+router.get('/riders/:id/earnings',    getRiderEarnings);
 router.patch('/riders/:id/approve',   approveRider);
 router.patch('/riders/:id/block',     blockRider);
 
@@ -73,14 +78,22 @@ router.patch('/orders/:id/status',    overrideOrderStatus);
 
 // ── Payouts ───────────────────────────────────────────────────────
 router.get('/payouts',                listPayouts);
-router.get('/payouts/history',        getPayoutHistory);   // must be before /:vendorId
+router.post('/payouts',               triggerPayout);       // body: { vendorId, weekStart }
+router.get('/payouts/history',        getPayoutHistory);    // must be before /:vendorId
 router.get('/payouts/:vendorId',      getVendorPayoutHistory);
-router.post('/payouts/:vendorId',     triggerPayout);
 
 // ── Coupons (implemented in Phase 4) ─────────────────────────────
 router.post('/coupons',               createCoupon);
 router.get('/coupons',                listCoupons);
 router.patch('/coupons/:id',          updateCoupon);
 router.delete('/coupons/:id',         disableCoupon);
+
+// ── Banners ───────────────────────────────────────────────────────
+router.get('/banners',              listBanners);
+router.post('/banners',             createBanner);
+router.put('/banners/reorder',      reorderBanners);   // must be before /:id
+router.patch('/banners/:id',        updateBanner);
+router.patch('/banners/:id/toggle', toggleBanner);
+router.delete('/banners/:id',       deleteBanner);
 
 module.exports = router;

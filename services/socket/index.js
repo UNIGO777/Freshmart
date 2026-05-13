@@ -63,6 +63,7 @@ io.on('connection', (socket) => {
     case 'customer': socket.join(customerRoom(userId)); break;
     case 'vendor':   socket.join(vendorRoom(userId));   break;
     case 'rider':    socket.join(riderRoom(userId));    break;
+    case 'admin':    socket.join('admin:panel');        break;
     default: break;
   }
 

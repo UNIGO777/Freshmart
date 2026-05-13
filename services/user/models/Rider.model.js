@@ -35,6 +35,11 @@ const riderSchema = new mongoose.Schema(
       panUrl:     { type: String },
       status:     { type: String, enum: ['pending', 'verified', 'rejected'], default: 'pending' },
     },
+
+    drivingLicense: {
+      number:   { type: String, trim: true, default: '' },
+      photoUrl: { type: String, default: '' },
+    },
   },
   { timestamps: true },
 );

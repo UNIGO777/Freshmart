@@ -26,6 +26,8 @@ const vendorSchema = new mongoose.Schema(
     isApproved: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
 
+    profilePhoto: { type: String, default: '' },
+
     fcmToken: { type: String },
 
     bankDetails: {

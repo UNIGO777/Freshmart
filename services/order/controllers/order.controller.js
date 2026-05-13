@@ -20,6 +20,7 @@ const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const { ORDER_STATUS, SUB_ORDER_STATUS } = require('../../../shared/constants/orderStatus');
 const ROLES = require('../../../shared/constants/roles');
 const { triggerNotification } = require('../../../shared/utils/notify');
+const { notifyAdmin } = require('../../../shared/utils/notifyAdmin');
 const logger = require('../../../shared/utils/logger');
 
 // ── POST /api/orders/check-stock ──────────────────────────────────
@@ -172,6 +173,13 @@ const placeOrder = async (req, res) => {
       await order.save();
     }
 
+    notifyAdmin(
+      'new_order',
+      `New Order — ₹${totalAmount}`,
+      `Order #${order._id.toString().slice(-6).toUpperCase()} placed via ${paymentMethod.toUpperCase()}`,
+      { orderId: order._id.toString(), totalAmount },
+    );
+
     return sendSuccess(res, 201, 'Order placed', {
       orderId: order._id,
       totalAmount,
@@ -279,6 +287,13 @@ const cancelOrder = async (req, res) => {
         .post(`${paymentServiceUrl}/internal/refund-by-order`, { orderId: order._id.toString() })
         .catch((err) => logger.error(`Refund trigger failed for order ${order._id}:`, err.message));
     }
+
+    notifyAdmin(
+      'order_cancelled',
+      `Order Cancelled`,
+      `Order #${order._id.toString().slice(-6).toUpperCase()} was cancelled (₹${order.totalAmount})`,
+      { orderId: order._id.toString(), totalAmount: order.totalAmount },
+    );
 
     return sendSuccess(res, 200, 'Order cancelled', { orderId: order._id });
   } catch (err) {

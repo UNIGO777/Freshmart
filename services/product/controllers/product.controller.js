@@ -8,7 +8,7 @@ const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const logger = require('../../../shared/utils/logger');
 
 // ── Redis cache helpers ───────────────────────────────────────────
-const CACHE_TTL = 60 * 60; // 1 hour in seconds
+const CACHE_TTL = 60; // 60 seconds — writes call invalidateProductCache() immediately
 
 const cacheKey = (category) =>
   category ? `products:today:${category}` : 'products:today';
@@ -98,7 +98,7 @@ const getCategories = async (req, res) => {
       icon: c.icon,
     }));
 
-    await redisClient.setEx('categories', CACHE_TTL, JSON.stringify(response)).catch(() => {});
+    await redisClient.setEx('categories', 60 * 60, JSON.stringify(response)).catch(() => {}); // categories change rarely
     return sendSuccess(res, 200, 'Categories fetched', response);
   } catch (err) {
     logger.error('getCategories error:', err);
@@ -123,9 +123,12 @@ const createProductSchema = z.object({
   name: z.string().min(1),
   nameHi: z.string().optional(),
   category: z.enum(['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other']),
-  unit: z.enum(['kg', 'g', 'piece', 'dozen']),
+  unit: z.literal('kg').default('kg'),
+  description: z.string().optional().default(''),
+  availableSeason: z.enum(['summer', 'winter', 'rain', 'all']).optional().default('all'),
   images: z.array(z.string().url()).optional().default([]),
   coverImage: z.string().optional().default(''),
+  listedPrice: z.coerce.number().min(0).optional().default(0),
   buyingPrice: z.coerce.number().min(0),
   sellingPrice: z.coerce.number().min(0),
   isAvailableToday: z.preprocess(
@@ -155,9 +158,12 @@ const updateProductSchema = z.object({
   name: z.string().min(1).optional(),
   nameHi: z.string().optional(),
   category: z.enum(['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other']).optional(),
-  unit: z.enum(['kg', 'g', 'piece', 'dozen']).optional(),
+  unit: z.literal('kg').optional(),
+  description: z.string().optional(),
+  availableSeason: z.enum(['summer', 'winter', 'rain', 'all']).optional(),
   images: z.array(z.string().url()).optional(),
   coverImage: z.string().optional(),
+  listedPrice: z.coerce.number().min(0).optional(),
   buyingPrice: z.coerce.number().min(0).optional(),
   sellingPrice: z.coerce.number().min(0).optional(),
   isAvailableToday: z.preprocess(

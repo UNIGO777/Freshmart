@@ -1,3 +1,4 @@
+const mongoose    = require('mongoose');
 const Rider       = require('../../user/models/Rider.model');
 const DeliveryJob = require('../../delivery/models/DeliveryJob.model');
 const { DELIVERY_JOB_STATUS } = require('../../delivery/models/DeliveryJob.model');
@@ -109,10 +110,17 @@ const createRider = async (req, res) => {
     const {
       name, phone, password, vehicleType,
       aadhaarUrl, panUrl,
+      drivingLicenseNumber, drivingLicenseUrl,
     } = req.body;
 
     if (!name || !phone || !password) {
       return sendError(res, 400, 'name, phone and password are required', ERROR_CODES.MISSING_FIELDS);
+    }
+    if (!drivingLicenseNumber || !drivingLicenseNumber.trim()) {
+      return sendError(res, 400, 'Driving license number is required', ERROR_CODES.MISSING_FIELDS);
+    }
+    if (!drivingLicenseUrl || !drivingLicenseUrl.trim()) {
+      return sendError(res, 400, 'Driving license photo is required', ERROR_CODES.MISSING_FIELDS);
     }
 
     const existing = await Rider.findOne({ phone });
@@ -129,6 +137,10 @@ const createRider = async (req, res) => {
       isApproved: true,
       isActive: true,
       kyc: { aadhaarUrl: aadhaarUrl || '', panUrl: panUrl || '', status: 'pending' },
+      drivingLicense: {
+        number:   drivingLicenseNumber.trim(),
+        photoUrl: drivingLicenseUrl.trim(),
+      },
     });
 
     const r = rider.toObject();
@@ -140,4 +152,39 @@ const createRider = async (req, res) => {
   }
 };
 
-module.exports = { listRiders, getRiderDetail, approveRider, blockRider, createRider };
+// ── GET /riders/:id/earnings ──────────────────────────────────────
+// Returns daily earning points for a rider between from..to (ISO date strings)
+const getRiderEarnings = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const from = req.query.from ? new Date(req.query.from) : new Date(Date.now() - 6 * 24 * 3600 * 1000);
+    const to   = req.query.to   ? new Date(req.query.to)   : new Date();
+    to.setHours(23, 59, 59, 999);
+
+    const points = await DeliveryJob.aggregate([
+      {
+        $match: {
+          riderId:     new mongoose.Types.ObjectId(id),
+          status:      DELIVERY_JOB_STATUS.DELIVERED,
+          deliveredAt: { $gte: from, $lte: to },
+        },
+      },
+      {
+        $group: {
+          _id:    { $dateToString: { format: '%Y-%m-%d', date: '$deliveredAt' } },
+          amount: { $sum: '$riderEarnings' },
+          deliveries: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+      { $project: { _id: 0, date: '$_id', amount: 1, deliveries: 1 } },
+    ]);
+
+    return sendSuccess(res, 200, 'Rider earnings', { points });
+  } catch (err) {
+    logger.error('getRiderEarnings error:', err);
+    return sendError(res, 500, 'Failed to fetch earnings', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+module.exports = { listRiders, getRiderDetail, approveRider, blockRider, createRider, getRiderEarnings };

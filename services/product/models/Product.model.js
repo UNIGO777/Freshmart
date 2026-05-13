@@ -12,29 +12,38 @@ const productSchema = new mongoose.Schema(
       index: true,
     },
 
-    unit: {
-      type: String,
-      required: true,
-      enum: ['kg', 'g', 'piece', 'dozen'],
-    },
+    // Price unit is always kg — enforced at application level
+    unit: { type: String, default: 'kg', enum: ['kg'] },
 
-    availableSeason: { type: String, enum: ['summer', 'winter', 'rain', 'all'] },
+    description: { type: String, trim: true, default: '' },
+
+    availableSeason: {
+      type: String,
+      enum: ['summer', 'winter', 'rain', 'all'],
+      default: 'all',
+    },
 
     images: [{ type: String }],
     coverImage: { type: String, default: '' },
 
-    // Admin-managed pricing
+    // Admin-managed pricing (all per kg)
+    listedPrice: {
+      type: Number,
+      min: 0,
+      default: 0,
+      // MRP / market reference price shown to customers
+    },
     buyingPrice: {
       type: Number,
       required: true,
       min: 0,
-      // Visible to vendors — what they'll earn per unit
+      // Vendor payout per kg
     },
     sellingPrice: {
       type: Number,
       required: true,
       min: 0,
-      // Visible to customers — what they pay
+      // Customer-facing price per kg
     },
     active: { type: Boolean, default: true, index: true },
 

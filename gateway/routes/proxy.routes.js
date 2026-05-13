@@ -18,6 +18,7 @@ const SERVICE_URLS = {
   payment: `http://localhost:${process.env.PORT_PAYMENT || 3007}`,
   notification: `http://localhost:${process.env.PORT_NOTIFICATION || 3008}`,
   admin: `http://localhost:${process.env.PORT_ADMIN || 3009}`,
+  panelNotify: `http://localhost:${process.env.PORT_PANEL_NOTIFY || 3012}`,
 };
 
 const proxy = (target, stripPrefix) =>
@@ -72,6 +73,13 @@ router.use(
   authenticate,
   requireRole(ROLES.ADMIN),
   proxy(SERVICE_URLS.admin, '/api/admin'),
+);
+
+router.use(
+  '/api/panel-notify',
+  authenticate,
+  requireRole(ROLES.ADMIN),
+  proxy(SERVICE_URLS.panelNotify, '/api/panel-notify'),
 );
 
 module.exports = router;

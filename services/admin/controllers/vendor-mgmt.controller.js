@@ -127,7 +127,7 @@ const createVendor = async (req, res) => {
       businessName, ownerName, phone, email, password,
       lat, lng, address, serviceRadiusKm, categories,
       bankDetails,
-      aadhaarUrl, panUrl,
+      aadhaarUrl, panUrl, profilePhoto,
     } = req.body;
 
     if (!businessName || !ownerName || !phone || !password) {
@@ -146,13 +146,14 @@ const createVendor = async (req, res) => {
     const vendor = await Vendor.create({
       businessName, ownerName, phone, email,
       passwordHash,
+      profilePhoto: profilePhoto || '',
       location: { type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] },
       address: address || '',
       serviceRadiusKm: serviceRadiusKm ? parseFloat(serviceRadiusKm) : 5,
       categories: Array.isArray(categories) ? categories : [],
       bankDetails: bankDetails || {},
       isApproved: true,
-      kyc: { aadhaarUrl: aadhaarUrl || '', panUrl: panUrl || '', status: aadhaarUrl && panUrl ? 'pending' : 'pending' },
+      kyc: { aadhaarUrl: aadhaarUrl || '', panUrl: panUrl || '', status: 'pending' },
     });
 
     const v = vendor.toObject();
@@ -164,4 +165,39 @@ const createVendor = async (req, res) => {
   }
 };
 
-module.exports = { listVendors, getVendorDetail, approveVendor, blockVendor, createVendor };
+// ── GET /vendors/:id/earnings ─────────────────────────────────────
+// Returns daily earning points for a vendor between from..to (ISO date strings)
+const mongoose = require('mongoose');
+
+const getVendorEarnings = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const from = req.query.from ? new Date(req.query.from) : new Date(Date.now() - 6 * 24 * 3600 * 1000);
+    const to   = req.query.to   ? new Date(req.query.to)   : new Date();
+    to.setHours(23, 59, 59, 999);
+
+    const points = await VendorEarning.aggregate([
+      {
+        $match: {
+          vendorId:    new mongoose.Types.ObjectId(id),
+          earningDate: { $gte: from, $lte: to },
+        },
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: '%Y-%m-%d', date: '$earningDate' } },
+          amount: { $sum: '$netAmount' },
+        },
+      },
+      { $sort: { _id: 1 } },
+      { $project: { _id: 0, date: '$_id', amount: 1 } },
+    ]);
+
+    return sendSuccess(res, 200, 'Vendor earnings', { points });
+  } catch (err) {
+    logger.error('getVendorEarnings error:', err);
+    return sendError(res, 500, 'Failed to fetch earnings', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+module.exports = { listVendors, getVendorDetail, approveVendor, blockVendor, createVendor, getVendorEarnings };
