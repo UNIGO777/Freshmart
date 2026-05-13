@@ -59,7 +59,7 @@ const productSchema = new mongoose.Schema(
   },
 );
 
-// Text index for search
-productSchema.index({ name: 'text', nameHi: 'text' });
+// Compound index for fast category + availability queries (used by getProducts)
+productSchema.index({ isAvailableToday: 1, category: 1, name: 1 });
 
 module.exports = mongoose.model('Product', productSchema);

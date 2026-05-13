@@ -5446,3 +5446,5 @@
     at Axios.request (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/axios/dist/node/axios.cjs:4871:41)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
     at async sendOtp (/Users/namanjain/FreshMart/Freshmart-backend/services/auth/controllers/otp.controller.js:34:5)
+2026-05-13 23:10:18 [[31merror[39m]: Error: queryTxt EREFUSED landacers.jy24n.mongodb.net
+    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:293:17)

@@ -40,6 +40,90 @@ const invalidateProductCache = async () => {
   }
 };
 
+// ── Search helpers ────────────────────────────────────────────────
+
+/**
+ * Bigram similarity between two lowercase strings.
+ * Returns 0–1: 1 = identical, 0 = no shared bigrams.
+ * Catches single-char typos well (e.g. "tamoto" → "tomato").
+ */
+function bigramSimilarity(a, b) {
+  if (!a || !b) return 0;
+  if (a === b)  return 1;
+
+  const bigrams = (s) => {
+    const set = new Map();
+    for (let i = 0; i < s.length - 1; i++) {
+      const bg = s.slice(i, i + 2);
+      set.set(bg, (set.get(bg) || 0) + 1);
+    }
+    return set;
+  };
+
+  const aMap = bigrams(a);
+  const bMap = bigrams(b);
+  let intersection = 0;
+  for (const [bg, count] of aMap) {
+    intersection += Math.min(count, bMap.get(bg) || 0);
+  }
+  return (2 * intersection) / (a.length + b.length - 2);
+}
+
+/**
+ * Score a product against a search term.
+ * Returns a number:
+ *   ≥ 80  → strong match  (exact / prefix)
+ *   40–79 → partial match  (substring / word boundary)
+ *   1–39  → fuzzy match   (bigram similarity above threshold)
+ *   0     → no match      (still returned at the end as fallback)
+ */
+function scoreProduct(product, term) {
+  const t = term.toLowerCase().trim();
+  if (!t) return 0;
+
+  const FIELDS = [
+    { value: product.name,        weight: 10 },
+    { value: product.nameHi || '', weight: 9  },
+    { value: product.category,    weight: 4  },
+    { value: product.description || '', weight: 2 },
+  ];
+
+  let best = 0;
+
+  for (const { value, weight } of FIELDS) {
+    if (!value) continue;
+    const v = value.toLowerCase();
+
+    // Exact match
+    if (v === t) { best = Math.max(best, weight * 10); continue; }
+
+    // Starts with term
+    if (v.startsWith(t)) { best = Math.max(best, weight * 8); continue; }
+
+    // Term starts with value (user typed the whole name and more)
+    if (t.startsWith(v)) { best = Math.max(best, weight * 7); continue; }
+
+    // Contains term as a substring
+    if (v.includes(t)) { best = Math.max(best, weight * 6); continue; }
+
+    // Word-boundary: any word in the value starts with the term
+    const wordMatch = v.split(/\s+/).some(w => w.startsWith(t));
+    if (wordMatch) { best = Math.max(best, weight * 5); continue; }
+
+    // Multi-word query: every word in the term appears somewhere in the value
+    const termWords = t.split(/\s+/);
+    if (termWords.length > 1 && termWords.every(tw => v.includes(tw))) {
+      best = Math.max(best, weight * 4); continue;
+    }
+
+    // Fuzzy: bigram similarity (catches typos like "tamoto" → "tomato")
+    const sim = bigramSimilarity(v, t);
+    if (sim > 0.4) best = Math.max(best, weight * sim * 3);
+  }
+
+  return Math.round(best);
+}
+
 // ── GET /api/products ─────────────────────────────────────────────
 // Public. Supports ?category=fruits|vegetables|spices and ?lang=hi|en
 const getProducts = async (req, res) => {
@@ -47,16 +131,46 @@ const getProducts = async (req, res) => {
     const { category, search } = req.query;
     const lang = req.lang || 'en'; // set by langMiddleware (query param > Accept-Language header)
 
-    // Search bypasses cache
+    // ── Search path (bypasses cache) ──────────────────────────────
     if (search) {
-      const products = await Product.find(
-        { isAvailableToday: true, $text: { $search: search } },
-        { score: { $meta: 'textScore' } },
-      )
-        .sort({ score: { $meta: 'textScore' } })
-        .lean();
+      const term = search.trim();
+      if (!term) {
+        return sendSuccess(res, 200, 'Search results', []);
+      }
 
-      return sendSuccess(res, 200, 'Search results', localiseProducts(products, lang));
+      // Fetch all available products (optionally filtered by category).
+      // We do the relevance scoring in JS so we can apply fuzzy logic
+      // without needing a search engine. The collection is small enough
+      // that a full collection scan here is fine; add Atlas Search later
+      // if the catalogue grows beyond a few thousand SKUs.
+      const baseFilter = { isAvailableToday: true };
+      if (category) {
+        const normalised = category.toLowerCase();
+        baseFilter.category = normalised;
+      }
+
+      const allProducts = await Product.find(baseFilter).lean();
+
+      // Score every product
+      const scored = allProducts
+        .map(p => ({ ...p, _score: scoreProduct(p, term) }))
+        .sort((a, b) => {
+          // Primary: score descending
+          if (b._score !== a._score) return b._score - a._score;
+          // Secondary: alphabetical for stable order
+          return a.name.localeCompare(b.name);
+        });
+
+      // Separate into matched (score > 0) and unmatched
+      const matched   = scored.filter(p => p._score > 0);
+      const unmatched = scored.filter(p => p._score === 0);
+
+      // Always return matched first; append unmatched at end as fallback
+      // so the UI always has something to show
+      const results = [...matched, ...unmatched].map(({ _score, ...p }) => p);
+
+      logger.info(`Search "${term}": ${matched.length} matched, ${unmatched.length} fallback`);
+      return sendSuccess(res, 200, 'Search results', localiseProducts(results, lang));
     }
 
     const key = cacheKey(category);
