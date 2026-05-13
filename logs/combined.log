@@ -9662,3 +9662,144 @@
     at async model.Query._find (/Users/macbookpro/Documents/Personal/plan-zero/freshmart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
 2026-05-13 14:58:09 [[33mwarn[39m]: MongoDB disconnected
 2026-05-13 14:58:09 [[33mwarn[39m]: MongoDB disconnected
+2026-05-13 17:23:13 [[32minfo[39m]: Redis connected
+2026-05-13 17:23:13 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-13 17:23:13 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-13 17:23:23 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-13 17:23:25 [[32minfo[39m]: Redis connected
+2026-05-13 17:23:25 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-13 17:23:26 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-13 17:23:28 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:23:28 [[32minfo[39m]: Payment Service running on port 3007
+2026-05-13 17:23:28 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:23:28 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:23:28 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:23:28 [[32minfo[39m]: Notification Service running on port 3008
+2026-05-13 17:23:28 [[32minfo[39m]: Vendor Service running on port 3005
+2026-05-13 17:23:28 [[32minfo[39m]: User Service running on port 3002
+2026-05-13 17:23:28 [[32minfo[39m]: Redis connected
+2026-05-13 17:23:28 [[32minfo[39m]: Redis connected
+2026-05-13 17:23:28 [[32minfo[39m]: Redis connected
+2026-05-13 17:23:28 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:23:28 [[32minfo[39m]: Admin Service running on port 3009
+2026-05-13 17:23:28 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:23:29 [[32minfo[39m]: Auth Service running on port 3011
+2026-05-13 17:23:29 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:23:29 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:23:29 [[32minfo[39m]: Order Service running on port 3004
+2026-05-13 17:23:29 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:23:29 [[32minfo[39m]: Product Service running on port 3003
+2026-05-13 17:23:29 [[32minfo[39m]: Delivery Service running on port 3006
+2026-05-13 17:50:06 [[31merror[39m]: AxiosError: Request failed with status code 401
+    at settle (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/axios/dist/node/axios.cjs:2049:12)
+    at Unzip.handleStreamEnd (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/axios/dist/node/axios.cjs:3591:11)
+    at Unzip.emit (node:events:524:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+    at Axios.request (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/axios/dist/node/axios.cjs:4871:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async sendOtp (/Users/namanjain/FreshMart/Freshmart-backend/services/auth/controllers/otp.controller.js:34:5)
+2026-05-13 17:50:12 [[32minfo[39m]: New customer registered: 6a046c7cdc8bf7d36a9250eb
+2026-05-13 17:51:03 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-13 17:51:07 [[32minfo[39m]: Redis connected
+2026-05-13 17:51:07 [[32minfo[39m]: Redis connected
+2026-05-13 17:51:07 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-13 17:51:07 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-13 17:51:08 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-13 17:51:08 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-13 17:51:09 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:51:09 [[32minfo[39m]: Vendor Service running on port 3005
+2026-05-13 17:51:09 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:51:09 [[32minfo[39m]: Payment Service running on port 3007
+2026-05-13 17:51:09 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:51:09 [[32minfo[39m]: Notification Service running on port 3008
+2026-05-13 17:51:09 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:51:09 [[32minfo[39m]: User Service running on port 3002
+2026-05-13 17:51:10 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:51:10 [[32minfo[39m]: Auth Service running on port 3011
+2026-05-13 17:51:10 [[32minfo[39m]: Redis connected
+2026-05-13 17:51:10 [[32minfo[39m]: Redis connected
+2026-05-13 17:51:10 [[32minfo[39m]: Redis connected
+2026-05-13 17:51:10 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:51:10 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:51:10 [[32minfo[39m]: Admin Service running on port 3009
+2026-05-13 17:51:10 [[32minfo[39m]: Product Service running on port 3003
+2026-05-13 17:51:10 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:51:10 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:51:10 [[32minfo[39m]: Order Service running on port 3004
+2026-05-13 17:51:10 [[32minfo[39m]: Delivery Service running on port 3006
+2026-05-13 17:51:36 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:51:37 [[32minfo[39m]: Auth Service running on port 3011
+2026-05-13 17:53:11 [[32minfo[39m]: New customer registered: 6a046d2f73f84ab14ef0e8ce
+2026-05-13 17:54:57 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-13 17:54:59 [[32minfo[39m]: Redis connected
+2026-05-13 17:54:59 [[32minfo[39m]: Redis connected
+2026-05-13 17:54:59 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-13 17:54:59 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-13 17:55:00 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-13 17:55:00 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-13 17:55:02 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:55:02 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:55:02 [[32minfo[39m]: Payment Service running on port 3007
+2026-05-13 17:55:02 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:55:02 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:55:02 [[32minfo[39m]: User Service running on port 3002
+2026-05-13 17:55:02 [[32minfo[39m]: Notification Service running on port 3008
+2026-05-13 17:55:02 [[32minfo[39m]: Vendor Service running on port 3005
+2026-05-13 17:55:03 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:55:03 [[32minfo[39m]: Auth Service running on port 3011
+2026-05-13 17:55:04 [[32minfo[39m]: Redis connected
+2026-05-13 17:55:04 [[32minfo[39m]: Redis connected
+2026-05-13 17:55:04 [[32minfo[39m]: Redis connected
+2026-05-13 17:55:05 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:55:05 [[32minfo[39m]: Auth Service running on port 3011
+2026-05-13 17:55:05 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:55:05 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:55:05 [[32minfo[39m]: Product Service running on port 3003
+2026-05-13 17:55:05 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:55:05 [[32minfo[39m]: Order Service running on port 3004
+2026-05-13 17:55:05 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:55:05 [[32minfo[39m]: Admin Service running on port 3009
+2026-05-13 17:55:05 [[32minfo[39m]: Delivery Service running on port 3006
+2026-05-13 17:55:14 [[33mwarn[39m]: [DEV] OTP for +919876543211: 148552
+2026-05-13 17:55:14 [[32minfo[39m]: OTP sent to +919876543211
+2026-05-13 17:56:17 [[33mwarn[39m]: [DEV] OTP for +919876543211: 377086
+2026-05-13 17:56:17 [[32minfo[39m]: OTP sent to +919876543211
+2026-05-13 17:57:36 [[32minfo[39m]: New customer registered: 6a046e383863ae91b27233f0
+2026-05-13 17:57:59 [[33mwarn[39m]: [DEV] OTP for +917000610047: 294190
+2026-05-13 17:57:59 [[32minfo[39m]: OTP sent to +917000610047
+2026-05-13 17:58:49 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-13 17:58:51 [[32minfo[39m]: Redis connected
+2026-05-13 17:58:51 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-13 17:58:51 [[32minfo[39m]: Redis connected
+2026-05-13 17:58:51 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-13 17:58:52 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-13 17:58:52 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-13 17:58:53 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:58:53 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:58:53 [[32minfo[39m]: Vendor Service running on port 3005
+2026-05-13 17:58:53 [[32minfo[39m]: Notification Service running on port 3008
+2026-05-13 17:58:53 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:58:53 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:58:53 [[32minfo[39m]: User Service running on port 3002
+2026-05-13 17:58:53 [[32minfo[39m]: Payment Service running on port 3007
+2026-05-13 17:58:53 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:58:53 [[32minfo[39m]: Auth Service running on port 3011
+2026-05-13 17:58:53 [[32minfo[39m]: Redis connected
+2026-05-13 17:58:53 [[32minfo[39m]: Redis connected
+2026-05-13 17:58:53 [[32minfo[39m]: Redis connected
+2026-05-13 17:58:53 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:58:53 [[32minfo[39m]: Auth Service running on port 3011
+2026-05-13 17:58:54 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:58:54 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:58:54 [[32minfo[39m]: Product Service running on port 3003
+2026-05-13 17:58:54 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:58:54 [[32minfo[39m]: MongoDB connected
+2026-05-13 17:58:54 [[32minfo[39m]: Order Service running on port 3004
+2026-05-13 17:58:54 [[32minfo[39m]: Admin Service running on port 3009
+2026-05-13 17:58:54 [[32minfo[39m]: Delivery Service running on port 3006
+2026-05-13 17:59:01 [[33mwarn[39m]: [DEV] OTP for +917000610047: 636333
+2026-05-13 17:59:01 [[32minfo[39m]: OTP sent to +917000610047
+2026-05-13 18:30:00 [[32minfo[39m]: [cron] Reset earnings.today for 1 riders
+2026-05-13 19:23:19 [[33mwarn[39m]: [DEV] OTP for +917000610047: 734869
+2026-05-13 19:23:19 [[32minfo[39m]: OTP sent to +917000610047

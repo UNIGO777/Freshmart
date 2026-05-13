@@ -1,15 +1,19 @@
 const { Router } = require('express');
 const { sendOtp, verifyOtp } = require('../controllers/otp.controller');
+const { register } = require('../controllers/register.controller');
 const { registerEmail, loginEmail, loginAdmin, refreshToken, logout } = require('../controllers/email.controller');
 const { googleLogin, appleLogin } = require('../controllers/social.controller');
 
 const router = Router();
 
-// Phone OTP
+// Phone OTP (sign-in flow)
 router.post('/send-otp', sendOtp);
 router.post('/verify-otp', verifyOtp);
 
-// Email / password
+// Registration — name + email + confirmEmail + phone (no password)
+router.post('/register', register);
+
+// Legacy email/password (kept for admin panel & backwards compat)
 router.post('/register-email', registerEmail);
 router.post('/login-email', loginEmail);
 router.post('/login-admin', loginAdmin);

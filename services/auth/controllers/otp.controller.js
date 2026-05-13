@@ -29,17 +29,23 @@ const sendOtp = async (req, res) => {
     const otp = generateOtp();
     const expiresAt = new Date(Date.now() + OTP_EXPIRY_MS);
 
-    // Send SMS FIRST — only persist the session if delivery succeeds.
-    // This prevents a phantom OTP sitting in DB that the user never received.
-    await axios.get('https://www.fast2sms.com/dev/bulkV2', {
-      params: {
-        authorization: process.env.FASTTOSMS_AUTH_TOKEN,
-        variables_values: otp,
-        route: 'otp',
-        numbers: phone.replace(/^\+91/, ''),
-      },
-      timeout: 8000,
-    });
+    console.log(otp);
+
+    // In development with no SMS token configured, skip SMS and log OTP to console.
+    if (process.env.FASTTOSMS_AUTH_TOKEN) {
+      await axios.get('https://www.fast2sms.com/dev/bulkV2', {
+        params: {
+          authorization: process.env.FASTTOSMS_AUTH_TOKEN,
+          variables_values: otp,
+          route: 'otp',
+          numbers: phone.replace(/^\+91/, ''),
+        },
+        timeout: 8000,
+      });
+    } else {
+      // DEV ONLY — print OTP to server console so you can test without SMS credits
+      logger.warn(`[DEV] OTP for ${phone}: ${otp}`);
+    }
 
     // Upsert OTP session only after successful delivery
     await OtpSession.findOneAndUpdate(
@@ -92,13 +98,13 @@ const verifyOtp = async (req, res) => {
     // OTP verified — clean up session
     await OtpSession.deleteOne({ phone });
 
-    // Find or create customer (OTP is only for customers in this flow)
-    let user = await Customer.findOne({ phone });
-    const isNewUser = !user;
-
+    // Login only — user must have registered via POST /api/auth/register first
+    const user = await Customer.findOne({ phone });
     if (!user) {
-      user = await Customer.create({ phone, authProviders: ['phone'] });
-    } else if (!user.authProviders.includes('phone')) {
+      return sendError(res, 404, 'No account found for this number. Please sign up first.', ERROR_CODES.NOT_FOUND);
+    }
+
+    if (!user.authProviders.includes('phone')) {
       user.authProviders.push('phone');
       await user.save();
     }
@@ -107,10 +113,9 @@ const verifyOtp = async (req, res) => {
     const accessToken = signAccessToken(tokenPayload);
     const refreshToken = signRefreshToken(tokenPayload);
 
-    return sendSuccess(res, 200, isNewUser ? 'Account created' : 'Login successful', {
+    return sendSuccess(res, 200, 'Login successful', {
       accessToken,
       refreshToken,
-      isNewUser,
       user: { id: user._id, name: user.name, phone: user.phone },
     });
   } catch (err) {
