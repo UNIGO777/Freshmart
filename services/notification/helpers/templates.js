@@ -75,6 +75,17 @@ const TEMPLATES = {
     data:  { jobId: data.jobId ?? '', screen: 'Dashboard' },
   }),
 
+  // ── Support notifications ───────────────────────────────────────
+
+  /** Admin replied to a customer support query */
+  'support:reply': (data) => ({
+    title: 'Support Reply 💬',
+    body:  data.preview
+      ? `Support: ${data.preview}`
+      : 'Our support team has replied to your query.',
+    data:  { screen: 'HelpSupport' },
+  }),
+
   // ── Promo (admin-triggered bulk) ───────────────────────────────
 
   /** Admin sends a promotional notification — title/body provided directly */

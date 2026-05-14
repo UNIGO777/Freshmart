@@ -32,6 +32,17 @@ const customerSchema = new mongoose.Schema(
     language: { type: String, enum: ['en', 'hi'], default: 'en' },
     fcmToken: { type: String },
     isActive: { type: Boolean, default: true },
+
+    wishlist: [
+      {
+        productId: { type: mongoose.Schema.Types.ObjectId, required: true },
+        name: { type: String, required: true },
+        sellingPrice: { type: Number, required: true },
+        coverImage: { type: String, default: '' },
+        category: { type: String, default: '' },
+        addedAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true },
 );

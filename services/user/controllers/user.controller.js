@@ -132,4 +132,190 @@ const deleteAddress = async (req, res) => {
   }
 };
 
-module.exports = { getProfile, updateProfile, getAddresses, addAddress, deleteAddress };
+// ── GET /check-serviceability?lat=...&lng=...  (Public — no auth) ─────
+const RADIUS_TIERS = [
+  { maxKm: 5,  estimatedMinutes: 15 },
+  { maxKm: 10, estimatedMinutes: 30 },
+  { maxKm: 15, estimatedMinutes: 45 },
+];
+
+const ALL_CATEGORIES = ['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other'];
+
+const checkServiceability = async (req, res) => {
+  try {
+    const lat = parseFloat(req.query.lat);
+    const lng = parseFloat(req.query.lng);
+
+    if (isNaN(lat) || isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+      return sendError(res, 400, 'Valid lat and lng query params required', ERROR_CODES.VALIDATION_ERROR);
+    }
+
+    const availableCategories = [];
+    const unavailableCategories = [];
+
+    // For each category, find the closest vendor that serves it
+    for (const category of ALL_CATEGORIES) {
+      let found = false;
+
+      for (const tier of RADIUS_TIERS) {
+        const vendors = await Vendor.find({
+          isApproved: true,
+          isActive: true,
+          isOnline: true,
+          categories: category,
+          location: {
+            $nearSphere: {
+              $geometry: { type: 'Point', coordinates: [lng, lat] },
+              $maxDistance: tier.maxKm * 1000,
+            },
+          },
+        })
+          .limit(1)
+          .select('_id')
+          .lean();
+
+        if (vendors.length > 0) {
+          availableCategories.push({
+            category,
+            radiusKm: tier.maxKm,
+            estimatedMinutes: tier.estimatedMinutes,
+          });
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
+        unavailableCategories.push(category);
+      }
+    }
+
+    const serviceable = availableCategories.length > 0;
+    const message = serviceable ? 'Delivery available' : 'Delivery not available';
+
+    return sendSuccess(res, 200, message, {
+      serviceable,
+      availableCategories,
+      unavailableCategories,
+    });
+  } catch (err) {
+    logger.error('checkServiceability error:', err);
+    return sendError(res, 500, 'Failed to check serviceability', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── PATCH /toggle-online  (Vendor only) ──────────────────────────────
+const axios = require('axios');
+const SOCKET_URL = `http://localhost:${process.env.PORT_SOCKET || 3010}`;
+
+const toggleOnline = async (req, res) => {
+  try {
+    if (req.user.role !== ROLES.VENDOR) {
+      return sendError(res, 403, 'Only vendors can toggle online status', ERROR_CODES.FORBIDDEN);
+    }
+
+    const vendor = await Vendor.findById(req.user.id);
+    if (!vendor) return sendError(res, 404, 'Vendor not found', ERROR_CODES.USER_NOT_FOUND);
+
+    vendor.isOnline = !vendor.isOnline;
+    await vendor.save();
+
+    // Notify all customers in real-time so they re-check serviceability
+    try {
+      await axios.post(`${SOCKET_URL}/internal/emit`, {
+        room: 'serviceability:broadcast',
+        event: 'vendor:availability',
+        payload: {
+          vendorId: vendor._id,
+          isOnline: vendor.isOnline,
+          location: vendor.location,
+          serviceRadiusKm: vendor.serviceRadiusKm,
+          categories: vendor.categories,
+        },
+      }, { timeout: 3000 });
+    } catch (socketErr) {
+      logger.warn('Failed to emit vendor:availability socket event:', socketErr.message);
+    }
+
+    return sendSuccess(res, 200, `You are now ${vendor.isOnline ? 'online' : 'offline'}`, {
+      isOnline: vendor.isOnline,
+    });
+  } catch (err) {
+    logger.error('toggleOnline error:', err);
+    return sendError(res, 500, 'Failed to toggle status', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── GET /me/wishlist  (Customer only) ─────────────────────────────
+const getWishlist = async (req, res) => {
+  try {
+    if (req.user.role !== ROLES.CUSTOMER) {
+      return sendError(res, 403, 'Only customers have a wishlist', ERROR_CODES.FORBIDDEN);
+    }
+
+    const customer = await Customer.findById(req.user.id).select('wishlist').lean();
+    if (!customer) return sendError(res, 404, 'User not found', ERROR_CODES.USER_NOT_FOUND);
+
+    return sendSuccess(res, 200, 'Wishlist fetched', customer.wishlist);
+  } catch (err) {
+    logger.error('getWishlist error:', err);
+    return sendError(res, 500, 'Failed to fetch wishlist', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── POST /me/wishlist  (Customer only) ────────────────────────────
+const addToWishlist = async (req, res) => {
+  try {
+    if (req.user.role !== ROLES.CUSTOMER) {
+      return sendError(res, 403, 'Only customers can manage wishlist', ERROR_CODES.FORBIDDEN);
+    }
+
+    const { productId, name, sellingPrice, coverImage, category } = req.body;
+    if (!productId || !name || sellingPrice === undefined) {
+      return sendError(res, 400, 'productId, name, and sellingPrice are required', ERROR_CODES.VALIDATION_ERROR);
+    }
+
+    // Prevent duplicates
+    const existing = await Customer.findOne({ _id: req.user.id, 'wishlist.productId': productId }).lean();
+    if (existing) {
+      return sendError(res, 409, 'Product already in wishlist', ERROR_CODES.CONFLICT);
+    }
+
+    const customer = await Customer.findByIdAndUpdate(
+      req.user.id,
+      { $push: { wishlist: { productId, name, sellingPrice, coverImage, category } } },
+      { new: true },
+    ).lean();
+
+    if (!customer) return sendError(res, 404, 'User not found', ERROR_CODES.USER_NOT_FOUND);
+
+    return sendSuccess(res, 201, 'Added to wishlist', customer.wishlist);
+  } catch (err) {
+    logger.error('addToWishlist error:', err);
+    return sendError(res, 500, 'Failed to add to wishlist', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── DELETE /me/wishlist/:productId  (Customer only) ───────────────
+const removeFromWishlist = async (req, res) => {
+  try {
+    if (req.user.role !== ROLES.CUSTOMER) {
+      return sendError(res, 403, 'Only customers can manage wishlist', ERROR_CODES.FORBIDDEN);
+    }
+
+    const customer = await Customer.findByIdAndUpdate(
+      req.user.id,
+      { $pull: { wishlist: { productId: req.params.productId } } },
+      { new: true },
+    ).lean();
+
+    if (!customer) return sendError(res, 404, 'User not found', ERROR_CODES.USER_NOT_FOUND);
+
+    return sendSuccess(res, 200, 'Removed from wishlist', customer.wishlist);
+  } catch (err) {
+    logger.error('removeFromWishlist error:', err);
+    return sendError(res, 500, 'Failed to remove from wishlist', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+module.exports = { getProfile, updateProfile, getAddresses, addAddress, deleteAddress, checkServiceability, toggleOnline, getWishlist, addToWishlist, removeFromWishlist };

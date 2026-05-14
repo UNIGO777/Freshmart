@@ -19,12 +19,14 @@ const vendorSchema = new mongoose.Schema(
 
     categories: {
       type: [String],
-      enum: ['fruits', 'vegetables', 'spices'],
+      enum: ['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other'],
       default: [],
     },
 
     isApproved: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
+    isOnline: { type: Boolean, default: false },
+    
 
     profilePhoto: { type: String, default: '' },
 

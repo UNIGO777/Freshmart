@@ -38,8 +38,14 @@ const proxy = (target, stripPrefix) =>
 const isDev = process.env.NODE_ENV !== 'production';
 router.use('/api/auth', ...(isDev ? [] : [authLimiter]), proxy(SERVICE_URLS.auth, '/api/auth'));
 
+// ── Public user routes ────────────────────────────────────────────
+router.get('/api/users/check-serviceability', proxy(SERVICE_URLS.user, '/api/users'));
+
 // ── Protected routes ───────────────────────────────────────────────
 router.use('/api/users', authenticate, proxy(SERVICE_URLS.user, '/api/users'));
+
+// Support — admin endpoints (queries/all, queries/:id/reply) use x-admin-secret; customer endpoints use JWT
+router.use('/api/support', authenticate, proxy(SERVICE_URLS.user, '/api/support'));
 
 router.use(
   '/api/products',

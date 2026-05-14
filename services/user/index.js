@@ -15,6 +15,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const connectDB = require('../../shared/db/mongoose');
 const userRoutes = require('./routes/user.routes');
+const supportRoutes = require('./routes/support.routes');
 const { authenticate } = require('../../gateway/middleware/auth.middleware');
 const logger = require('../../shared/utils/logger');
 
@@ -30,8 +31,16 @@ app.get('/health', (_req, res) => {
   res.json({ success: true, service: 'user', timestamp: new Date().toISOString() });
 });
 
+// Public route — no auth needed (checked before app opens fully)
+const { checkServiceability } = require('./controllers/user.controller');
+app.get('/check-serviceability', checkServiceability);
+
 // All user routes require a valid JWT — the gateway forwards the Authorization header
 app.use('/', authenticate, userRoutes);
+
+// Support routes — gateway strips /api/support prefix, so paths arrive as /queries, /queries/:id/reply etc.
+// Mounted at root so /queries routes are reachable directly.
+app.use('/', supportRoutes);
 
 app.use((_req, res) => res.status(404).json({ success: false, message: 'Route not found', errorCode: 'NOT_FOUND' }));
 
