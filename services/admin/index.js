@@ -29,6 +29,29 @@ app.get('/health', (_req, res) => {
   res.json({ success: true, service: 'admin', timestamp: new Date().toISOString() });
 });
 
+// Public banner endpoint (no auth) — must be before admin routes
+const Banner = require('./models/Banner.model');
+const { sendSuccess, sendError } = require('../../shared/utils/response.util');
+app.get('/api/banners', async (_req, res) => {
+  try {
+    const banners = await Banner.find({ isActive: true }).sort({ position: 1, createdAt: 1 }).lean();
+    return sendSuccess(res, 200, 'Banners fetched', banners);
+  } catch (err) {
+    return sendError(res, 500, 'Failed to fetch banners', 'INTERNAL_ERROR');
+  }
+});
+
+// Public endpoint: active deal of the day (no auth required)
+app.get('/api/deal-of-day', async (_req, res) => {
+  try {
+    const DealOfDay = require('./models/DealOfDay.model');
+    const deal = await DealOfDay.findOne({ isActive: true }).sort({ updatedAt: -1 }).lean();
+    return sendSuccess(res, 200, 'Active deal', deal);
+  } catch (err) {
+    return sendError(res, 500, 'Failed to fetch deal', 'INTERNAL_ERROR');
+  }
+});
+
 app.use('/', adminRoutes);
 
 app.use((_req, res) => res.status(404).json({ success: false, message: 'Route not found', errorCode: 'NOT_FOUND' }));

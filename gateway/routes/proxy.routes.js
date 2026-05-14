@@ -41,6 +41,10 @@ router.use('/api/auth', ...(isDev ? [] : [authLimiter]), proxy(SERVICE_URLS.auth
 // ── Public user routes ────────────────────────────────────────────
 router.get('/api/users/check-serviceability', proxy(SERVICE_URLS.user, '/api/users'));
 
+// Public banners + deal of the day (no auth) — served from admin service
+router.get('/api/banners', proxy(SERVICE_URLS.admin));
+router.get('/api/deal-of-day', proxy(SERVICE_URLS.admin));
+
 // ── Protected routes ───────────────────────────────────────────────
 router.use('/api/users', authenticate, proxy(SERVICE_URLS.user, '/api/users'));
 

@@ -1,15 +1,28 @@
 const { Router } = require('express');
 const { authenticate } = require('../../../gateway/middleware/auth.middleware');
-const { submitQuery, getMyQueries, adminReply, getAllQueries } = require('../controllers/support.controller');
+const {
+  submitQuery,
+  getMyQueries,
+  customerReply,
+  adminReply,
+  getAllQueries,
+  updateQueryStatus,
+} = require('../controllers/support.controller');
 
 const router = Router();
 
-// Customer endpoints — require JWT auth
-router.post('/queries', authenticate, submitQuery);
-router.get('/queries', authenticate, getMyQueries);
+// All support routes require JWT auth (gateway already applies authenticate,
+// but we double-check here in case routes are mounted directly)
+router.use(authenticate);
 
-// Admin endpoints — protected by x-admin-secret header (no JWT required)
+// Customer endpoints
+router.post('/queries', submitQuery);
+router.get('/queries', getMyQueries);
+router.post('/queries/:id/customer-reply', customerReply);
+
+// Admin endpoints (controller checks ADMIN role)
 router.get('/queries/all', getAllQueries);
 router.post('/queries/:id/reply', adminReply);
+router.patch('/queries/:id/status', updateQueryStatus);
 
 module.exports = router;

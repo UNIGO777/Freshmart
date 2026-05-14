@@ -96,7 +96,7 @@ const listPayouts = async (req, res) => {
       },
     ]);
 
-    return sendSuccess(res, rows);
+    return sendSuccess(res, 200, 'Payouts fetched', rows);
   } catch (err) {
     logger.error('listPayouts error:', err);
     return sendError(res, 500, 'Failed to fetch payouts', ERROR_CODES.INTERNAL_ERROR);
@@ -174,7 +174,7 @@ const triggerPayout = async (req, res) => {
       { vendorId: vendorId.toString(), vendorName: vendor.businessName, amount, weekStart },
     );
 
-    return sendSuccess(res, {
+    return sendSuccess(res, 200, 'Payout approved', {
       record,
       vendorName:  vendor.businessName,
       amount,
@@ -210,7 +210,7 @@ const getPayoutHistory = async (req, res) => {
       PayoutRecord.countDocuments(),
     ]);
 
-    return sendSuccess(res, { data: records, total, page, limit });
+    return sendSuccess(res, 200, 'Payout history fetched', { data: records, total, page, limit });
   } catch (err) {
     logger.error('getPayoutHistory error:', err);
     return sendError(res, 500, 'Failed to fetch payout history', ERROR_CODES.INTERNAL_ERROR);
@@ -237,7 +237,7 @@ const getVendorPayoutHistory = async (req, res) => {
 
     if (!vendor) return sendError(res, 404, 'Vendor not found', ERROR_CODES.NOT_FOUND);
 
-    return sendSuccess(res, { vendor, records, total, page, limit });
+    return sendSuccess(res, 200, 'Vendor payout history fetched', { vendor, records, total, page, limit });
   } catch (err) {
     logger.error('getVendorPayoutHistory error:', err);
     return sendError(res, 500, 'Failed to fetch payout history', ERROR_CODES.INTERNAL_ERROR);

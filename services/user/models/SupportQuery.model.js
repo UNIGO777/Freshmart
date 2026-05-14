@@ -12,6 +12,7 @@ const supportQuerySchema = new mongoose.Schema(
   {
     customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer', required: true },
     customerName: { type: String },
+    customerEmail: { type: String, default: null },
     message: { type: String, required: true, maxlength: 2000 },
     status: { type: String, enum: ['open', 'closed'], default: 'open' },
     replies: [replySchema],

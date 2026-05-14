@@ -25,6 +25,8 @@ const { uploadFile }                                = require('../controllers/up
 const { listBanners, createBanner, updateBanner,
         deleteBanner, toggleBanner,
         reorderBanners }                            = require('../controllers/banner.controller');
+const { listDeals, createDeal, updateDeal,
+        toggleDeal, deleteDeal }                    = require('../controllers/deal.controller');
 
 // Auth (double-checked inside the service — gateway already enforces ADMIN)
 const { authenticate } = require('../../../gateway/middleware/auth.middleware');
@@ -95,5 +97,12 @@ router.put('/banners/reorder',      reorderBanners);   // must be before /:id
 router.patch('/banners/:id',        updateBanner);
 router.patch('/banners/:id/toggle', toggleBanner);
 router.delete('/banners/:id',       deleteBanner);
+
+// ── Deal of the Day ───────────────────────────────────────────────
+router.get('/deals',                listDeals);
+router.post('/deals',               createDeal);
+router.patch('/deals/:id',          updateDeal);
+router.patch('/deals/:id/toggle',   toggleDeal);
+router.delete('/deals/:id',         deleteDeal);
 
 module.exports = router;

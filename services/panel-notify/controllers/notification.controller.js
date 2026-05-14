@@ -50,7 +50,7 @@ const listNotifications = async (req, res) => {
       PanelNotification.countDocuments({ panel, isRead: false }),
     ]);
 
-    return sendSuccess(res, { data, total, unreadCount, page, limit });
+    return sendSuccess(res, 200, 'Notifications fetched', { data, total, unreadCount, page, limit });
   } catch (err) {
     logger.error('listNotifications error:', err);
     return sendError(res, 500, 'Failed to fetch notifications', ERROR_CODES.SERVER_ERROR);
@@ -66,7 +66,7 @@ const markOneRead = async (req, res) => {
       { new: true },
     );
     if (!notif) return sendError(res, 404, 'Notification not found', ERROR_CODES.NOT_FOUND);
-    return sendSuccess(res, notif);
+    return sendSuccess(res, 200, 'Notification marked read', notif);
   } catch (err) {
     logger.error('markOneRead error:', err);
     return sendError(res, 500, 'Failed to mark notification', ERROR_CODES.SERVER_ERROR);
@@ -78,7 +78,7 @@ const markAllRead = async (req, res) => {
   try {
     const panel = req.query.panel || 'admin';
     await PanelNotification.updateMany({ panel, isRead: false }, { isRead: true });
-    return sendSuccess(res, { ok: true });
+    return sendSuccess(res, 200, 'All notifications marked read', { ok: true });
   } catch (err) {
     logger.error('markAllRead error:', err);
     return sendError(res, 500, 'Failed to mark all', ERROR_CODES.SERVER_ERROR);
@@ -90,7 +90,7 @@ const deleteNotification = async (req, res) => {
   try {
     const notif = await PanelNotification.findByIdAndDelete(req.params.id);
     if (!notif) return sendError(res, 404, 'Notification not found', ERROR_CODES.NOT_FOUND);
-    return sendSuccess(res, { deleted: true });
+    return sendSuccess(res, 200, 'Notification deleted', { deleted: true });
   } catch (err) {
     logger.error('deleteNotification error:', err);
     return sendError(res, 500, 'Failed to delete notification', ERROR_CODES.SERVER_ERROR);
