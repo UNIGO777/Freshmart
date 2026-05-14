@@ -23,7 +23,7 @@ const updateBannerSchema = z.object({
 const listBanners = async (req, res) => {
   try {
     const banners = await Banner.find().sort({ position: 1, createdAt: 1 });
-    return sendSuccess(res, banners);
+    return sendSuccess(res, 200, 'Banners fetched', banners);
   } catch (err) {
     logger.error('listBanners error', err);
     return sendError(res, 500, 'Failed to fetch banners', ERROR_CODES.SERVER_ERROR);
@@ -38,7 +38,7 @@ const createBanner = async (req, res) => {
   }
   try {
     const banner = await Banner.create(parsed.data);
-    return sendSuccess(res, banner, 201);
+    return sendSuccess(res, 201, 'Banner created', banner);
   } catch (err) {
     logger.error('createBanner error', err);
     return sendError(res, 500, 'Failed to create banner', ERROR_CODES.SERVER_ERROR);
@@ -54,7 +54,7 @@ const updateBanner = async (req, res) => {
   try {
     const banner = await Banner.findByIdAndUpdate(req.params.id, parsed.data, { new: true });
     if (!banner) return sendError(res, 404, 'Banner not found', ERROR_CODES.NOT_FOUND);
-    return sendSuccess(res, banner);
+    return sendSuccess(res, 200, 'Banner updated', banner);
   } catch (err) {
     logger.error('updateBanner error', err);
     return sendError(res, 500, 'Failed to update banner', ERROR_CODES.SERVER_ERROR);
@@ -66,7 +66,7 @@ const deleteBanner = async (req, res) => {
   try {
     const banner = await Banner.findByIdAndDelete(req.params.id);
     if (!banner) return sendError(res, 404, 'Banner not found', ERROR_CODES.NOT_FOUND);
-    return sendSuccess(res, { deleted: true });
+    return sendSuccess(res, 200, 'Banner deleted', { deleted: true });
   } catch (err) {
     logger.error('deleteBanner error', err);
     return sendError(res, 500, 'Failed to delete banner', ERROR_CODES.SERVER_ERROR);
@@ -80,7 +80,7 @@ const toggleBanner = async (req, res) => {
     if (!banner) return sendError(res, 404, 'Banner not found', ERROR_CODES.NOT_FOUND);
     banner.isActive = !banner.isActive;
     await banner.save();
-    return sendSuccess(res, banner);
+    return sendSuccess(res, 200, 'Banner toggled', banner);
   } catch (err) {
     logger.error('toggleBanner error', err);
     return sendError(res, 500, 'Failed to toggle banner', ERROR_CODES.SERVER_ERROR);
@@ -100,7 +100,7 @@ const reorderBanners = async (req, res) => {
       ),
     );
     const banners = await Banner.find().sort({ position: 1, createdAt: 1 });
-    return sendSuccess(res, banners);
+    return sendSuccess(res, 200, 'Banners reordered', banners);
   } catch (err) {
     logger.error('reorderBanners error', err);
     return sendError(res, 500, 'Failed to reorder banners', ERROR_CODES.SERVER_ERROR);

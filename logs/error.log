@@ -5470,3 +5470,55 @@
     at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
     at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
     at async model.Query._find (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/mongoose/lib/query.js:2473:14)
+2026-05-14 21:20:57 [[31merror[39m]: Error: Socket closed unexpectedly
+    at TLSSocket.<anonymous> (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/@redis/client/dist/lib/client/socket.js:250:33)
+    at Object.onceWrapper (node:events:639:26)
+    at TLSSocket.emit (node:events:536:35)
+    at node:net:351:12
+    at TCP.done (node:_tls_wrap:650:7)
+2026-05-14 21:20:57 [[31merror[39m]: Error: Socket closed unexpectedly
+    at TLSSocket.<anonymous> (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/@redis/client/dist/lib/client/socket.js:250:33)
+    at Object.onceWrapper (node:events:639:26)
+    at TLSSocket.emit (node:events:536:35)
+    at node:net:351:12
+    at TCP.done (node:_tls_wrap:650:7)
+2026-05-14 21:20:59 [[31merror[39m]: Error: Socket closed unexpectedly
+    at TLSSocket.<anonymous> (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/@redis/client/dist/lib/client/socket.js:250:33)
+    at Object.onceWrapper (node:events:639:26)
+    at TLSSocket.emit (node:events:536:35)
+    at node:net:351:12
+    at TCP.done (node:_tls_wrap:650:7)
+2026-05-14 21:21:00 [[31merror[39m]: Error: Socket closed unexpectedly
+    at TLSSocket.<anonymous> (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/@redis/client/dist/lib/client/socket.js:250:33)
+    at Object.onceWrapper (node:events:639:26)
+    at TLSSocket.emit (node:events:536:35)
+    at node:net:351:12
+    at TCP.done (node:_tls_wrap:650:7)
+2026-05-14 21:21:05 [[31merror[39m]: Error: Socket closed unexpectedly
+    at TLSSocket.<anonymous> (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/@redis/client/dist/lib/client/socket.js:250:33)
+    at Object.onceWrapper (node:events:639:26)
+    at TLSSocket.emit (node:events:536:35)
+    at node:net:351:12
+    at TCP.done (node:_tls_wrap:650:7)
+2026-05-14 22:16:16 [[31merror[39m]: TypeError: Invalid status code: []. Status code must be an integer.
+    at ServerResponse.status (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/express/lib/response.js:67:11)
+    at sendSuccess (/Users/namanjain/FreshMart/Freshmart-backend/shared/utils/response.util.js:11:14)
+    at listBanners (/Users/namanjain/FreshMart/Freshmart-backend/services/admin/controllers/banner.controller.js:26:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-05-14 22:16:17 [[31merror[39m]: TypeError: Invalid status code: []. Status code must be an integer.
+    at ServerResponse.status (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/express/lib/response.js:67:11)
+    at sendSuccess (/Users/namanjain/FreshMart/Freshmart-backend/shared/utils/response.util.js:11:14)
+    at listBanners (/Users/namanjain/FreshMart/Freshmart-backend/services/admin/controllers/banner.controller.js:26:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-05-14 22:16:38 [[31merror[39m]: TypeError: Invalid status code: {"title":"esrgdfs","imageUrl":"https://res.cloudinary.com/deewydlyh/image/upload/v1778777198/freshmart_products/xyhij8fcyw8ncxhxfjmi.png","linkUrl":"sdfg","position":0,"isActive":true,"_id":"6a05fc6e665f35f9856ae191","createdAt":"2026-05-14T16:46:38.860Z","updatedAt":"2026-05-14T16:46:38.860Z","__v":0}. Status code must be an integer.
+    at ServerResponse.status (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/express/lib/response.js:67:11)
+    at sendSuccess (/Users/namanjain/FreshMart/Freshmart-backend/shared/utils/response.util.js:11:14)
+    at createBanner (/Users/namanjain/FreshMart/Freshmart-backend/services/admin/controllers/banner.controller.js:41:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-05-14 22:16:54 [[31merror[39m]: TypeError: Invalid status code: {"title":"esrgdfs","imageUrl":"https://res.cloudinary.com/deewydlyh/image/upload/v1778777213/freshmart_products/outbixwsrl4yeyp0tycy.png","linkUrl":"sdfg","position":0,"isActive":true,"_id":"6a05fc7e665f35f9856ae192","createdAt":"2026-05-14T16:46:54.597Z","updatedAt":"2026-05-14T16:46:54.597Z","__v":0}. Status code must be an integer.
+    at ServerResponse.status (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/express/lib/response.js:67:11)
+    at sendSuccess (/Users/namanjain/FreshMart/Freshmart-backend/shared/utils/response.util.js:11:14)
+    at createBanner (/Users/namanjain/FreshMart/Freshmart-backend/services/admin/controllers/banner.controller.js:41:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-05-14 22:18:29 [[31merror[39m]: Error: queryTxt EREFUSED landacers.jy24n.mongodb.net
+    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:293:17)

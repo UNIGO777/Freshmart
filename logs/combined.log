@@ -10849,3 +10849,135 @@
 2026-05-14 20:18:01 [[32minfo[39m]: Delivery Service running on port 3006
 2026-05-14 20:18:02 [[32minfo[39m]: MongoDB connected
 2026-05-14 20:18:02 [[32minfo[39m]: Order Service running on port 3004
+2026-05-14 20:56:33 [[32minfo[39m]: Socket disconnected: FFJyvtA3NuPePKCjAAAB (customer:6a046e383863ae91b27233f0) — transport close
+2026-05-14 21:20:57 [[31merror[39m]: Error: Socket closed unexpectedly
+    at TLSSocket.<anonymous> (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/@redis/client/dist/lib/client/socket.js:250:33)
+    at Object.onceWrapper (node:events:639:26)
+    at TLSSocket.emit (node:events:536:35)
+    at node:net:351:12
+    at TCP.done (node:_tls_wrap:650:7)
+2026-05-14 21:20:57 [[33mwarn[39m]: Redis reconnecting…
+2026-05-14 21:20:57 [[32minfo[39m]: Redis connected
+2026-05-14 21:20:57 [[31merror[39m]: Error: Socket closed unexpectedly
+    at TLSSocket.<anonymous> (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/@redis/client/dist/lib/client/socket.js:250:33)
+    at Object.onceWrapper (node:events:639:26)
+    at TLSSocket.emit (node:events:536:35)
+    at node:net:351:12
+    at TCP.done (node:_tls_wrap:650:7)
+2026-05-14 21:20:57 [[33mwarn[39m]: Redis reconnecting…
+2026-05-14 21:20:58 [[32minfo[39m]: Redis connected
+2026-05-14 21:20:59 [[31merror[39m]: Error: Socket closed unexpectedly
+    at TLSSocket.<anonymous> (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/@redis/client/dist/lib/client/socket.js:250:33)
+    at Object.onceWrapper (node:events:639:26)
+    at TLSSocket.emit (node:events:536:35)
+    at node:net:351:12
+    at TCP.done (node:_tls_wrap:650:7)
+2026-05-14 21:20:59 [[33mwarn[39m]: Redis reconnecting…
+2026-05-14 21:21:00 [[32minfo[39m]: Redis connected
+2026-05-14 21:21:00 [[31merror[39m]: Error: Socket closed unexpectedly
+    at TLSSocket.<anonymous> (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/@redis/client/dist/lib/client/socket.js:250:33)
+    at Object.onceWrapper (node:events:639:26)
+    at TLSSocket.emit (node:events:536:35)
+    at node:net:351:12
+    at TCP.done (node:_tls_wrap:650:7)
+2026-05-14 21:21:00 [[33mwarn[39m]: Redis reconnecting…
+2026-05-14 21:21:00 [[32minfo[39m]: Redis connected
+2026-05-14 21:21:05 [[31merror[39m]: Error: Socket closed unexpectedly
+    at TLSSocket.<anonymous> (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/@redis/client/dist/lib/client/socket.js:250:33)
+    at Object.onceWrapper (node:events:639:26)
+    at TLSSocket.emit (node:events:536:35)
+    at node:net:351:12
+    at TCP.done (node:_tls_wrap:650:7)
+2026-05-14 21:21:05 [[33mwarn[39m]: Redis reconnecting…
+2026-05-14 21:21:05 [[32minfo[39m]: Redis connected
+2026-05-14 21:56:42 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-14 21:56:48 [[32minfo[39m]: Redis connected
+2026-05-14 21:56:48 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-14 21:56:50 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-14 21:56:50 [[32minfo[39m]: Redis connected
+2026-05-14 21:56:50 [[32minfo[39m]: MongoDB connected
+2026-05-14 21:56:50 [[32minfo[39m]: Payment Service running on port 3007
+2026-05-14 21:56:50 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-14 21:56:51 [[32minfo[39m]: MongoDB connected
+2026-05-14 21:56:51 [[32minfo[39m]: Notification Service running on port 3008
+2026-05-14 21:56:51 [[32minfo[39m]: MongoDB connected
+2026-05-14 21:56:51 [[32minfo[39m]: Vendor Service running on port 3005
+2026-05-14 21:56:51 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-14 21:56:51 [[32minfo[39m]: MongoDB connected
+2026-05-14 21:56:51 [[32minfo[39m]: User Service running on port 3002
+2026-05-14 21:56:51 [[32minfo[39m]: MongoDB connected
+2026-05-14 21:56:51 [[32minfo[39m]: Auth Service running on port 3011
+2026-05-14 21:56:51 [[32minfo[39m]: Redis connected
+2026-05-14 21:56:51 [[32minfo[39m]: Redis connected
+2026-05-14 21:56:52 [[32minfo[39m]: Redis connected
+2026-05-14 21:56:52 [[32minfo[39m]: MongoDB connected
+2026-05-14 21:56:52 [[32minfo[39m]: Admin Service running on port 3009
+2026-05-14 21:56:52 [[32minfo[39m]: MongoDB connected
+2026-05-14 21:56:52 [[32minfo[39m]: MongoDB connected
+2026-05-14 21:56:52 [[32minfo[39m]: Product Service running on port 3003
+2026-05-14 21:56:52 [[32minfo[39m]: MongoDB connected
+2026-05-14 21:56:52 [[32minfo[39m]: Order Service running on port 3004
+2026-05-14 21:56:52 [[32minfo[39m]: Delivery Service running on port 3006
+2026-05-14 22:02:40 [[32minfo[39m]: Socket connected: rKUyvyqoo_wMvumXAAAB (admin:6a0000d3b8b024f8eff26d15)
+2026-05-14 22:16:16 [[31merror[39m]: TypeError: Invalid status code: []. Status code must be an integer.
+    at ServerResponse.status (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/express/lib/response.js:67:11)
+    at sendSuccess (/Users/namanjain/FreshMart/Freshmart-backend/shared/utils/response.util.js:11:14)
+    at listBanners (/Users/namanjain/FreshMart/Freshmart-backend/services/admin/controllers/banner.controller.js:26:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-05-14 22:16:17 [[31merror[39m]: TypeError: Invalid status code: []. Status code must be an integer.
+    at ServerResponse.status (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/express/lib/response.js:67:11)
+    at sendSuccess (/Users/namanjain/FreshMart/Freshmart-backend/shared/utils/response.util.js:11:14)
+    at listBanners (/Users/namanjain/FreshMart/Freshmart-backend/services/admin/controllers/banner.controller.js:26:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-05-14 22:16:38 [[31merror[39m]: TypeError: Invalid status code: {"title":"esrgdfs","imageUrl":"https://res.cloudinary.com/deewydlyh/image/upload/v1778777198/freshmart_products/xyhij8fcyw8ncxhxfjmi.png","linkUrl":"sdfg","position":0,"isActive":true,"_id":"6a05fc6e665f35f9856ae191","createdAt":"2026-05-14T16:46:38.860Z","updatedAt":"2026-05-14T16:46:38.860Z","__v":0}. Status code must be an integer.
+    at ServerResponse.status (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/express/lib/response.js:67:11)
+    at sendSuccess (/Users/namanjain/FreshMart/Freshmart-backend/shared/utils/response.util.js:11:14)
+    at createBanner (/Users/namanjain/FreshMart/Freshmart-backend/services/admin/controllers/banner.controller.js:41:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-05-14 22:16:54 [[31merror[39m]: TypeError: Invalid status code: {"title":"esrgdfs","imageUrl":"https://res.cloudinary.com/deewydlyh/image/upload/v1778777213/freshmart_products/outbixwsrl4yeyp0tycy.png","linkUrl":"sdfg","position":0,"isActive":true,"_id":"6a05fc7e665f35f9856ae192","createdAt":"2026-05-14T16:46:54.597Z","updatedAt":"2026-05-14T16:46:54.597Z","__v":0}. Status code must be an integer.
+    at ServerResponse.status (/Users/namanjain/FreshMart/Freshmart-backend/node_modules/express/lib/response.js:67:11)
+    at sendSuccess (/Users/namanjain/FreshMart/Freshmart-backend/shared/utils/response.util.js:11:14)
+    at createBanner (/Users/namanjain/FreshMart/Freshmart-backend/services/admin/controllers/banner.controller.js:41:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-05-14 22:17:52 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-14 22:17:56 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-14 22:18:03 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-14 22:18:06 [[32minfo[39m]: Redis connected
+2026-05-14 22:18:06 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-14 22:18:09 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-14 22:18:13 [[32minfo[39m]: Redis connected
+2026-05-14 22:18:13 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-14 22:18:14 [[32minfo[39m]: Redis connected
+2026-05-14 22:18:14 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-14 22:18:15 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-14 22:18:15 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-14 22:18:20 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-14 22:18:27 [[32minfo[39m]: Socket Server running on port 3010
+2026-05-14 22:18:29 [[32minfo[39m]: Redis connected
+2026-05-14 22:18:29 [[32minfo[39m]: Redis connected
+2026-05-14 22:18:29 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-14 22:18:29 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-05-14 22:18:29 [[33mwarn[39m]: MongoDB disconnected
+2026-05-14 22:18:29 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-14 22:18:29 [[32minfo[39m]: API Gateway running on port 3000
+2026-05-14 22:18:30 [[32minfo[39m]: MongoDB connected
+2026-05-14 22:18:30 [[32minfo[39m]: MongoDB connected
+2026-05-14 22:18:30 [[32minfo[39m]: User Service running on port 3002
+2026-05-14 22:18:30 [[32minfo[39m]: Payment Service running on port 3007
+2026-05-14 22:18:30 [[32minfo[39m]: Redis connected
+2026-05-14 22:18:30 [[32minfo[39m]: MongoDB connected
+2026-05-14 22:18:30 [[32minfo[39m]: Notification Service running on port 3008
+2026-05-14 22:18:30 [[32minfo[39m]: Redis connected
+2026-05-14 22:18:31 [[32minfo[39m]: Redis connected
+2026-05-14 22:18:31 [[32minfo[39m]: MongoDB connected
+2026-05-14 22:18:31 [[32minfo[39m]: Auth Service running on port 3011
+2026-05-14 22:18:31 [[32minfo[39m]: MongoDB connected
+2026-05-14 22:18:31 [[32minfo[39m]: Auth Service running on port 3011
+2026-05-14 22:18:31 [[32minfo[39m]: MongoDB connected
+2026-05-14 22:18:31 [[32minfo[39m]: Order Service running on port 3004
+2026-05-14 22:18:31 [[32minfo[39m]: MongoDB connected
+2026-05-14 22:18:31 [[32minfo[39m]: Product Service running on port 3003
+2026-05-14 22:18:31 [[32minfo[39m]: MongoDB connected
+2026-05-14 22:18:31 [[32minfo[39m]: Delivery Service running on port 3006
+2026-05-14 22:18:32 [[32minfo[39m]: MongoDB connected
+2026-05-14 22:18:32 [[32minfo[39m]: Admin Service running on port 3009
