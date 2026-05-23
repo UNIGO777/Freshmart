@@ -77,10 +77,17 @@ const getAddresses = async (req, res) => {
 };
 
 const addressSchema = z.object({
-  label: z.string().optional(),
-  lat: z.number(),
-  lng: z.number(),
-  fullAddress: z.string().min(5),
+  label:       z.string().optional(),
+  lat:         z.number().optional(),
+  lng:         z.number().optional(),
+  fullAddress: z.string().min(3),
+  flat:        z.string().optional(),
+  floor:       z.string().optional(),
+  landmark:    z.string().optional(),
+  street:      z.string().optional(),
+  city:        z.string().optional(),
+  state:       z.string().optional(),
+  zip:         z.string().optional(),
 });
 
 // ── POST /api/users/me/addresses ──────────────────────────────────
@@ -129,6 +136,33 @@ const deleteAddress = async (req, res) => {
   } catch (err) {
     logger.error('deleteAddress error:', err);
     return sendError(res, 500, 'Failed to delete address', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── PUT /api/users/me/addresses/:addressId ────────────────────────
+const updateAddress = async (req, res) => {
+  try {
+    if (req.user.role !== ROLES.CUSTOMER) {
+      return sendError(res, 403, 'Only customers can update addresses', ERROR_CODES.FORBIDDEN);
+    }
+
+    const parsed = addressSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return sendError(res, 400, 'Validation failed', ERROR_CODES.VALIDATION_ERROR, parsed.error.flatten());
+    }
+
+    const customer = await Customer.findOneAndUpdate(
+      { _id: req.user.id, 'addresses._id': req.params.addressId },
+      { $set: { 'addresses.$': { _id: req.params.addressId, ...parsed.data } } },
+      { new: true },
+    ).lean();
+
+    if (!customer) return sendError(res, 404, 'Address not found', ERROR_CODES.USER_NOT_FOUND);
+
+    return sendSuccess(res, 200, 'Address updated', customer.addresses);
+  } catch (err) {
+    logger.error('updateAddress error:', err);
+    return sendError(res, 500, 'Failed to update address', ERROR_CODES.INTERNAL_ERROR);
   }
 };
 
@@ -207,6 +241,13 @@ const checkServiceability = async (req, res) => {
 // ── PATCH /toggle-online  (Vendor only) ──────────────────────────────
 const axios = require('axios');
 const SOCKET_URL = `http://localhost:${process.env.PORT_SOCKET || 3010}`;
+
+const emitToCustomer = (customerId, event, payload) =>
+  axios.post(`${SOCKET_URL}/internal/emit`, {
+    room: `customer:${customerId}`,
+    event,
+    payload,
+  }, { timeout: 3000 }).catch((err) => logger.warn(`Failed to emit ${event}:`, err.message));
 
 const toggleOnline = async (req, res) => {
   try {
@@ -289,6 +330,7 @@ const addToWishlist = async (req, res) => {
 
     if (!customer) return sendError(res, 404, 'User not found', ERROR_CODES.USER_NOT_FOUND);
 
+    emitToCustomer(req.user.id, 'wishlist:toggled', { productId, action: 'add' });
     return sendSuccess(res, 201, 'Added to wishlist', customer.wishlist);
   } catch (err) {
     logger.error('addToWishlist error:', err);
@@ -311,6 +353,7 @@ const removeFromWishlist = async (req, res) => {
 
     if (!customer) return sendError(res, 404, 'User not found', ERROR_CODES.USER_NOT_FOUND);
 
+    emitToCustomer(req.user.id, 'wishlist:toggled', { productId: req.params.productId, action: 'remove' });
     return sendSuccess(res, 200, 'Removed from wishlist', customer.wishlist);
   } catch (err) {
     logger.error('removeFromWishlist error:', err);
@@ -318,4 +361,53 @@ const removeFromWishlist = async (req, res) => {
   }
 };
 
-module.exports = { getProfile, updateProfile, getAddresses, addAddress, deleteAddress, checkServiceability, toggleOnline, getWishlist, addToWishlist, removeFromWishlist };
+// ── GET /me/cart  (Customer only) ─────────────────────────────────
+const getCart = async (req, res) => {
+  try {
+    if (req.user.role !== ROLES.CUSTOMER) {
+      return sendError(res, 403, 'Only customers have a cart', ERROR_CODES.FORBIDDEN);
+    }
+    const customer = await Customer.findById(req.user.id).select('cart').lean();
+    if (!customer) return sendError(res, 404, 'User not found', ERROR_CODES.USER_NOT_FOUND);
+    return sendSuccess(res, 200, 'Cart fetched', customer.cart);
+  } catch (err) {
+    logger.error('getCart error:', err);
+    return sendError(res, 500, 'Failed to fetch cart', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── PUT /me/cart  (Customer only) — replaces entire cart ──────────
+const syncCart = async (req, res) => {
+  try {
+    if (req.user.role !== ROLES.CUSTOMER) {
+      return sendError(res, 403, 'Only customers have a cart', ERROR_CODES.FORBIDDEN);
+    }
+    const items = req.body.items;
+    if (!Array.isArray(items)) {
+      return sendError(res, 400, 'items must be an array', ERROR_CODES.VALIDATION_ERROR);
+    }
+    const cart = items
+      .filter((i) => i.productId && i.name && i.sellingPrice != null)
+      .map(({ productId, name, sellingPrice, coverImage, unit, qty }) => ({
+        productId,
+        name,
+        sellingPrice,
+        coverImage: coverImage || '',
+        unit: unit || '',
+        qty: Math.max(1, Number(qty) || 1),
+      }));
+
+    const customer = await Customer.findByIdAndUpdate(
+      req.user.id,
+      { $set: { cart } },
+      { new: true },
+    ).lean();
+    if (!customer) return sendError(res, 404, 'User not found', ERROR_CODES.USER_NOT_FOUND);
+    return sendSuccess(res, 200, 'Cart synced', customer.cart);
+  } catch (err) {
+    logger.error('syncCart error:', err);
+    return sendError(res, 500, 'Failed to sync cart', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+module.exports = { getProfile, updateProfile, getAddresses, addAddress, updateAddress, deleteAddress, checkServiceability, toggleOnline, getWishlist, addToWishlist, removeFromWishlist, getCart, syncCart };

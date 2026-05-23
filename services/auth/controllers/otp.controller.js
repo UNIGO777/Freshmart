@@ -14,22 +14,24 @@ const MAX_ATTEMPTS = 5;
 /** Generate a 6-digit OTP */
 const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString();
 
+/** Strip +91 / 91 country code prefix so mobile and web resolve to the same DB record */
+const normalizePhone = (phone) => phone.replace(/^\+?91(?=\d{10}$)/, '');
+
 /**
  * POST /api/auth/send-otp
  * Body: { phone: string }
  */
 const sendOtp = async (req, res) => {
   try {
-    const { phone } = req.body;
+    const raw = req.body.phone;
 
-    if (!phone || !/^\+?[1-9]\d{9,14}$/.test(phone)) {
+    if (!raw || !/^\+?[1-9]\d{9,14}$/.test(raw)) {
       return sendError(res, 400, 'Invalid phone number', ERROR_CODES.VALIDATION_ERROR);
     }
 
+    const phone = normalizePhone(raw);
     const otp = generateOtp();
     const expiresAt = new Date(Date.now() + OTP_EXPIRY_MS);
-
-    console.log(otp);
 
     // In development with no SMS token configured, skip SMS and log OTP to console.
     if (process.env.FASTTOSMS_AUTH_TOKEN) {
@@ -38,13 +40,14 @@ const sendOtp = async (req, res) => {
           authorization: process.env.FASTTOSMS_AUTH_TOKEN,
           variables_values: otp,
           route: 'otp',
-          numbers: phone.replace(/^\+91/, ''),
+          numbers: phone,
         },
         timeout: 8000,
       });
     } else {
-      // DEV ONLY — print OTP to server console so you can test without SMS credits
-      logger.warn(`[DEV] OTP for ${phone}: ${otp}`);
+      console.log('\n' + '='.repeat(50));
+      console.log(`  [DEV] OTP for ${phone}:  ${otp}`);
+      console.log('='.repeat(50) + '\n');
     }
 
     // Upsert OTP session only after successful delivery
@@ -55,7 +58,10 @@ const sendOtp = async (req, res) => {
     );
 
     logger.info(`OTP sent to ${phone}`);
-    return sendSuccess(res, 200, 'OTP sent successfully');
+
+    // In dev mode return the OTP in the response so the web layer can print it
+    const devPayload = !process.env.FASTTOSMS_AUTH_TOKEN ? { devOtp: otp } : {};
+    return sendSuccess(res, 200, 'OTP sent successfully', devPayload);
   } catch (err) {
     logger.error('sendOtp error:', err);
     return sendError(res, 500, 'Failed to send OTP', ERROR_CODES.INTERNAL_ERROR);
@@ -68,12 +74,13 @@ const sendOtp = async (req, res) => {
  */
 const verifyOtp = async (req, res) => {
   try {
-    const { phone, otp } = req.body;
+    const { phone: rawPhone, otp } = req.body;
 
-    if (!phone || !otp) {
+    if (!rawPhone || !otp) {
       return sendError(res, 400, 'Phone and OTP are required', ERROR_CODES.MISSING_FIELDS);
     }
 
+    const phone = normalizePhone(rawPhone);
     const session = await OtpSession.findOne({ phone });
 
     if (!session) {

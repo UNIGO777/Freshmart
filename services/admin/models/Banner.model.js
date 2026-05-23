@@ -27,13 +27,18 @@ const bannerSchema = new mongoose.Schema(
 
     isActive: {
       type: Boolean,
-      default: true,
+      default: false,
+    },
+
+    type: {
+      type: String,
+      enum: ['hero', 'deal_of_day'],
+      default: 'hero',
     },
   },
   { timestamps: true },
 );
 
-// Keep active banners sorted by position
-bannerSchema.index({ isActive: 1, position: 1 });
+bannerSchema.index({ type: 1, isActive: 1, position: 1 });
 
 module.exports = mongoose.model('Banner', bannerSchema);

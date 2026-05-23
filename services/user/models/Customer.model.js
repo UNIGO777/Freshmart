@@ -2,10 +2,17 @@ const mongoose = require('mongoose');
 
 const addressSchema = new mongoose.Schema(
   {
-    label: { type: String, default: 'Home' },
-    lat: { type: Number, required: true },
-    lng: { type: Number, required: true },
+    label:       { type: String, default: 'Home' },
+    lat:         { type: Number },
+    lng:         { type: Number },
     fullAddress: { type: String, required: true },
+    flat:        { type: String, default: '' },
+    floor:       { type: String, default: '' },
+    landmark:    { type: String, default: '' },
+    street:      { type: String, default: '' },
+    city:        { type: String, default: '' },
+    state:       { type: String, default: '' },
+    zip:         { type: String, default: '' },
   },
   { _id: true },
 );
@@ -41,6 +48,17 @@ const customerSchema = new mongoose.Schema(
         coverImage: { type: String, default: '' },
         category: { type: String, default: '' },
         addedAt: { type: Date, default: Date.now },
+      },
+    ],
+
+    cart: [
+      {
+        productId:    { type: mongoose.Schema.Types.ObjectId, required: true },
+        name:         { type: String, required: true },
+        sellingPrice: { type: Number, required: true },
+        coverImage:   { type: String, default: '' },
+        unit:         { type: String, default: '' },
+        qty:          { type: Number, required: true, min: 1 },
       },
     ],
   },

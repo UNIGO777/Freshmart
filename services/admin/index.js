@@ -32,9 +32,14 @@ app.get('/health', (_req, res) => {
 // Public banner endpoint (no auth) — must be before admin routes
 const Banner = require('./models/Banner.model');
 const { sendSuccess, sendError } = require('../../shared/utils/response.util');
-app.get('/api/banners', async (_req, res) => {
+app.get('/api/banners', async (req, res) => {
   try {
-    const banners = await Banner.find({ isActive: true }).sort({ position: 1, createdAt: 1 }).lean();
+    const filter = { isActive: true };
+    if (req.query.type) {
+      // Banners without a type field default to 'hero'
+      filter.$or = [{ type: req.query.type }, ...(req.query.type === 'hero' ? [{ type: { $exists: false } }] : [])];
+    }
+    const banners = await Banner.find(filter).sort({ position: 1, createdAt: 1 }).lean();
     return sendSuccess(res, 200, 'Banners fetched', banners);
   } catch (err) {
     return sendError(res, 500, 'Failed to fetch banners', 'INTERNAL_ERROR');

@@ -9,7 +9,8 @@ const createBannerSchema = z.object({
   title: z.string().trim().default(''),
   linkUrl: z.string().trim().default(''),
   position: z.number().int().min(0).default(0),
-  isActive: z.boolean().default(true),
+  isActive: z.boolean().default(false),
+  type: z.enum(['hero', 'deal_of_day']).default('hero'),
 });
 
 const updateBannerSchema = z.object({
@@ -19,10 +20,11 @@ const updateBannerSchema = z.object({
   isActive: z.boolean().optional(),
 });
 
-// GET /banners — all banners sorted by position
+// GET /banners — all banners sorted by position, optionally filtered by ?type=
 const listBanners = async (req, res) => {
   try {
-    const banners = await Banner.find().sort({ position: 1, createdAt: 1 });
+    const filter = req.query.type ? { type: req.query.type } : {};
+    const banners = await Banner.find(filter).sort({ position: 1, createdAt: 1 });
     return sendSuccess(res, 200, 'Banners fetched', banners);
   } catch (err) {
     logger.error('listBanners error', err);
@@ -73,12 +75,16 @@ const deleteBanner = async (req, res) => {
   }
 };
 
-// PATCH /banners/:id/toggle — flip isActive
+// PATCH /banners/:id/toggle — set as active (radio-button: deactivates others of same type)
 const toggleBanner = async (req, res) => {
   try {
     const banner = await Banner.findById(req.params.id);
     if (!banner) return sendError(res, 404, 'Banner not found', ERROR_CODES.NOT_FOUND);
-    banner.isActive = !banner.isActive;
+    const newActive = !banner.isActive;
+    if (newActive) {
+      await Banner.updateMany({ type: banner.type, _id: { $ne: banner._id } }, { isActive: false });
+    }
+    banner.isActive = newActive;
     await banner.save();
     return sendSuccess(res, 200, 'Banner toggled', banner);
   } catch (err) {
