@@ -75,16 +75,14 @@ const deleteBanner = async (req, res) => {
   }
 };
 
-// PATCH /banners/:id/toggle — set as active (radio-button: deactivates others of same type)
+// PATCH /banners/:id/toggle — independently flip this banner's active state.
+// Multiple banners of the same type can be active at once; the storefront shows
+// all active banners (of a type) as a carousel, sorted by position.
 const toggleBanner = async (req, res) => {
   try {
     const banner = await Banner.findById(req.params.id);
     if (!banner) return sendError(res, 404, 'Banner not found', ERROR_CODES.NOT_FOUND);
-    const newActive = !banner.isActive;
-    if (newActive) {
-      await Banner.updateMany({ type: banner.type, _id: { $ne: banner._id } }, { isActive: false });
-    }
-    banner.isActive = newActive;
+    banner.isActive = !banner.isActive;
     await banner.save();
     return sendSuccess(res, 200, 'Banner toggled', banner);
   } catch (err) {

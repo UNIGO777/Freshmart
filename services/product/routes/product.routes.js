@@ -8,6 +8,7 @@ const {
   toggleAvailability,
   toggleActive,
   bulkUpdatePrices,
+  deleteProduct,
   getStaleProducts,
 } = require('../controllers/product.controller');
 const { authenticate } = require('../../../gateway/middleware/auth.middleware');
@@ -29,5 +30,6 @@ router.put('/bulk-prices', ...adminOnly, bulkUpdatePrices);
 router.put('/:id', ...adminOnly, updateProduct);
 router.patch('/:id/toggle', ...adminOnly, toggleAvailability);
 router.patch('/:id/active', ...adminOnly, toggleActive);
+router.delete('/:id',       ...adminOnly, deleteProduct);
 
 module.exports = router;

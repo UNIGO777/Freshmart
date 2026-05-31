@@ -24,6 +24,12 @@ const getProfile = async (req, res) => {
     const user = await Model.findById(req.user.id).lean();
     if (!user) return sendError(res, 404, 'User not found', ERROR_CODES.USER_NOT_FOUND);
 
+    // Ensure customers always have a referral code to show (backfill legacy accounts).
+    if (req.user.role === ROLES.CUSTOMER && !user.referralCode) {
+      user.referralCode = await Customer.generateUniqueReferralCode(user.name);
+      await Customer.updateOne({ _id: user._id }, { referralCode: user.referralCode });
+    }
+
     return sendSuccess(res, 200, 'Profile fetched', user);
   } catch (err) {
     logger.error('getProfile error:', err);

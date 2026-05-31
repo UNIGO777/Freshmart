@@ -38,8 +38,17 @@ const listCustomers = async (req, res) => {
 // ── GET /customers/:id ────────────────────────────────────────────
 const getCustomerDetail = async (req, res) => {
   try {
-    const customer = await Customer.findById(req.params.id).select('-passwordHash').lean();
+    const customer = await Customer.findById(req.params.id)
+      .select('-passwordHash')
+      .populate('referredBy', 'name phone referralCode')
+      .lean();
     if (!customer) return sendError(res, 404, 'Customer not found', ERROR_CODES.NOT_FOUND);
+
+    // Backfill own referral code for legacy accounts so admin always sees one.
+    if (!customer.referralCode) {
+      customer.referralCode = await Customer.generateUniqueReferralCode(customer.name);
+      await Customer.updateOne({ _id: customer._id }, { referralCode: customer.referralCode });
+    }
 
     const [orderCount, totalSpentResult, recentOrders] = await Promise.all([
       Order.countDocuments({ customerId: customer._id }),

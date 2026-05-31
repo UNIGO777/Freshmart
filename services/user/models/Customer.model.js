@@ -36,6 +36,13 @@ const customerSchema = new mongoose.Schema(
 
     addresses: [addressSchema],
 
+    // Referrals (tracking only — no rewards). `referralCode` is this user's own
+    // shareable code (auto-generated). `referredBy` / `referredByCode` record
+    // who/which code brought them in at signup.
+    referralCode:   { type: String, unique: true, sparse: true, uppercase: true, trim: true, index: true },
+    referredBy:     { type: mongoose.Schema.Types.ObjectId, ref: 'Customer', default: null },
+    referredByCode: { type: String, default: '', uppercase: true, trim: true },
+
     language: { type: String, enum: ['en', 'hi'], default: 'en' },
     fcmToken: { type: String },
     isActive: { type: Boolean, default: true },
@@ -64,5 +71,39 @@ const customerSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+// ── Referral code generation ──────────────────────────────────────
+// Unambiguous alphabet (no 0/O/1/I) so codes are easy to read & share.
+const REFERRAL_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
+const randomChars = (len) => {
+  let s = '';
+  for (let i = 0; i < len; i++) {
+    s += REFERRAL_ALPHABET[Math.floor(Math.random() * REFERRAL_ALPHABET.length)];
+  }
+  return s;
+};
+
+/**
+ * Generate a referral code unique across customers. Uses up to 4 alpha chars
+ * from the name as a recognisable prefix, padded with random chars to length 8.
+ */
+customerSchema.statics.generateUniqueReferralCode = async function (name = '') {
+  const prefix = String(name).toUpperCase().replace(/[^A-Z]/g, '').slice(0, 4);
+  for (let attempt = 0; attempt < 12; attempt++) {
+    const code = (prefix + randomChars(8 - prefix.length)) || randomChars(8);
+    const exists = await this.exists({ referralCode: code });
+    if (!exists) return code;
+  }
+  return randomChars(10); // statistically unreachable fallback
+};
+
+// Assign a referral code to every new customer (create() runs save hooks).
+customerSchema.pre('save', async function (next) {
+  if (!this.referralCode) {
+    this.referralCode = await this.constructor.generateUniqueReferralCode(this.name);
+  }
+  next();
+});
 
 module.exports = mongoose.model('Customer', customerSchema);

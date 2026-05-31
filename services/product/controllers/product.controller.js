@@ -130,6 +130,9 @@ const getProducts = async (req, res) => {
   try {
     const { category, search } = req.query;
     const lang = req.lang || 'en'; // set by langMiddleware (query param > Accept-Language header)
+    // Admin surfaces (product list, bulk pricing) pass ?available=all to include
+    // products that are not available today. Storefront callers omit it.
+    const includeAll = req.query.available === 'all';
 
     // ── Search path (bypasses cache) ──────────────────────────────
     if (search) {
@@ -143,7 +146,7 @@ const getProducts = async (req, res) => {
       // without needing a search engine. The collection is small enough
       // that a full collection scan here is fine; add Atlas Search later
       // if the catalogue grows beyond a few thousand SKUs.
-      const baseFilter = { isAvailableToday: true };
+      const baseFilter = includeAll ? {} : { isAvailableToday: true };
       if (category) {
         const normalised = category.toLowerCase();
         baseFilter.category = normalised;
@@ -174,11 +177,13 @@ const getProducts = async (req, res) => {
     }
 
     const key = cacheKey(category);
-    const cached = await getFromCache(key);
+    // The admin "all products" view bypasses the (storefront-only) cache so it
+    // always reflects the latest data and never pollutes the public cache.
+    const cached = includeAll ? null : await getFromCache(key);
     if (cached) return sendSuccess(res, 200, 'Products fetched (cache)', cached);
 
     const VALID_CATEGORIES = ['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other'];
-    const filter = { isAvailableToday: true };
+    const filter = includeAll ? {} : { isAvailableToday: true };
     if (category) {
       const normalised = category.toLowerCase();
       if (!VALID_CATEGORIES.includes(normalised)) {
@@ -190,7 +195,7 @@ const getProducts = async (req, res) => {
     const products = await Product.find(filter).sort({ category: 1, name: 1 }).lean();
     const response = localiseProducts(products, lang);
 
-    await setCache(key, response);
+    if (!includeAll) await setCache(key, response);
     return sendSuccess(res, 200, 'Products fetched', response);
   } catch (err) {
     logger.error('getProducts error:', err);
@@ -356,7 +361,7 @@ const toggleActive = async (req, res) => {
 };
 
 // ── PUT /api/products/bulk-prices  (Admin) ────────────────────────
-// Body: { updates: [{ id, buyingPrice, sellingPrice }] }
+// Body: { updates: [{ id, buyingPrice, sellingPrice, isAvailableToday }] }
 const bulkUpdatePrices = async (req, res) => {
   try {
     const { updates } = req.body;
@@ -364,18 +369,15 @@ const bulkUpdatePrices = async (req, res) => {
       return sendError(res, 400, 'updates array is required', ERROR_CODES.MISSING_FIELDS);
     }
 
-    const ops = updates.map(({ id, buyingPrice, sellingPrice }) => ({
-      updateOne: {
-        filter: { _id: id },
-        update: {
-          $set: {
-            ...(buyingPrice !== undefined && { buyingPrice }),
-            ...(sellingPrice !== undefined && { sellingPrice }),
-            lastPricedAt: new Date(),
-          },
-        },
-      },
-    }));
+    const ops = updates.map(({ id, buyingPrice, sellingPrice, isAvailableToday }) => {
+      const $set = {};
+      if (buyingPrice      !== undefined) $set.buyingPrice      = buyingPrice;
+      if (sellingPrice     !== undefined) $set.sellingPrice     = sellingPrice;
+      if (isAvailableToday !== undefined) $set.isAvailableToday = isAvailableToday;
+      // Only stamp lastPricedAt when an actual price changed.
+      if (buyingPrice !== undefined || sellingPrice !== undefined) $set.lastPricedAt = new Date();
+      return { updateOne: { filter: { _id: id }, update: { $set } } };
+    });
 
     const result = await Product.bulkWrite(ops);
     await invalidateProductCache();
@@ -387,6 +389,20 @@ const bulkUpdatePrices = async (req, res) => {
   } catch (err) {
     logger.error('bulkUpdatePrices error:', err);
     return sendError(res, 500, 'Bulk update failed', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── DELETE /api/products/:id  (Admin) ─────────────────────────────
+const deleteProduct = async (req, res) => {
+  try {
+    const product = await Product.findByIdAndDelete(req.params.id);
+    if (!product) return sendError(res, 404, 'Product not found', ERROR_CODES.NOT_FOUND);
+
+    await invalidateProductCache();
+    return sendSuccess(res, 200, 'Product deleted', { id: req.params.id });
+  } catch (err) {
+    logger.error('deleteProduct error:', err);
+    return sendError(res, 500, 'Failed to delete product', ERROR_CODES.INTERNAL_ERROR);
   }
 };
 
@@ -427,5 +443,6 @@ module.exports = {
   toggleAvailability,
   toggleActive,
   bulkUpdatePrices,
+  deleteProduct,
   getStaleProducts,
 };
