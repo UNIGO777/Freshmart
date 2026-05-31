@@ -5,12 +5,6 @@ const Product = require('../../product/models/Product.model');
 const logger = require('../../../shared/utils/logger');
 
 const SEARCH_RADIUS_KM = Number(process.env.VENDOR_SEARCH_RADIUS_KM) || 5;
-const EARTH_RADIUS_M = 6378100;
-
-/**
- * Convert km to radians for MongoDB $geoWithin / $nearSphere.
- */
-const kmToRadians = (km) => km / (EARTH_RADIUS_M / 1000);
 
 /**
  * Pre-payment stock check.

@@ -10,6 +10,7 @@ const Vendor = require('../../user/models/Vendor.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const { PAYMENT_STATUS, ORDER_STATUS } = require('../../../shared/constants/orderStatus');
+const { markCouponUsedByCode } = require('../../order/logic/couponEngine');
 const logger = require('../../../shared/utils/logger');
 
 // ── Internal: confirm a UPI-paid order and kick off vendor routing ─
@@ -18,9 +19,20 @@ const confirmUpiOrder = async (txn) => {
     const order = await Order.findById(txn.orderId);
     if (!order) return logger.warn(`confirmUpiOrder: order ${txn.orderId} not found`);
 
+    // Idempotency: a duplicate COMPLETED callback must not re-route or
+    // double-count the coupon.
+    if (order.paymentStatus === PAYMENT_STATUS.PAID) return;
+
     order.paymentStatus = PAYMENT_STATUS.PAID;
     order.status = ORDER_STATUS.CONFIRMED;
     await order.save();
+
+    // UPI coupon usage is recorded only now, once payment has succeeded.
+    if (order.couponCode) {
+      markCouponUsedByCode(order.couponCode, order.customerId).catch((err) =>
+        logger.error('markCouponUsedByCode error:', err),
+      );
+    }
 
     // Call Order Service to start vendor routing via internal HTTP
     const orderServiceUrl = `http://localhost:${process.env.PORT_ORDER || 3004}`;

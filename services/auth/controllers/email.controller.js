@@ -1,4 +1,5 @@
 require('dotenv').config();
+const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const { z } = require('zod');
 const Customer = require('../../user/models/Customer.model');
@@ -8,7 +9,33 @@ const { sendSuccess, sendError } = require('../../../shared/utils/response.util'
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const ROLES = require('../../../shared/constants/roles');
 const { notifyAdmin } = require('../../../shared/utils/notifyAdmin');
+const { redisClient } = require('../../../shared/db/redis');
 const logger = require('../../../shared/utils/logger');
+
+// ── Refresh-token revocation blocklist (Redis, fail-open) ──────────
+const blocklistKey = (token) => `bl:rt:${crypto.createHash('sha256').update(token).digest('hex')}`;
+
+/** Add a refresh token to the blocklist until its natural expiry. */
+const revokeRefreshToken = async (token, expSeconds) => {
+  try {
+    if (!redisClient.isReady) return;
+    const ttl = Math.max(1, (expSeconds || 0) - Math.floor(Date.now() / 1000));
+    await redisClient.set(blocklistKey(token), '1', { EX: ttl });
+  } catch (err) {
+    logger.warn(`revokeRefreshToken failed (non-fatal): ${err.message}`);
+  }
+};
+
+/** Returns true only if we positively confirm the token is revoked. */
+const isRefreshTokenRevoked = async (token) => {
+  try {
+    if (!redisClient.isReady) return false;
+    return (await redisClient.exists(blocklistKey(token))) === 1;
+  } catch (err) {
+    logger.warn(`isRefreshTokenRevoked check failed (fail-open): ${err.message}`);
+    return false;
+  }
+};
 
 const registerSchema = z.object({
   name: z.string().min(2),
@@ -32,7 +59,8 @@ const registerEmail = async (req, res) => {
       return sendError(res, 400, 'Validation failed', ERROR_CODES.VALIDATION_ERROR, parsed.error.flatten());
     }
 
-    const { name, email, password } = parsed.data;
+    const { name, password } = parsed.data;
+    const email = parsed.data.email.toLowerCase();
 
     const existing = await Customer.findOne({ email });
     if (existing) {
@@ -80,7 +108,8 @@ const loginEmail = async (req, res) => {
       return sendError(res, 400, 'Validation failed', ERROR_CODES.VALIDATION_ERROR, parsed.error.flatten());
     }
 
-    const { email, password } = parsed.data;
+    const { password } = parsed.data;
+    const email = parsed.data.email.toLowerCase();
 
     const user = await Customer.findOne({ email }).select('+passwordHash');
     if (!user || !user.passwordHash) {
@@ -124,6 +153,11 @@ const refreshToken = async (req, res) => {
     }
 
     const decoded = verifyRefreshToken(token);
+
+    if (await isRefreshTokenRevoked(token)) {
+      return sendError(res, 401, 'Refresh token has been revoked', ERROR_CODES.TOKEN_INVALID);
+    }
+
     const newAccessToken = signAccessToken({ id: decoded.id, role: decoded.role });
 
     return sendSuccess(res, 200, 'Token refreshed', { accessToken: newAccessToken });
@@ -137,9 +171,20 @@ const refreshToken = async (req, res) => {
 
 /**
  * POST /api/auth/logout
- * No-op for now — stateless JWT; future: add refresh token to a Redis blocklist
+ * Body: { refreshToken? }
+ * Revokes the supplied refresh token (added to a Redis blocklist until expiry).
+ * Always succeeds — even if no token is given or Redis is unavailable.
  */
-const logout = async (_req, res) => {
+const logout = async (req, res) => {
+  const token = req.body?.refreshToken;
+  if (token) {
+    try {
+      const decoded = verifyRefreshToken(token);
+      await revokeRefreshToken(token, decoded.exp);
+    } catch {
+      // Invalid/expired token — nothing to revoke.
+    }
+  }
   return sendSuccess(res, 200, 'Logged out successfully');
 };
 

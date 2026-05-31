@@ -7,6 +7,11 @@ export default [
   js.configs.recommended,
   {
     files: ["**/*.js"],
+    rules: {
+      // Allow intentionally-unused args/vars prefixed with `_` (e.g. the
+      // Express error-handler `_next` signature, throwaway destructures).
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }]
+    },
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "commonjs",
@@ -18,7 +23,21 @@ export default [
         __filename: "readonly",
         module: "readonly",
         require: "readonly",
-        exports: "readonly"
+        exports: "readonly",
+        global: "readonly",
+        // Node.js global timers & web-standard globals available in Node
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+        setImmediate: "readonly",
+        queueMicrotask: "readonly",
+        URL: "readonly",
+        URLSearchParams: "readonly",
+        TextEncoder: "readonly",
+        TextDecoder: "readonly",
+        fetch: "readonly",
+        AbortController: "readonly"
       }
     }
   }

@@ -43,7 +43,7 @@ const validateCoupon = async (code, orderSubtotal, customerId) => {
   }
 
   // Calculate discount
-  let discountAmount = 0;
+  let discountAmount;
   if (coupon.discountType === 'flat') {
     discountAmount = Math.min(coupon.discountValue, orderSubtotal);
   } else {
@@ -77,10 +77,41 @@ const markCouponUsed = async (couponId, customerId) => {
  * @param {string} customerId
  */
 const releaseCoupon = async (couponId, customerId) => {
-  await Coupon.findByIdAndUpdate(couponId, {
-    $inc: { usedCount: -1 },
-    $pull: { usedBy: customerId },
-  });
+  await Coupon.findOneAndUpdate(
+    { _id: couponId, usedCount: { $gt: 0 } },
+    { $inc: { usedCount: -1 }, $pull: { usedBy: customerId } },
+  );
 };
 
-module.exports = { validateCoupon, markCouponUsed, releaseCoupon };
+/**
+ * Mark a coupon used, identified by its code (used by services that only have
+ * the order's stored couponCode, e.g. payment confirmation).
+ *
+ * @param {string} code
+ * @param {string} customerId
+ */
+const markCouponUsedByCode = async (code, customerId) => {
+  if (!code) return;
+  await Coupon.findOneAndUpdate(
+    { code: code.toUpperCase() },
+    { $inc: { usedCount: 1 }, $push: { usedBy: customerId } },
+  );
+};
+
+/**
+ * Release a coupon hold identified by its code (used on cancel/refund where
+ * only the order's stored couponCode is available). Never drives usedCount
+ * below zero.
+ *
+ * @param {string} code
+ * @param {string} customerId
+ */
+const releaseCouponByCode = async (code, customerId) => {
+  if (!code) return;
+  await Coupon.findOneAndUpdate(
+    { code: code.toUpperCase(), usedCount: { $gt: 0 } },
+    { $inc: { usedCount: -1 }, $pull: { usedBy: customerId } },
+  );
+};
+
+module.exports = { validateCoupon, markCouponUsed, releaseCoupon, markCouponUsedByCode, releaseCouponByCode };

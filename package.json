@@ -18,6 +18,7 @@
     "dev": "concurrently \"npm:dev:gateway\" \"npm:dev:auth\" \"npm:dev:user\" \"npm:dev:product\" \"npm:dev:order\" \"npm:dev:vendor\" \"npm:dev:delivery\" \"npm:dev:payment\" \"npm:dev:notification\" \"npm:dev:admin\" \"npm:dev:socket\"",
     "lint": "eslint .",
     "format": "prettier --write .",
+    "smoke": "node scripts/smoke-order-flow.js",
     "test": "echo \"No tests configured yet\""
   },
   "keywords": [

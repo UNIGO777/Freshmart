@@ -17,7 +17,6 @@ const connectDB = require('../../shared/db/mongoose');
 const { connectRedis } = require('../../shared/db/redis');
 const orderRoutes = require('./routes/order.routes');
 const Order         = require('./models/Order.model');
-const Product       = require('../product/models/Product.model');
 const VendorEarning = require('../vendor/models/VendorEarning.model');
 const { initiateRouting } = require('./logic/vendorRouter');
 const { SUB_ORDER_STATUS, ORDER_STATUS } = require('../../shared/constants/orderStatus');

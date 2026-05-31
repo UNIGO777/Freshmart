@@ -37,7 +37,7 @@ const uploadFile = (req, res) => {
       return sendError(res, 400, 'No file provided', ERROR_CODES.VALIDATION_ERROR);
     }
 
-    const folder = (req.body.folder || 'freshmart_kyc').replace(/[^a-zA-Z0-9_/\-]/g, '');
+    const folder = (req.body.folder || 'freshmart_kyc').replace(/[^a-zA-Z0-9_/-]/g, '');
 
     try {
       const result = await new Promise((resolve, reject) => {

@@ -31,7 +31,8 @@ const PORT = process.env.PORT_GATEWAY || 3000;
     logger.warn(`Redis unavailable (${err.message}) — rate limiter falling back to in-memory store`);
   }
 
-  const { generalLimiter, authLimiter } = require('./middleware/rateLimiter');
+  // authLimiter is applied inside proxy.routes (on /api/auth), not here.
+  const { generalLimiter } = require('./middleware/rateLimiter');
 
   // ── 2. Global middleware ──────────────────────────────────────────
   app.use(helmet());

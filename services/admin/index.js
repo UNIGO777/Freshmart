@@ -42,6 +42,7 @@ app.get('/api/banners', async (req, res) => {
     const banners = await Banner.find(filter).sort({ position: 1, createdAt: 1 }).lean();
     return sendSuccess(res, 200, 'Banners fetched', banners);
   } catch (err) {
+    logger.error('Public banners fetch error:', err);
     return sendError(res, 500, 'Failed to fetch banners', 'INTERNAL_ERROR');
   }
 });
@@ -53,6 +54,7 @@ app.get('/api/deal-of-day', async (_req, res) => {
     const deal = await DealOfDay.findOne({ isActive: true }).sort({ updatedAt: -1 }).lean();
     return sendSuccess(res, 200, 'Active deal', deal);
   } catch (err) {
+    logger.error('Public deal-of-day fetch error:', err);
     return sendError(res, 500, 'Failed to fetch deal', 'INTERNAL_ERROR');
   }
 });

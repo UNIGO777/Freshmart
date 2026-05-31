@@ -33,7 +33,10 @@ const sendOtp = async (req, res) => {
     const otp = generateOtp();
     const expiresAt = new Date(Date.now() + OTP_EXPIRY_MS);
 
-    // In development with no SMS token configured, skip SMS and log OTP to console.
+    const isProd = process.env.NODE_ENV === 'production';
+
+    // Send via SMS when configured. With no token: log to console in dev, but
+    // FAIL CLOSED in production — never fall back to leaking the OTP.
     if (process.env.FASTTOSMS_AUTH_TOKEN) {
       await axios.get('https://www.fast2sms.com/dev/bulkV2', {
         params: {
@@ -44,6 +47,9 @@ const sendOtp = async (req, res) => {
         },
         timeout: 8000,
       });
+    } else if (isProd) {
+      logger.error('FASTTOSMS_AUTH_TOKEN not configured — cannot send OTP in production');
+      return sendError(res, 500, 'OTP service is not configured', ERROR_CODES.INTERNAL_ERROR);
     } else {
       console.log('\n' + '='.repeat(50));
       console.log(`  [DEV] OTP for ${phone}:  ${otp}`);
@@ -59,8 +65,8 @@ const sendOtp = async (req, res) => {
 
     logger.info(`OTP sent to ${phone}`);
 
-    // In dev mode return the OTP in the response so the web layer can print it
-    const devPayload = !process.env.FASTTOSMS_AUTH_TOKEN ? { devOtp: otp } : {};
+    // Return the OTP in the response only in non-production dev mode.
+    const devPayload = (!process.env.FASTTOSMS_AUTH_TOKEN && !isProd) ? { devOtp: otp } : {};
     return sendSuccess(res, 200, 'OTP sent successfully', devPayload);
   } catch (err) {
     logger.error('sendOtp error:', err);

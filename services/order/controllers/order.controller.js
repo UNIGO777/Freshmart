@@ -5,7 +5,7 @@ const Order = require('../models/Order.model');
 const Product = require('../../product/models/Product.model');
 const Vendor = require('../../user/models/Vendor.model');
 const { checkStock } = require('../logic/stockChecker');
-const { validateCoupon, markCouponUsed } = require('../logic/couponEngine');
+const { validateCoupon, markCouponUsed, releaseCouponByCode } = require('../logic/couponEngine');
 const {
   initiateRouting,
   handleVendorResponse,
@@ -155,22 +155,25 @@ const placeOrder = async (req, res) => {
       },
     });
 
-    // ── Mark coupon used after order created ─────────────────────
-    if (validatedCoupon) {
-      markCouponUsed(validatedCoupon._id, req.user.id).catch((err) =>
-        logger.error('markCouponUsed error:', err),
-      );
-    }
-
-    // ── For COD: kick off vendor routing immediately ──────────────
-    // For UPI: routing starts after payment confirmation (Phase 4 wires this)
+    // ── Coupon usage & routing ────────────────────────────────────
+    // COD: the order is committed now, so mark the coupon used and route.
+    // UPI: defer coupon usage to payment success (confirmUpiOrder) so an
+    // abandoned or failed payment doesn't permanently burn the coupon.
     if (paymentMethod === 'cod') {
+      if (validatedCoupon) {
+        markCouponUsed(validatedCoupon._id, req.user.id).catch((err) =>
+          logger.error('markCouponUsed error:', err),
+        );
+      }
       const requiredCategories = [...new Set(orderItems.map((i) => i.category))];
+      // Persist CONFIRMED first, then fire routing as the sole subsequent
+      // writer of this document — avoids a lost-update race on routingMeta
+      // between two concurrent saves of the same Mongoose instance.
+      order.status = ORDER_STATUS.CONFIRMED;
+      await order.save();
       initiateRouting(order, deliveryAddress, productIds, requiredCategories).catch((err) =>
         logger.error(`Routing failed for order ${order._id}:`, err),
       );
-      order.status = ORDER_STATUS.CONFIRMED;
-      await order.save();
     }
 
     notifyAdmin(
@@ -279,6 +282,14 @@ const cancelOrder = async (req, res) => {
     await order.save();
 
     await clearRoutingState(order._id);
+
+    // Release the coupon hold if it was actually counted: COD orders count it
+    // at placement, and any paid order counted it on payment success.
+    if (order.couponCode && (order.paymentMethod === 'cod' || order.paymentStatus === 'paid')) {
+      releaseCouponByCode(order.couponCode, order.customerId).catch((err) =>
+        logger.error('releaseCoupon error:', err),
+      );
+    }
 
     // Trigger refund if the order was already paid via UPI
     if (order.paymentStatus === 'paid') {

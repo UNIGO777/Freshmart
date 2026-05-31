@@ -14,6 +14,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
 const connectDB = require('../../shared/db/mongoose');
+const { connectRedis } = require('../../shared/db/redis');
 const authRoutes = require('./routes/auth.routes');
 const logger = require('../../shared/utils/logger');
 
@@ -42,6 +43,11 @@ app.use((err, _req, res, _next) => {
 });
 
 connectDB().then(() => {
+  // Redis powers the refresh-token revocation blocklist. Best-effort: if it is
+  // unavailable the blocklist fails open (logout/refresh still work).
+  connectRedis()
+    .then(() => logger.info('Auth Service: Redis connected (refresh-token blocklist active)'))
+    .catch((err) => logger.warn(`Auth Service: Redis unavailable (${err.message}) — token blocklist disabled`));
   app.listen(PORT, () => logger.info(`Auth Service running on port ${PORT}`));
 });
 
