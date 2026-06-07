@@ -28,11 +28,14 @@ const register = async (req, res) => {
       );
     }
 
-    const { name, email, confirmEmail, phone } = parsed.data;
+    const { name, email, confirmEmail, phone: rawPhone } = parsed.data;
 
     if (email.toLowerCase() !== confirmEmail.toLowerCase()) {
       return sendError(res, 400, 'Emails do not match', ERROR_CODES.VALIDATION_ERROR);
     }
+
+    /** Strip +91 / 91 country code prefix so all records use the same 10-digit form */
+    const phone = rawPhone.replace(/^\+?91(?=\d{10}$)/, '');
 
     // Check duplicates
     const [byEmail, byPhone] = await Promise.all([

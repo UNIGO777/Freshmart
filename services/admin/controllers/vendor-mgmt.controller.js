@@ -1,4 +1,5 @@
 const Vendor        = require('../../user/models/Vendor.model');
+const Customer      = require('../../user/models/Customer.model');
 const VendorEarning = require('../../vendor/models/VendorEarning.model');
 const Order         = require('../../order/models/Order.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
@@ -121,6 +122,8 @@ const blockVendor = async (req, res) => {
 };
 
 // ── POST /vendors ─────────────────────────────────────────────────
+// Accepts optional `customerId` to convert an existing customer into a vendor.
+// If no customer exists with this phone, a customer account is auto-created.
 const createVendor = async (req, res) => {
   try {
     const {
@@ -128,6 +131,7 @@ const createVendor = async (req, res) => {
       lat, lng, address, serviceRadiusKm, categories,
       bankDetails,
       aadhaarUrl, panUrl, profilePhoto,
+      customerId,
     } = req.body;
 
     if (!businessName || !ownerName || !phone || !password) {
@@ -138,13 +142,29 @@ const createVendor = async (req, res) => {
     }
 
     const existing = await Vendor.findOne({ phone });
-    if (existing) return sendError(res, 409, 'Phone number already registered', ERROR_CODES.ALREADY_EXISTS);
+    if (existing) return sendError(res, 409, 'Phone number already registered as vendor', ERROR_CODES.ALREADY_EXISTS);
+
+    // Auto-create customer account if one doesn't exist for this phone
+    const normalizedPhone = phone.replace(/^\+?91(?=\d{10}$)/, '');
+    const existingCustomer = customerId
+      ? await Customer.findById(customerId)
+      : await Customer.findOne({ phone: normalizedPhone });
+
+    if (!existingCustomer) {
+      await Customer.create({
+        name: ownerName.trim(),
+        email: email ? email.toLowerCase() : undefined,
+        phone: normalizedPhone,
+        authProviders: ['phone'],
+      });
+      logger.info(`Auto-created customer account for vendor phone ${normalizedPhone}`);
+    }
 
     const bcrypt = require('bcryptjs');
     const passwordHash = await bcrypt.hash(password, 12);
 
     const vendor = await Vendor.create({
-      businessName, ownerName, phone, email,
+      businessName, ownerName, phone: normalizedPhone, email,
       passwordHash,
       profilePhoto: profilePhoto || '',
       location: { type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] },

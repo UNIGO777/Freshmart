@@ -35,6 +35,24 @@ app.get('/health', (_req, res) => {
 const { checkServiceability } = require('./controllers/user.controller');
 app.get('/check-serviceability', checkServiceability);
 
+// Internal endpoint — called by Socket Service when a vendor disconnects (no JWT, uses shared secret)
+const Vendor = require('./models/Vendor.model');
+app.patch('/set-offline', async (req, res) => {
+  const secret = req.headers['x-internal-secret'];
+  if (secret !== (process.env.INTERNAL_SECRET || 'internal')) {
+    return res.status(403).json({ success: false, message: 'Forbidden' });
+  }
+  const { vendorId } = req.body;
+  if (!vendorId) return res.status(400).json({ success: false, message: 'vendorId required' });
+  try {
+    await Vendor.updateOne({ _id: vendorId, isOnline: true }, { isOnline: false });
+    return res.json({ success: true });
+  } catch (err) {
+    logger.error('set-offline error:', err);
+    return res.status(500).json({ success: false, message: 'Failed' });
+  }
+});
+
 // All user routes require a valid JWT — the gateway forwards the Authorization header
 app.use('/', authenticate, userRoutes);
 

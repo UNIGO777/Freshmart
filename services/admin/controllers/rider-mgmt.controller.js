@@ -1,5 +1,6 @@
 const mongoose    = require('mongoose');
 const Rider       = require('../../user/models/Rider.model');
+const Customer    = require('../../user/models/Customer.model');
 const DeliveryJob = require('../../delivery/models/DeliveryJob.model');
 const { DELIVERY_JOB_STATUS } = require('../../delivery/models/DeliveryJob.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
@@ -105,12 +106,15 @@ const blockRider = async (req, res) => {
 };
 
 // ── POST /riders ──────────────────────────────────────────────────
+// Accepts optional `customerId` to convert an existing customer into a rider.
+// If no customer exists with this phone, a customer account is auto-created.
 const createRider = async (req, res) => {
   try {
     const {
       name, phone, password, vehicleType,
       aadhaarUrl, panUrl,
       drivingLicenseNumber, drivingLicenseUrl,
+      customerId,
     } = req.body;
 
     if (!name || !phone || !password) {
@@ -123,15 +127,31 @@ const createRider = async (req, res) => {
       return sendError(res, 400, 'Driving license photo is required', ERROR_CODES.MISSING_FIELDS);
     }
 
-    const existing = await Rider.findOne({ phone });
-    if (existing) return sendError(res, 409, 'Phone number already registered', ERROR_CODES.ALREADY_EXISTS);
+    const normalizedPhone = phone.replace(/^\+?91(?=\d{10}$)/, '');
+
+    const existing = await Rider.findOne({ phone: normalizedPhone });
+    if (existing) return sendError(res, 409, 'Phone number already registered as rider', ERROR_CODES.ALREADY_EXISTS);
+
+    // Auto-create customer account if one doesn't exist for this phone
+    const existingCustomer = customerId
+      ? await Customer.findById(customerId)
+      : await Customer.findOne({ phone: normalizedPhone });
+
+    if (!existingCustomer) {
+      await Customer.create({
+        name: name.trim(),
+        phone: normalizedPhone,
+        authProviders: ['phone'],
+      });
+      logger.info(`Auto-created customer account for rider phone ${normalizedPhone}`);
+    }
 
     const bcrypt = require('bcryptjs');
     const passwordHash = await bcrypt.hash(password, 12);
 
     const rider = await Rider.create({
       name,
-      phone,
+      phone: normalizedPhone,
       passwordHash,
       vehicleType: vehicleType || 'bike',
       isApproved: true,

@@ -388,7 +388,8 @@ const getVendorIncoming = async (req, res) => {
       'routingMeta.offeredVendorIds': req.user.id,
       status: { $in: [ORDER_STATUS.CONFIRMED, ORDER_STATUS.AWAITING_PAYMENT] },
     })
-      .select('items deliveryAddress totalAmount createdAt subOrders')
+      .select('items deliveryAddress totalAmount createdAt subOrders customerId')
+      .populate('customerId', 'name phone')
       .lean();
 
     return sendSuccess(res, 200, 'Incoming orders fetched', orders);
@@ -526,6 +527,115 @@ const vendorRejectOrder = async (req, res) => {
   }
 };
 
+// ── GET /api/orders/vendor/history ───────────────────────────────
+// Vendor: see past orders (completed/delivered/cancelled) assigned to them
+const getVendorHistory = async (req, res) => {
+  try {
+    const mongoose = require('mongoose');
+    const vendorId = req.user.id;
+    const vendorOid = new mongoose.Types.ObjectId(vendorId);
+    const { page = 1, limit = 20, status } = req.query;
+    const skip = (Math.max(1, +page) - 1) * Math.min(50, +limit || 20);
+    const take = Math.min(50, +limit || 20);
+
+    const matchFilter = { 'subOrders.vendorId': vendorOid };
+
+    const terminalStatuses = [SUB_ORDER_STATUS.DELIVERED, SUB_ORDER_STATUS.FAILED];
+    if (status && terminalStatuses.includes(status)) {
+      matchFilter['subOrders.status'] = status;
+    } else {
+      matchFilter['subOrders.status'] = { $in: terminalStatuses };
+    }
+
+    // Fetch one extra to know if there are more pages (avoids separate count query)
+    const orders = await Order.find(matchFilter)
+      .select('items totalAmount status createdAt subOrders customerId')
+      .populate('customerId', 'name')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(take + 1)
+      .lean();
+
+    const hasMore = orders.length > take;
+    if (hasMore) orders.pop();
+
+    const mapped = orders.map((o) => {
+      const vendorSub = o.subOrders?.find((s) => s.vendorId?.toString() === vendorId);
+      return {
+        _id: o._id,
+        status: o.status,
+        subOrderStatus: vendorSub?.status,
+        totalAmount: o.totalAmount,
+        itemCount: o.items?.length || 0,
+        customerName: o.customerId?.name || 'Customer',
+        createdAt: o.createdAt,
+        deliveredAt: vendorSub?.deliveredAt,
+      };
+    });
+
+    return sendSuccess(res, 200, 'Vendor order history fetched', {
+      orders: mapped,
+      page: +page,
+      limit: take,
+      hasMore,
+    });
+  } catch (err) {
+    logger.error('getVendorHistory error:', err);
+    return sendError(res, 500, 'Failed to fetch vendor history', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── GET /api/orders/vendor/stats ────────────────────────────────
+// Vendor: dashboard stats (today's order count, yesterday comparison)
+// Single aggregation pipeline for performance.
+const getVendorStats = async (req, res) => {
+  try {
+    const mongoose = require('mongoose');
+    const vendorId = new mongoose.Types.ObjectId(req.user.id);
+
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const yesterdayStart = new Date(todayStart);
+    yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+
+    const result = await Order.aggregate([
+      {
+        $match: {
+          'subOrders.vendorId': vendorId,
+          createdAt: { $gte: yesterdayStart },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $cond: [{ $gte: ['$createdAt', todayStart] }, 'today', 'yesterday'],
+          },
+          count: { $sum: 1 },
+          avgTotal: { $avg: '$totalAmount' },
+        },
+      },
+    ]);
+
+    const today = result.find((r) => r._id === 'today') || { count: 0, avgTotal: 0 };
+    const yesterday = result.find((r) => r._id === 'yesterday') || { count: 0, avgTotal: 0 };
+
+    const avgToday = Math.round(today.avgTotal || 0);
+    const avgYesterday = Math.round(yesterday.avgTotal || 0);
+
+    return sendSuccess(res, 200, 'Vendor stats fetched', {
+      ordersToday: today.count,
+      ordersYesterday: yesterday.count,
+      ordersDelta: today.count - yesterday.count,
+      avgOrderValue: avgToday,
+      avgDelta: avgToday - avgYesterday,
+    });
+  } catch (err) {
+    logger.error('getVendorStats error:', err);
+    return sendError(res, 500, 'Failed to fetch vendor stats', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
 // ── POST /api/orders/validate-coupon ─────────────────────────────
 // Customer: preview coupon discount before placing order (no side-effects)
 const validateCouponController = async (req, res) => {
@@ -566,6 +676,8 @@ module.exports = {
   cancelOrder,
   rateOrder,
   getVendorIncoming,
+  getVendorHistory,
+  getVendorStats,
   vendorAcceptOrder,
   vendorRejectOrder,
   validateCouponController,

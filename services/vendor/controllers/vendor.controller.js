@@ -126,7 +126,7 @@ const bulkUpdateInventory = async (req, res) => {
 // Vendor: view their earnings summary + recent records
 const getEarnings = async (req, res) => {
   try {
-    const { period = 'all' } = req.query; // today | week | all
+    const { period = 'all' } = req.query; // today | yesterday | week | all
 
     const filter = { vendorId: req.user.id };
 
@@ -134,6 +134,12 @@ const getEarnings = async (req, res) => {
       const start = new Date();
       start.setHours(0, 0, 0, 0);
       filter.earningDate = { $gte: start };
+    } else if (period === 'yesterday') {
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      const yesterdayStart = new Date(todayStart);
+      yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+      filter.earningDate = { $gte: yesterdayStart, $lt: todayStart };
     } else if (period === 'week') {
       const start = new Date();
       start.setDate(start.getDate() - 7);

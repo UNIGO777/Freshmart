@@ -230,4 +230,72 @@ const loginAdmin = async (req, res) => {
   }
 };
 
-module.exports = { registerEmail, loginEmail, loginAdmin, refreshToken, logout };
+// ── POST /api/auth/switch-role ───────────────────────────────────
+// Allows a customer who is also a vendor (or vice versa) to get
+// a new token pair scoped to the other role.
+// Requires a valid JWT (authenticate middleware must run first).
+const Vendor = require('../../user/models/Vendor.model');
+
+const switchRole = async (req, res) => {
+  try {
+    const { targetRole } = req.body;
+    if (!targetRole || ![ROLES.CUSTOMER, ROLES.VENDOR].includes(targetRole)) {
+      return sendError(res, 400, 'targetRole must be "customer" or "vendor"', ERROR_CODES.VALIDATION_ERROR);
+    }
+
+    if (req.user.role === targetRole) {
+      return sendError(res, 400, 'Already in this role', ERROR_CODES.VALIDATION_ERROR);
+    }
+
+    let targetId;
+
+    if (req.user.role === ROLES.CUSTOMER && targetRole === ROLES.VENDOR) {
+      // Customer wants to switch to vendor — find linked vendor by email
+      const customer = await Customer.findById(req.user.id).select('email phone').lean();
+      if (!customer) return sendError(res, 404, 'Customer not found', ERROR_CODES.USER_NOT_FOUND);
+
+      const vendor = await Vendor.findOne({
+        $or: [
+          ...(customer.email ? [{ email: customer.email }] : []),
+          ...(customer.phone ? [{ phone: customer.phone }] : []),
+        ],
+      }).select('_id isApproved isActive').lean();
+
+      if (!vendor) return sendError(res, 404, 'No vendor account linked', ERROR_CODES.NOT_FOUND);
+      if (!vendor.isActive) return sendError(res, 403, 'Vendor account is inactive', ERROR_CODES.FORBIDDEN);
+
+      targetId = vendor._id.toString();
+    } else if (req.user.role === ROLES.VENDOR && targetRole === ROLES.CUSTOMER) {
+      // Vendor wants to switch back to customer
+      const vendor = await Vendor.findById(req.user.id).select('email phone').lean();
+      if (!vendor) return sendError(res, 404, 'Vendor not found', ERROR_CODES.USER_NOT_FOUND);
+
+      const customer = await Customer.findOne({
+        $or: [
+          ...(vendor.email ? [{ email: vendor.email }] : []),
+          ...(vendor.phone ? [{ phone: vendor.phone }] : []),
+        ],
+      }).select('_id').lean();
+
+      if (!customer) return sendError(res, 404, 'No customer account linked', ERROR_CODES.NOT_FOUND);
+      targetId = customer._id.toString();
+    } else {
+      return sendError(res, 400, 'Unsupported role switch', ERROR_CODES.VALIDATION_ERROR);
+    }
+
+    const tokenPayload = { id: targetId, role: targetRole };
+    const accessToken = signAccessToken(tokenPayload);
+    const newRefreshToken = signRefreshToken(tokenPayload);
+
+    return sendSuccess(res, 200, `Switched to ${targetRole}`, {
+      accessToken,
+      refreshToken: newRefreshToken,
+      role: targetRole,
+    });
+  } catch (err) {
+    logger.error('switchRole error:', err);
+    return sendError(res, 500, 'Role switch failed', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+module.exports = { registerEmail, loginEmail, loginAdmin, refreshToken, logout, switchRole };

@@ -7,6 +7,8 @@ const {
   cancelOrder,
   rateOrder,
   getVendorIncoming,
+  getVendorHistory,
+  getVendorStats,
   vendorAcceptOrder,
   vendorRejectOrder,
   validateCouponController,
@@ -20,6 +22,13 @@ const router = Router();
 // All order routes require authentication
 router.use(authenticate);
 
+// ── Vendor routes (before /:id to avoid conflict) ────────────────
+router.get('/vendor/incoming', requireRole(ROLES.VENDOR), getVendorIncoming);
+router.get('/vendor/history', requireRole(ROLES.VENDOR), getVendorHistory);
+router.get('/vendor/stats', requireRole(ROLES.VENDOR), getVendorStats);
+router.patch('/vendor/:id/accept', requireRole(ROLES.VENDOR), vendorAcceptOrder);
+router.patch('/vendor/:id/reject', requireRole(ROLES.VENDOR), vendorRejectOrder);
+
 // ── Customer routes ───────────────────────────────────────────────
 router.post('/check-stock', requireRole(ROLES.CUSTOMER), checkStockController);
 router.post('/validate-coupon', requireRole(ROLES.CUSTOMER), validateCouponController);
@@ -28,10 +37,5 @@ router.get('/', requireRole(ROLES.CUSTOMER), getOrders);
 router.get('/:id', getOrderById);                                  // Customer + vendor + rider
 router.patch('/:id/cancel', requireRole(ROLES.CUSTOMER), cancelOrder);
 router.post('/:id/rate', requireRole(ROLES.CUSTOMER), rateOrder);
-
-// ── Vendor routes ─────────────────────────────────────────────────
-router.get('/vendor/incoming', requireRole(ROLES.VENDOR), getVendorIncoming);
-router.patch('/vendor/:id/accept', requireRole(ROLES.VENDOR), vendorAcceptOrder);
-router.patch('/vendor/:id/reject', requireRole(ROLES.VENDOR), vendorRejectOrder);
 
 module.exports = router;

@@ -123,4 +123,7 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+// Index for vendor queries (incoming, history, stats)
+orderSchema.index({ 'subOrders.vendorId': 1, createdAt: -1 });
+
 module.exports = mongoose.model('Order', orderSchema);

@@ -1,4 +1,6 @@
 const Customer = require('../../user/models/Customer.model');
+const Vendor   = require('../../user/models/Vendor.model');
+const Rider    = require('../../user/models/Rider.model');
 const Order    = require('../../order/models/Order.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
@@ -63,6 +65,12 @@ const getCustomerDetail = async (req, res) => {
         .lean(),
     ]);
 
+    // Check if this customer is also registered as vendor or rider
+    const [vendorRecord, riderRecord] = await Promise.all([
+      customer.phone ? Vendor.findOne({ phone: customer.phone }).select('_id').lean() : null,
+      customer.phone ? Rider.findOne({ phone: customer.phone }).select('_id').lean() : null,
+    ]);
+
     return sendSuccess(res, 200, 'Customer detail', {
       customer,
       stats: {
@@ -70,6 +78,10 @@ const getCustomerDetail = async (req, res) => {
         totalSpent: totalSpentResult[0]?.total ?? 0,
       },
       recentOrders,
+      isAlsoVendor: !!vendorRecord,
+      vendorId: vendorRecord?._id || null,
+      isAlsoRider: !!riderRecord,
+      riderId: riderRecord?._id || null,
     });
   } catch (err) {
     logger.error('getCustomerDetail error:', err);

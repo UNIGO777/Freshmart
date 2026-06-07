@@ -30,6 +30,15 @@ const getProfile = async (req, res) => {
       await Customer.updateOne({ _id: user._id }, { referralCode: user.referralCode });
     }
 
+    // Check if this customer's email is also registered as a vendor
+    if (req.user.role === ROLES.CUSTOMER && user.email) {
+      const vendor = await Vendor.findOne({ email: user.email }).select('_id').lean();
+      if (vendor) {
+        user.isAlsoVendor = true;
+        user.vendorId = vendor._id;
+      }
+    }
+
     return sendSuccess(res, 200, 'Profile fetched', user);
   } catch (err) {
     logger.error('getProfile error:', err);

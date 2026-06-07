@@ -1,7 +1,8 @@
 const { Router } = require('express');
 const { sendOtp, verifyOtp } = require('../controllers/otp.controller');
 const { register } = require('../controllers/register.controller');
-const { registerEmail, loginEmail, loginAdmin, refreshToken, logout } = require('../controllers/email.controller');
+const { registerEmail, loginEmail, loginAdmin, refreshToken, logout, switchRole } = require('../controllers/email.controller');
+const { authenticate } = require('../../../gateway/middleware/auth.middleware');
 const { googleLogin, appleLogin } = require('../controllers/social.controller');
 
 const router = Router();
@@ -25,5 +26,8 @@ router.post('/apple', appleLogin);
 // Token management
 router.post('/refresh', refreshToken);
 router.post('/logout', logout);
+
+// Role switching (customer ↔ vendor)
+router.post('/switch-role', authenticate, switchRole);
 
 module.exports = router;

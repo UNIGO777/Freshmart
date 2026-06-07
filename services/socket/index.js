@@ -78,8 +78,24 @@ io.on('connection', (socket) => {
     registerRiderLocation(io, socket, { riderId: userId });
   }
 
-  socket.on('disconnect', (reason) => {
+  socket.on('disconnect', async (reason) => {
     logger.info(`Socket disconnected: ${socket.id} (${role}:${userId}) — ${reason}`);
+
+    // Auto-offline vendors when they disconnect (app killed / network lost)
+    if (role === 'vendor') {
+      try {
+        const axios = require('axios');
+        const USER_URL = `http://localhost:${process.env.PORT_USER || 3002}`;
+        await axios.patch(
+          `${USER_URL}/set-offline`,
+          { vendorId: userId },
+          { headers: { 'x-internal-secret': process.env.INTERNAL_SECRET || 'internal' }, timeout: 5000 },
+        );
+        logger.info(`Vendor ${userId} auto-set offline on disconnect`);
+      } catch (err) {
+        logger.warn(`Failed to auto-offline vendor ${userId}: ${err.message}`);
+      }
+    }
   });
 
   socket.on('error', (err) => {

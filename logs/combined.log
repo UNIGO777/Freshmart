@@ -48480,3 +48480,1143 @@
 2026-05-31 16:55:19 [[32minfo[39m]: Socket disconnected: Ysxc0GDD6754Y2m-AAAb (customer:6a0e8a93eb7dd665993eb5d4) — transport close
 2026-05-31 16:55:19 [[32minfo[39m]: Socket disconnected: ekFS8KfCtusZL4GIAAAa (customer:6a0e8a93eb7dd665993eb5d4) — transport close
 2026-05-31 16:55:19 [[32minfo[39m]: Socket disconnected: JLPI5TtdqA-3J9DpAAAZ (customer:6a0e8a93eb7dd665993eb5d4) — transport close
+2026-06-06 21:50:50 [[32minfo[39m]: Redis connected
+2026-06-06 21:50:50 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-06 21:50:50 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-06 21:51:05 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-06 21:51:06 [[33mwarn[39m]: MongoDB disconnected
+2026-06-06 21:51:07 [[32minfo[39m]: Redis connected
+2026-06-06 21:51:07 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-06 21:51:08 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-06 21:51:08 [[32minfo[39m]: Redis connected
+2026-06-06 21:51:08 [[32minfo[39m]: Redis connected
+2026-06-06 21:51:08 [[32minfo[39m]: Redis connected
+2026-06-06 21:51:09 [[32minfo[39m]: MongoDB connected
+2026-06-06 21:51:09 [[32minfo[39m]: Product Service running on port 3003
+2026-06-06 21:51:09 [[32minfo[39m]: MongoDB connected
+2026-06-06 21:51:09 [[32minfo[39m]: MongoDB connected
+2026-06-06 21:51:09 [[32minfo[39m]: MongoDB connected
+2026-06-06 21:51:09 [[32minfo[39m]: Order Service running on port 3004
+2026-06-06 21:51:09 [[32minfo[39m]: MongoDB connected
+2026-06-06 21:51:09 [[32minfo[39m]: MongoDB connected
+2026-06-06 21:51:09 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-06 21:51:09 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-06 21:51:09 [[32minfo[39m]: User Service running on port 3002
+2026-06-06 21:51:09 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-06 21:51:09 [[32minfo[39m]: MongoDB connected
+2026-06-06 21:51:09 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-06 21:51:09 [[32minfo[39m]: MongoDB connected
+2026-06-06 21:51:09 [[32minfo[39m]: Redis connected
+2026-06-06 21:51:10 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-06 21:51:09 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-06 22:56:30 [[32minfo[39m]: OTP sent to 7000610047
+2026-06-06 22:57:40 [[32minfo[39m]: OTP sent to 7000610047
+2026-06-06 23:00:45 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-06 23:00:47 [[32minfo[39m]: Redis connected
+2026-06-06 23:00:47 [[32minfo[39m]: Redis connected
+2026-06-06 23:00:47 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-06 23:00:47 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-06 23:00:47 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-06 23:00:47 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-06 23:00:47 [[32minfo[39m]: Redis connected
+2026-06-06 23:00:47 [[32minfo[39m]: Redis connected
+2026-06-06 23:00:47 [[32minfo[39m]: Redis connected
+2026-06-06 23:00:48 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:00:48 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:00:48 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-06 23:00:48 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:00:48 [[32minfo[39m]: Product Service running on port 3003
+2026-06-06 23:00:48 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:00:48 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-06 23:00:48 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:00:48 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-06 23:00:48 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-06 23:00:48 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:00:48 [[32minfo[39m]: User Service running on port 3002
+2026-06-06 23:00:48 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:00:48 [[32minfo[39m]: Order Service running on port 3004
+2026-06-06 23:00:48 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:00:48 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-06 23:00:48 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:00:48 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-06 23:00:49 [[32minfo[39m]: Redis connected
+2026-06-06 23:00:49 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-06 23:01:24 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-06 23:01:25 [[32minfo[39m]: Redis connected
+2026-06-06 23:01:25 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-06 23:01:25 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-06 23:01:26 [[32minfo[39m]: Redis connected
+2026-06-06 23:01:26 [[32minfo[39m]: Redis connected
+2026-06-06 23:01:26 [[32minfo[39m]: Redis connected
+2026-06-06 23:01:26 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:01:26 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-06 23:01:26 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:01:26 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:01:26 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-06 23:01:26 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-06 23:01:27 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:01:27 [[32minfo[39m]: User Service running on port 3002
+2026-06-06 23:01:27 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:01:27 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:01:27 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:01:27 [[32minfo[39m]: Product Service running on port 3003
+2026-06-06 23:01:27 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:01:27 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-06 23:01:27 [[32minfo[39m]: Order Service running on port 3004
+2026-06-06 23:01:27 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-06 23:01:27 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:01:27 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-06 23:01:28 [[32minfo[39m]: Redis connected
+2026-06-06 23:01:28 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-06 23:01:47 [[32minfo[39m]: OTP sent to 7000610047
+2026-06-06 23:03:45 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-06 23:03:46 [[32minfo[39m]: Redis connected
+2026-06-06 23:03:46 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-06 23:03:46 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-06 23:03:46 [[32minfo[39m]: Redis connected
+2026-06-06 23:03:46 [[32minfo[39m]: Redis connected
+2026-06-06 23:03:47 [[32minfo[39m]: Redis connected
+2026-06-06 23:03:47 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:03:47 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:03:47 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:03:47 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-06 23:03:47 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-06 23:03:47 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-06 23:03:47 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:03:47 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-06 23:03:47 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:03:47 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:03:47 [[32minfo[39m]: Product Service running on port 3003
+2026-06-06 23:03:47 [[32minfo[39m]: User Service running on port 3002
+2026-06-06 23:03:48 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:03:48 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-06 23:03:48 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:03:48 [[32minfo[39m]: Order Service running on port 3004
+2026-06-06 23:03:48 [[32minfo[39m]: MongoDB connected
+2026-06-06 23:03:48 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-06 23:03:48 [[32minfo[39m]: Redis connected
+2026-06-06 23:03:48 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-06 23:03:58 [[32minfo[39m]: OTP sent to 7000610047
+2026-06-06 23:08:05 [[32minfo[39m]: Socket connected: Dyd4UntAgLhE8m78AAAC (customer:6a046e383863ae91b27233f0)
+2026-06-06 23:08:05 [[32minfo[39m]: Socket connected: ui3fvZlfKVcN2ihrAAAD (customer:6a046e383863ae91b27233f0)
+2026-06-06 23:11:30 [[32minfo[39m]: Socket connected: yeO3i5J_VRQFxeCWAAAF (customer:6a046e383863ae91b27233f0)
+2026-06-06 23:21:34 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-06 23:21:42 [[32minfo[39m]: Redis connected
+2026-06-06 23:21:42 [[32minfo[39m]: Redis connected
+2026-06-06 23:21:42 [[32minfo[39m]: Redis connected
+2026-06-06 23:21:42 [[32minfo[39m]: Redis connected
+2026-06-06 23:21:42 [[32minfo[39m]: Redis connected
+2026-06-06 23:21:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-06 23:21:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-06 23:21:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-06 23:21:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-06 23:21:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-06 23:21:43 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-06 23:21:43 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-06 23:21:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-06 23:21:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-06 23:21:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-06 23:21:43 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-06 23:21:43 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-06 23:21:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 16:41:42 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 16:41:43 [[32minfo[39m]: Redis connected
+2026-06-07 16:41:43 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 16:41:44 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 16:41:44 [[32minfo[39m]: Redis connected
+2026-06-07 16:41:44 [[32minfo[39m]: Redis connected
+2026-06-07 16:41:44 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 16:41:44 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 16:41:45 [[32minfo[39m]: MongoDB connected
+2026-06-07 16:41:45 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 16:41:45 [[32minfo[39m]: Redis connected
+2026-06-07 16:41:45 [[32minfo[39m]: Redis connected
+2026-06-07 16:41:45 [[32minfo[39m]: MongoDB connected
+2026-06-07 16:41:45 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 16:41:45 [[32minfo[39m]: MongoDB connected
+2026-06-07 16:41:45 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 16:41:45 [[32minfo[39m]: MongoDB connected
+2026-06-07 16:41:45 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 16:41:46 [[32minfo[39m]: MongoDB connected
+2026-06-07 16:41:46 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 16:41:46 [[32minfo[39m]: MongoDB connected
+2026-06-07 16:41:46 [[32minfo[39m]: MongoDB connected
+2026-06-07 16:41:46 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 16:41:46 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 16:41:46 [[32minfo[39m]: MongoDB connected
+2026-06-07 16:41:46 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 16:41:46 [[32minfo[39m]: MongoDB connected
+2026-06-07 16:41:46 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 16:41:46 [[32minfo[39m]: Redis connected
+2026-06-07 16:41:46 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 16:53:18 [[32minfo[39m]: Socket connected: STuJ22i_aOvrtlRVAAAB (admin:6a0000d3b8b024f8eff26d15)
+2026-06-07 17:04:01 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 17:04:02 [[32minfo[39m]: Socket connected: RcWdOUklYdaqQo-QAAAB (admin:6a0000d3b8b024f8eff26d15)
+2026-06-07 17:04:02 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:02 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:04:02 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:02 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:04:03 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:04:03 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:04:04 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:04 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:04 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:04 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:04 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:04 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:04 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 17:04:04 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 17:04:04 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:04 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 17:04:04 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 17:04:04 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:04 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 17:04:05 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:05 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 17:04:05 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:05 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 17:04:05 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:05 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 17:04:05 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:05 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 17:04:06 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:06 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 17:04:19 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 17:04:20 [[32minfo[39m]: Socket connected: ot-uqwuyT290uKuOAAAB (admin:6a0000d3b8b024f8eff26d15)
+2026-06-07 17:04:20 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:20 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:04:20 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:21 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:04:21 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:04:21 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:04:23 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:23 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:24 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:24 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:24 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 17:04:24 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:24 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 17:04:24 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:24 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 17:04:24 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:24 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:24 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 17:04:24 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 17:04:24 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:24 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 17:04:24 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:24 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:24 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:24 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 17:04:24 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 17:04:24 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 17:04:26 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:26 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 17:04:28 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 17:04:30 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:30 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:30 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:04:30 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:04:30 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:04:30 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:04:30 [[32minfo[39m]: Socket connected: 3IuW30eRyIX3tO22AAAB (admin:6a0000d3b8b024f8eff26d15)
+2026-06-07 17:04:31 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:31 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 17:04:31 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:31 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 17:04:31 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:31 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:31 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:31 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:31 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 17:04:32 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:32 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 17:04:32 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:32 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:32 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 17:04:32 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:32 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 17:04:32 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 17:04:32 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:32 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 17:04:32 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:32 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 17:04:32 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:32 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 17:04:46 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 17:04:48 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:48 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:48 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:04:48 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:04:49 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:04:49 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:04:49 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:49 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 17:04:50 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:50 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 17:04:50 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:50 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:50 [[32minfo[39m]: Socket connected: GfhTKR7rnyELudeiAAAB (admin:6a0000d3b8b024f8eff26d15)
+2026-06-07 17:04:50 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 17:04:50 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 17:04:51 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:51 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:52 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:57 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 17:04:58 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:58 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:58 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:04:58 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:04:58 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:04:58 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:04:58 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:04:59 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:59 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:59 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:59 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 17:04:59 [[32minfo[39m]: Redis connected
+2026-06-07 17:04:59 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:04:59 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 17:05:00 [[32minfo[39m]: Socket connected: r61u69IIFKdo3jJ7AAAB (admin:6a0000d3b8b024f8eff26d15)
+2026-06-07 17:05:00 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:00 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 17:05:01 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:01 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:01 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:01 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 17:05:01 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 17:05:01 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 17:05:01 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:01 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 17:05:01 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:01 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 17:05:01 [[32minfo[39m]: Redis connected
+2026-06-07 17:05:01 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 17:05:04 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 17:05:05 [[32minfo[39m]: Socket connected: VRKvI0wYfbJAxU7rAAAB (admin:6a0000d3b8b024f8eff26d15)
+2026-06-07 17:05:07 [[32minfo[39m]: Redis connected
+2026-06-07 17:05:07 [[32minfo[39m]: Redis connected
+2026-06-07 17:05:07 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:05:07 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:05:08 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:05:08 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:05:09 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:09 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 17:05:09 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:09 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 17:05:09 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:09 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 17:05:09 [[32minfo[39m]: Redis connected
+2026-06-07 17:05:09 [[32minfo[39m]: Redis connected
+2026-06-07 17:05:09 [[32minfo[39m]: Redis connected
+2026-06-07 17:05:10 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:10 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 17:05:12 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:12 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:12 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 17:05:12 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:12 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 17:05:12 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:12 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 17:05:12 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 17:05:13 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:05:13 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 17:05:13 [[32minfo[39m]: Redis connected
+2026-06-07 17:05:13 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 17:08:27 [[32minfo[39m]: Socket disconnected: VRKvI0wYfbJAxU7rAAAB (admin:6a0000d3b8b024f8eff26d15) — transport close
+2026-06-07 17:08:31 [[32minfo[39m]: Socket connected: SGpoCtRFcHT0mDo8AAAD (admin:6a0000d3b8b024f8eff26d15)
+2026-06-07 17:11:13 [[32minfo[39m]: Socket disconnected: SGpoCtRFcHT0mDo8AAAD (admin:6a0000d3b8b024f8eff26d15) — transport close
+2026-06-07 17:11:15 [[32minfo[39m]: Socket connected: q9sY0A_YxMVjzQ4PAAAF (admin:6a0000d3b8b024f8eff26d15)
+2026-06-07 17:13:36 [[32minfo[39m]: Socket disconnected: q9sY0A_YxMVjzQ4PAAAF (admin:6a0000d3b8b024f8eff26d15) — transport close
+2026-06-07 17:13:37 [[32minfo[39m]: Socket connected: MtrgI7qE4Hre5aE1AAAH (admin:6a0000d3b8b024f8eff26d15)
+2026-06-07 17:17:09 [[32minfo[39m]: OTP sent to 7000610047
+2026-06-07 17:18:47 [[32minfo[39m]: OTP sent to 7000610047
+2026-06-07 17:18:53 [[32minfo[39m]: Socket connected: kAcP96TxQewbsBJ9AAAK (customer:6a046e383863ae91b27233f0)
+2026-06-07 17:18:53 [[32minfo[39m]: Socket connected: SW7Q-acd_gYV6IjDAAAL (customer:6a046e383863ae91b27233f0)
+2026-06-07 17:19:58 [[32minfo[39m]: OTP sent to 7000610047
+2026-06-07 17:21:50 [[32minfo[39m]: Socket disconnected: kAcP96TxQewbsBJ9AAAK (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-07 17:21:50 [[32minfo[39m]: Socket disconnected: SW7Q-acd_gYV6IjDAAAL (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-07 17:21:53 [[32minfo[39m]: Socket connected: IfVv1--_drFVJ52SAAAO (customer:6a046e383863ae91b27233f0)
+2026-06-07 17:21:53 [[32minfo[39m]: Socket connected: cdN8rH4DkAeDMWekAAAP (customer:6a046e383863ae91b27233f0)
+2026-06-07 17:22:13 [[32minfo[39m]: Socket connected: Yhbye2M19IHjMMV-AAAR (customer:6a046e383863ae91b27233f0)
+2026-06-07 17:23:03 [[32minfo[39m]: Socket disconnected: IfVv1--_drFVJ52SAAAO (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-07 17:23:03 [[32minfo[39m]: Socket disconnected: cdN8rH4DkAeDMWekAAAP (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-07 17:23:23 [[32minfo[39m]: Socket disconnected: Yhbye2M19IHjMMV-AAAR (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-07 17:23:28 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at listOnTimeout (node:internal/timers:555:9)
+    at process.processTimers (node:internal/timers:529:7)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:260:22)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+2026-06-07 17:23:28 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at listOnTimeout (node:internal/timers:555:9)
+    at process.processTimers (node:internal/timers:529:7)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:260:22)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+2026-06-07 17:23:28 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:260:22)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:23:32 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:23:47 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:24:02 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:24:17 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:24:32 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:24:43 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:24:48 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:24:49 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:25:02 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:25:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:25:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:25:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:25:59 [[32minfo[39m]: Socket disconnected: MtrgI7qE4Hre5aE1AAAH (admin:6a0000d3b8b024f8eff26d15) — transport close
+2026-06-07 17:26:09 [[32minfo[39m]: Redis connected
+2026-06-07 17:26:09 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 17:26:11 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:26:12 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:26:14 [[32minfo[39m]: Redis connected
+2026-06-07 17:26:15 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:26:15 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:26:16 [[32minfo[39m]: Redis connected
+2026-06-07 17:26:16 [[32minfo[39m]: Redis connected
+2026-06-07 17:26:16 [[32minfo[39m]: Redis connected
+2026-06-07 17:26:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:26:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:26:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:26:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:26:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:26:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:26:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:26:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:26:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:26:41 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 17:26:41 [[32minfo[39m]: Redis connected
+2026-06-07 17:26:41 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 17:26:41 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 17:26:42 [[32minfo[39m]: Redis connected
+2026-06-07 17:26:42 [[32minfo[39m]: Redis connected
+2026-06-07 17:26:42 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:26:42 [[32minfo[39m]: Redis connected
+2026-06-07 17:26:42 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 17:26:42 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:26:42 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 17:26:42 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:26:43 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 17:26:43 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:26:43 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 17:26:43 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:26:43 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 17:26:43 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:26:43 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 17:26:43 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:26:43 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 17:26:43 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:26:43 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 17:26:43 [[32minfo[39m]: MongoDB connected
+2026-06-07 17:26:43 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 17:26:43 [[32minfo[39m]: Redis connected
+2026-06-07 17:26:43 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 17:26:53 [[32minfo[39m]: Socket connected: 4AS6s0ABuJ-4O0jYAAAB (admin:6a0000d3b8b024f8eff26d15)
+2026-06-07 17:27:27 [[32minfo[39m]: Socket connected: UcjqduDfMCqLZPr-AAAG (customer:6a046e383863ae91b27233f0)
+2026-06-07 17:27:27 [[32minfo[39m]: Socket connected: 0g632qAQMZPN06t5AAAH (customer:6a046e383863ae91b27233f0)
+2026-06-07 17:27:27 [[32minfo[39m]: Socket connected: O5JHq19AK6TSA57ZAAAI (customer:6a046e383863ae91b27233f0)
+2026-06-07 17:27:27 [[32minfo[39m]: Socket connected: PAxVtKiTRwrxzq1pAAAJ (customer:6a046e383863ae91b27233f0)
+2026-06-07 17:27:32 [[32minfo[39m]: Socket disconnected: O5JHq19AK6TSA57ZAAAI (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-07 17:27:32 [[32minfo[39m]: Socket disconnected: 0g632qAQMZPN06t5AAAH (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-07 17:27:32 [[32minfo[39m]: Socket disconnected: UcjqduDfMCqLZPr-AAAG (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-07 17:27:32 [[32minfo[39m]: Socket disconnected: PAxVtKiTRwrxzq1pAAAJ (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-07 17:27:48 [[32minfo[39m]: Socket connected: v-XiqOjMIlbpC55sAAAL (customer:6a046e383863ae91b27233f0)
+2026-06-07 17:27:48 [[32minfo[39m]: Socket connected: DP3lGQxjRWQ41WESAAAN (customer:6a046e383863ae91b27233f0)
+2026-06-07 17:27:52 [[32minfo[39m]: Socket connected: _zILn5oPgJ4HW1ZbAAAP (customer:6a046e383863ae91b27233f0)
+2026-06-07 17:35:31 [[32minfo[39m]: Socket connected: hghcWfKKNg0vbJKqAAAR (customer:6a046e383863ae91b27233f0)
+2026-06-07 17:35:33 [[32minfo[39m]: Socket disconnected: hghcWfKKNg0vbJKqAAAR (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-07 17:46:37 [[32minfo[39m]: Socket disconnected: DP3lGQxjRWQ41WESAAAN (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-07 17:46:37 [[32minfo[39m]: Socket disconnected: v-XiqOjMIlbpC55sAAAL (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-07 17:46:43 [[32minfo[39m]: Socket disconnected: _zILn5oPgJ4HW1ZbAAAP (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-07 17:54:59 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at listOnTimeout (node:internal/timers:555:9)
+    at process.processTimers (node:internal/timers:529:7)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:260:22)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+2026-06-07 17:54:59 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:260:22)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:55:03 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:55:18 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:55:33 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:55:48 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:56:03 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:56:18 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:56:33 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:56:48 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:57:03 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-07 17:57:15 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:57:16 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:57:16 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:57:16 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:57:16 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 17:57:47 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-07 17:57:47 [[33mwarn[39m]: Redis reconnecting…
+2026-06-07 17:57:47 [[33mwarn[39m]: isRefreshTokenRevoked check failed (fail-open): read ETIMEDOUT
+2026-06-07 17:57:48 [[32minfo[39m]: Redis connected
+2026-06-07 18:04:34 [[32minfo[39m]: Socket connected: aVZej7BSSnpluRAxAAAd (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:05:20 [[32minfo[39m]: Socket disconnected: aVZej7BSSnpluRAxAAAd (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-07 18:05:37 [[32minfo[39m]: Socket connected: t_YJXlLrRIDuOythAAAg (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:05:37 [[32minfo[39m]: Socket connected: LLtFgOsXh-vG8R0lAAAh (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:05:40 [[32minfo[39m]: Socket connected: RsSszs_bbucv1_XNAAAj (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:05:52 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-07 18:05:52 [[33mwarn[39m]: Redis reconnecting…
+2026-06-07 18:05:52 [[32minfo[39m]: Redis connected
+2026-06-07 18:23:48 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 18:23:57 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 18:24:04 [[32minfo[39m]: Redis connected
+2026-06-07 18:24:05 [[32minfo[39m]: Redis connected
+2026-06-07 18:24:05 [[32minfo[39m]: Redis connected
+2026-06-07 18:24:05 [[32minfo[39m]: Redis connected
+2026-06-07 18:24:05 [[32minfo[39m]: Redis connected
+2026-06-07 18:24:06 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:24:06 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:24:06 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:24:06 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:24:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:09 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:09 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:09 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:09 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:09 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:09 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:09 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:09 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:25 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 18:24:27 [[32minfo[39m]: Redis connected
+2026-06-07 18:24:27 [[32minfo[39m]: Redis connected
+2026-06-07 18:24:27 [[32minfo[39m]: Redis connected
+2026-06-07 18:24:27 [[32minfo[39m]: Redis connected
+2026-06-07 18:24:27 [[32minfo[39m]: Redis connected
+2026-06-07 18:24:27 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:24:27 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:24:27 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:24:27 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:24:29 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:24:29 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 18:24:29 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:24:29 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 18:24:29 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:24:29 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 18:24:29 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:24:29 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:24:29 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:24:29 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 18:24:29 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 18:24:29 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:24:29 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 18:24:29 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 18:24:29 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:24:29 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:24:29 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 18:24:29 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 18:24:30 [[32minfo[39m]: Redis connected
+2026-06-07 18:24:30 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 18:24:37 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 18:24:43 [[32minfo[39m]: Redis connected
+2026-06-07 18:24:43 [[32minfo[39m]: Redis connected
+2026-06-07 18:24:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:45 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:24:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:45 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:24:45 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:24:45 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:24:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:24:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:26:55 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 18:26:56 [[32minfo[39m]: Redis connected
+2026-06-07 18:26:56 [[32minfo[39m]: Redis connected
+2026-06-07 18:26:56 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:26:56 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:26:57 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:26:57 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:26:57 [[32minfo[39m]: Redis connected
+2026-06-07 18:26:57 [[32minfo[39m]: Redis connected
+2026-06-07 18:26:57 [[32minfo[39m]: Redis connected
+2026-06-07 18:27:03 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:27:03 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 18:27:03 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:27:03 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:27:03 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 18:27:03 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:27:03 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 18:27:03 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 18:27:04 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:27:04 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 18:27:06 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:27:06 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 18:27:06 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:27:06 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 18:27:06 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:27:06 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 18:27:07 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:27:07 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 18:27:07 [[32minfo[39m]: Redis connected
+2026-06-07 18:27:07 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 18:27:31 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 18:27:40 [[32minfo[39m]: Redis connected
+2026-06-07 18:27:40 [[32minfo[39m]: Redis connected
+2026-06-07 18:27:40 [[32minfo[39m]: Redis connected
+2026-06-07 18:27:40 [[32minfo[39m]: Redis connected
+2026-06-07 18:27:40 [[32minfo[39m]: Redis connected
+2026-06-07 18:27:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:27:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:27:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:27:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:27:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:27:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:27:41 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:27:41 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:27:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:27:42 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:27:42 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:27:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:27:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 18:27:57 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 18:27:59 [[32minfo[39m]: Redis connected
+2026-06-07 18:27:59 [[32minfo[39m]: Redis connected
+2026-06-07 18:28:00 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:28:00 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:28:00 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:28:00 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:28:01 [[32minfo[39m]: Redis connected
+2026-06-07 18:28:02 [[32minfo[39m]: Redis connected
+2026-06-07 18:28:02 [[32minfo[39m]: Redis connected
+2026-06-07 18:28:02 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:28:02 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 18:28:03 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:28:03 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 18:28:03 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:28:03 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 18:28:03 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:28:03 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 18:28:03 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:28:03 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 18:28:03 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:28:03 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 18:28:04 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:28:04 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:28:04 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 18:28:04 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:28:04 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 18:28:04 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 18:28:04 [[32minfo[39m]: Redis connected
+2026-06-07 18:28:04 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 18:30:00 [[32minfo[39m]: [cron] Reset earnings.thisWeek for 1 riders
+2026-06-07 18:30:00 [[32minfo[39m]: [cron] Reset earnings.today for 1 riders
+2026-06-07 18:35:07 [[32minfo[39m]: OTP sent to 7000610047
+2026-06-07 18:39:44 [[32minfo[39m]: Socket connected: ax88UolqSAtOAnAiAAAC (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:39:44 [[32minfo[39m]: Socket connected: OxDmrguMpfNcEtkcAAAD (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:39:50 [[32minfo[39m]: Socket connected: rzleGHxrm8elwCV7AAAF (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:43:39 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 18:43:40 [[32minfo[39m]: Socket connected: Fcqh5v8RlohqgO78AAAC (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:43:40 [[32minfo[39m]: Socket connected: 9lwkkF-y9lNHlaJgAAAD (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:43:40 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:40 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:43:40 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:40 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:43:40 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:43:41 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:43:42 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:42 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:42 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 18:43:42 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:42 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:42 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:42 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 18:43:42 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:42 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 18:43:42 [[32minfo[39m]: Socket connected: Se9geHTC1-rCG7mgAAAF (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:43:42 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:42 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 18:43:42 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:42 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 18:43:42 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:42 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:42 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 18:43:42 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:43 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 18:43:44 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 18:43:45 [[32minfo[39m]: Socket connected: Alm5GCOtiUYySjFkAAAB (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:43:45 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:45 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:43:45 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:45 [[32minfo[39m]: Socket connected: p7OlJtdz-EVinrHvAAAD (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:43:45 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:43:45 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:43:46 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:43:46 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:46 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:47 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:47 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:47 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 18:43:47 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:47 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 18:43:47 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:47 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 18:43:47 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:47 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 18:43:47 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:47 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 18:43:47 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:47 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 18:43:47 [[32minfo[39m]: Socket connected: oRGJJHHkwpX1JQQCAAAF (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:43:48 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:48 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 18:43:48 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:48 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 18:43:48 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:48 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 18:43:48 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:49 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 18:43:50 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 18:43:51 [[32minfo[39m]: Socket connected: QwkKZsXzOva-FaLbAAAC (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:43:51 [[32minfo[39m]: Socket connected: UzbmCPpcbD4__vyyAAAD (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:43:51 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:51 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:43:51 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:51 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 18:43:52 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:43:52 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 18:43:52 [[32minfo[39m]: Socket connected: 5ONhY6yDNKJNsiy6AAAF (customer:6a046e383863ae91b27233f0)
+2026-06-07 18:43:53 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:53 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:53 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:53 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:53 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 18:43:53 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:53 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 18:43:53 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:53 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 18:43:54 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:54 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 18:43:54 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:54 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 18:43:54 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:54 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:54 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 18:43:54 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 18:43:54 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:54 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 18:43:54 [[32minfo[39m]: MongoDB connected
+2026-06-07 18:43:54 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 18:43:54 [[32minfo[39m]: Redis connected
+2026-06-07 18:43:55 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 18:44:53 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-07 18:48:37 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-07 18:48:40 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-07 19:02:25 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 19:02:26 [[32minfo[39m]: Redis connected
+2026-06-07 19:02:26 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 19:02:26 [[32minfo[39m]: Redis connected
+2026-06-07 19:02:26 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 19:02:26 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 19:02:27 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 19:02:27 [[32minfo[39m]: Redis connected
+2026-06-07 19:02:27 [[32minfo[39m]: Redis connected
+2026-06-07 19:02:28 [[32minfo[39m]: Redis connected
+2026-06-07 19:02:28 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:28 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 19:02:28 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:28 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 19:02:28 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:28 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 19:02:28 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:28 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 19:02:28 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:28 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:28 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 19:02:28 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:28 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 19:02:28 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:28 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 19:02:28 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 19:02:29 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:29 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 19:02:29 [[32minfo[39m]: Redis connected
+2026-06-07 19:02:29 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 19:02:42 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 19:02:44 [[32minfo[39m]: Redis connected
+2026-06-07 19:02:44 [[32minfo[39m]: Redis connected
+2026-06-07 19:02:44 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 19:02:44 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 19:02:44 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 19:02:44 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 19:02:45 [[32minfo[39m]: Redis connected
+2026-06-07 19:02:45 [[32minfo[39m]: Redis connected
+2026-06-07 19:02:45 [[32minfo[39m]: Redis connected
+2026-06-07 19:02:45 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:45 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 19:02:45 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:45 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 19:02:45 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:45 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:45 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 19:02:45 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 19:02:45 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:45 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 19:02:46 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:46 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 19:02:46 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:46 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 19:02:46 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:46 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 19:02:46 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:02:46 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 19:02:46 [[32minfo[39m]: Redis connected
+2026-06-07 19:02:46 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 19:03:05 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 19:03:06 [[32minfo[39m]: Redis connected
+2026-06-07 19:03:06 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 19:03:06 [[32minfo[39m]: Redis connected
+2026-06-07 19:03:06 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 19:03:06 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 19:03:06 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 19:03:07 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:03:07 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 19:03:07 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:03:07 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 19:03:07 [[32minfo[39m]: Redis connected
+2026-06-07 19:03:07 [[32minfo[39m]: Redis connected
+2026-06-07 19:03:07 [[32minfo[39m]: Redis connected
+2026-06-07 19:03:07 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:03:07 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 19:03:07 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:03:07 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 19:03:07 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:03:07 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 19:03:07 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:03:07 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 19:03:07 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:03:07 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 19:03:07 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:03:07 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 19:03:07 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:03:07 [[32minfo[39m]: Redis connected
+2026-06-07 19:03:07 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 19:03:08 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 19:03:41 [[32minfo[39m]: Socket connected: -bFi3Nbb8MjVnsf3AAAF (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:04:50 [[32minfo[39m]: Socket disconnected: -bFi3Nbb8MjVnsf3AAAF (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-07 19:04:51 [[32minfo[39m]: Socket connected: --TrHE-V6NJcA8FQAAAI (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:04:51 [[32minfo[39m]: Socket connected: 1zfZxBttHejG5G4CAAAJ (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:04:52 [[32minfo[39m]: Socket connected: STpEjT04w9qAft4yAAAL (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:05:30 [[32minfo[39m]: Socket disconnected: 1zfZxBttHejG5G4CAAAJ (vendor:6a2559a376e12c06b58540f3) — transport close
+2026-06-07 19:05:30 [[32minfo[39m]: Socket disconnected: --TrHE-V6NJcA8FQAAAI (vendor:6a2559a376e12c06b58540f3) — transport close
+2026-06-07 19:05:30 [[32minfo[39m]: Socket disconnected: STpEjT04w9qAft4yAAAL (vendor:6a2559a376e12c06b58540f3) — transport close
+2026-06-07 19:05:48 [[32minfo[39m]: Socket connected: -OVFZbKzx8QxZsYAAAAO (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:05:48 [[32minfo[39m]: Socket connected: 2pv9d8laGeKBZ5GYAAAP (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:05:50 [[32minfo[39m]: Socket connected: P7YLAUjKWlAtnyPpAAAR (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:06:22 [[32minfo[39m]: OTP sent to 7000610047
+2026-06-07 19:13:33 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 19:13:33 [[32minfo[39m]: Redis connected
+2026-06-07 19:13:34 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 19:13:34 [[32minfo[39m]: Redis connected
+2026-06-07 19:13:34 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 19:13:34 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 19:13:34 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 19:13:34 [[32minfo[39m]: Socket connected: w1zuYeQDsxQqhEeTAAAB (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:13:35 [[32minfo[39m]: Socket connected: 2HhQuzAPsb0FFtKDAAAD (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:13:35 [[32minfo[39m]: Redis connected
+2026-06-07 19:13:35 [[32minfo[39m]: Redis connected
+2026-06-07 19:13:35 [[32minfo[39m]: Redis connected
+2026-06-07 19:13:35 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:35 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:35 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:35 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 19:13:35 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 19:13:35 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 19:13:36 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:36 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:36 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:36 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 19:13:36 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 19:13:36 [[32minfo[39m]: Socket connected: fBBbIagdT5RGUGepAAAF (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:13:36 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 19:13:36 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:36 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 19:13:36 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:36 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 19:13:36 [[32minfo[39m]: Redis connected
+2026-06-07 19:13:36 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 19:13:38 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:38 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 19:13:55 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-07 19:13:56 [[32minfo[39m]: Redis connected
+2026-06-07 19:13:56 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 19:13:56 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 19:13:57 [[32minfo[39m]: Redis connected
+2026-06-07 19:13:57 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-07 19:13:57 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-07 19:13:57 [[32minfo[39m]: Socket connected: 7GQuvZd2p6gSI4HEAAAB (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:13:57 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:57 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-07 19:13:57 [[32minfo[39m]: Redis connected
+2026-06-07 19:13:57 [[32minfo[39m]: Redis connected
+2026-06-07 19:13:58 [[32minfo[39m]: Socket connected: GRMUeZEsY5qfOrISAAAD (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:13:58 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:58 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-07 19:13:58 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:58 [[32minfo[39m]: User Service running on port 3002
+2026-06-07 19:13:58 [[32minfo[39m]: Redis connected
+2026-06-07 19:13:58 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:58 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-07 19:13:58 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:58 [[32minfo[39m]: Product Service running on port 3003
+2026-06-07 19:13:58 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:58 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-07 19:13:58 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:58 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:58 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-07 19:13:58 [[32minfo[39m]: Order Service running on port 3004
+2026-06-07 19:13:59 [[32minfo[39m]: Redis connected
+2026-06-07 19:13:59 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-07 19:13:59 [[32minfo[39m]: MongoDB connected
+2026-06-07 19:13:59 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-07 19:13:59 [[32minfo[39m]: Socket connected: CK0NyGHR_saKYPlxAAAF (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:15:28 [[32minfo[39m]: Socket connected: QQgxpApqeNrrPTkmAAAH (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:16:10 [[32minfo[39m]: Socket disconnected: 7GQuvZd2p6gSI4HEAAAB (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-07 19:16:10 [[32minfo[39m]: Socket disconnected: GRMUeZEsY5qfOrISAAAD (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-07 19:16:10 [[32minfo[39m]: Socket disconnected: CK0NyGHR_saKYPlxAAAF (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-07 19:16:10 [[32minfo[39m]: Socket disconnected: QQgxpApqeNrrPTkmAAAH (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-07 19:16:11 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-07 19:16:11 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-07 19:16:11 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-07 19:16:11 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-07 19:16:32 [[32minfo[39m]: Socket connected: WKkLnEk9gkjKewvKAAAK (customer:6a046e383863ae91b27233f0)
+2026-06-07 19:16:32 [[32minfo[39m]: Socket connected: OMzaEbVv7F5xgWGNAAAL (customer:6a046e383863ae91b27233f0)
+2026-06-07 19:16:43 [[32minfo[39m]: Socket connected: S0kpsdy2nr-eCGioAAAN (customer:6a046e383863ae91b27233f0)
+2026-06-07 19:17:00 [[32minfo[39m]: Socket connected: 2y9wVdNWRMwHxiOfAAAP (vendor:6a2559a376e12c06b58540f3)
+2026-06-07 19:19:22 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-07 19:21:29 [[32minfo[39m]: Socket disconnected: 2y9wVdNWRMwHxiOfAAAP (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-07 19:21:34 [[33mwarn[39m]: Failed to auto-offline vendor 6a2559a376e12c06b58540f3: timeout of 5000ms exceeded
+2026-06-07 19:27:15 [[32minfo[39m]: Socket disconnected: OMzaEbVv7F5xgWGNAAAL (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-07 19:27:15 [[32minfo[39m]: Socket disconnected: WKkLnEk9gkjKewvKAAAK (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-07 19:27:15 [[32minfo[39m]: Socket disconnected: S0kpsdy2nr-eCGioAAAN (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-07 22:20:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 22:20:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 22:20:49 [[33mwarn[39m]: MongoDB disconnected
+2026-06-07 22:20:49 [[33mwarn[39m]: MongoDB disconnected
