@@ -112,7 +112,7 @@ const vegetables = [
   { name: 'Lotus Stem',      nameHi: 'Kamal Kakdi',    unit: 'kg',    availableSeason: 'rain',   buyingPrice: 45,  sellingPrice: 70  },
   { name: 'Raw Turmeric',    nameHi: 'Kacchi Haldi',   unit: 'kg',    availableSeason: 'rain',   buyingPrice: 50,  sellingPrice: 80  },
   { name: 'Water Chestnut',  nameHi: 'Singhara',       unit: 'kg',    availableSeason: 'rain',   buyingPrice: 35,  sellingPrice: 55  },
-].map((p) => ({ ...p, category: 'vegetables', active: false, isAvailableToday: true, images: [], coverImage: '', lastPricedAt: LAST_PRICED }));
+].map((p) => ({ ...p, category: 'vegetables', active: true, isAvailableToday: true, images: [], coverImage: '', lastPricedAt: LAST_PRICED }));
 
 const fruits = [
   // ── All season ──────────────────────────────────────────────────
@@ -156,7 +156,7 @@ const fruits = [
   { name: 'Tamarind',     nameHi: 'Imli',         unit: 'kg',     availableSeason: 'rain',   buyingPrice: 50,  sellingPrice: 80  },
   { name: 'Karonda',      nameHi: 'Karonda',      unit: 'kg',     availableSeason: 'rain',   buyingPrice: 35,  sellingPrice: 60  },
   { name: 'Ber',          nameHi: 'Ber',          unit: 'kg',     availableSeason: 'rain',   buyingPrice: 30,  sellingPrice: 50  },
-].map((p) => ({ ...p, category: 'fruits', active: false, isAvailableToday: true, images: [], coverImage: '', lastPricedAt: LAST_PRICED }));
+].map((p) => ({ ...p, category: 'fruits', active: true, isAvailableToday: true, images: [], coverImage: '', lastPricedAt: LAST_PRICED }));
 
 const spices = [
   { name: 'Turmeric Powder',    nameHi: 'Haldi',           unit: 'kg', buyingPrice: 120,  sellingPrice: 180  },
@@ -193,7 +193,7 @@ const spices = [
   { name: 'Dried Ginger Powder',nameHi: 'Sonth',             unit: 'kg', buyingPrice: 200,  sellingPrice: 300  },
   { name: 'Black Salt',         nameHi: 'Kala Namak',        unit: 'kg', buyingPrice: 40,   sellingPrice: 70   },
   { name: 'Rock Salt',          nameHi: 'Sendha Namak',      unit: 'kg', buyingPrice: 30,   sellingPrice: 55   },
-].map((p) => ({ ...p, category: 'spices', availableSeason: 'all', active: false, isAvailableToday: true, images: [], coverImage: '', lastPricedAt: LAST_PRICED }));
+].map((p) => ({ ...p, category: 'spices', availableSeason: 'all', active: true, isAvailableToday: true, images: [], coverImage: '', lastPricedAt: LAST_PRICED }));
 
 const dairy = [
   { name: 'Full Cream Milk',  nameHi: 'Poora Doodh',           unit: 'kg',    buyingPrice: 52,  sellingPrice: 65  },
@@ -217,7 +217,7 @@ const dairy = [
   { name: 'Egg',              nameHi: 'Anda',                   unit: 'dozen', buyingPrice: 70,  sellingPrice: 90  },
   { name: 'Shrikhand',        nameHi: 'Shrikhand',              unit: 'kg',    buyingPrice: 150, sellingPrice: 220 },
   { name: 'Ice Cream',        nameHi: 'Ice Cream',              unit: 'kg',    buyingPrice: 180, sellingPrice: 280 },
-].map((p) => ({ ...p, category: 'dairy', availableSeason: 'all', active: false, isAvailableToday: true, images: [], coverImage: '', lastPricedAt: LAST_PRICED }));
+].map((p) => ({ ...p, category: 'dairy', availableSeason: 'all', active: true, isAvailableToday: true, images: [], coverImage: '', lastPricedAt: LAST_PRICED }));
 
 const bakery = [
   { name: 'White Bread',    nameHi: 'Safed Bread',    unit: 'piece', buyingPrice: 35,  sellingPrice: 50  },
@@ -244,7 +244,7 @@ const bakery = [
   { name: 'Bread Roll',     nameHi: 'Bread Roll',     unit: 'piece', buyingPrice: 10,  sellingPrice: 18  },
   { name: 'Fruit Cake',     nameHi: 'Fruit Cake',     unit: 'kg',    buyingPrice: 250, sellingPrice: 380 },
   { name: 'Puff Pastry',    nameHi: 'Puff',           unit: 'piece', buyingPrice: 15,  sellingPrice: 25  },
-].map((p) => ({ ...p, category: 'bakery', availableSeason: 'all', active: false, isAvailableToday: true, images: [], coverImage: '', lastPricedAt: LAST_PRICED }));
+].map((p) => ({ ...p, category: 'bakery', availableSeason: 'all', active: true, isAvailableToday: true, images: [], coverImage: '', lastPricedAt: LAST_PRICED }));
 
 const other = [
   { name: 'Rice',            nameHi: 'Chawal',           unit: 'kg', buyingPrice: 55,  sellingPrice: 80   },
@@ -293,7 +293,7 @@ const other = [
   { name: 'Peanuts',         nameHi: 'Moongphali',        unit: 'kg', buyingPrice: 70,  sellingPrice: 110  },
   { name: 'Papad',           nameHi: 'Papad',             unit: 'kg', buyingPrice: 120, sellingPrice: 180  },
   { name: 'Pickle',          nameHi: 'Achar',             unit: 'kg', buyingPrice: 100, sellingPrice: 160  },
-].map((p) => ({ ...p, category: 'other', availableSeason: 'all', active: false, isAvailableToday: true, images: [], coverImage: '', lastPricedAt: LAST_PRICED }));
+].map((p) => ({ ...p, category: 'other', availableSeason: 'all', active: true, isAvailableToday: true, images: [], coverImage: '', lastPricedAt: LAST_PRICED }));
 
 const ALL_PRODUCTS = [...vegetables, ...fruits, ...spices, ...dairy, ...bakery, ...other];
 

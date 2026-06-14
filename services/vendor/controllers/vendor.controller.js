@@ -1,9 +1,58 @@
 const { z } = require('zod');
 const Inventory = require('../models/Inventory.model');
 const VendorEarning = require('../models/VendorEarning.model');
+const Vendor = require('../../user/models/Vendor.model');
+const Product = require('../../product/models/Product.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const logger = require('../../../shared/utils/logger');
+
+// ── GET /api/vendors/inventory/catalog ───────────────────────────
+// Vendor: get ALL active products in their categories, merged with their
+// current inventory. Products with no inventory record get quantityAvailable=0.
+// This is the primary endpoint for the inventory management screen.
+const getCatalog = async (req, res) => {
+  try {
+    const vendor = await Vendor.findById(req.user.id).select('categories').lean();
+    if (!vendor) return sendError(res, 404, 'Vendor not found', ERROR_CODES.NOT_FOUND);
+
+    const { categories } = vendor;
+    if (!categories || categories.length === 0) {
+      return sendSuccess(res, 200, 'Catalog fetched', []);
+    }
+
+    const [products, inventoryRecords] = await Promise.all([
+      Product.find({ category: { $in: categories }, active: true })
+        .select('name nameHi category unit buyingPrice sellingPrice coverImage isAvailableToday')
+        .sort({ category: 1, name: 1 })
+        .lean(),
+      Inventory.find({ vendorId: req.user.id })
+        .select('productId quantityAvailable isAvailable')
+        .lean(),
+    ]);
+
+    // Build map: productId → inventory record for O(1) merge
+    const invMap = new Map();
+    for (const inv of inventoryRecords) {
+      invMap.set(inv.productId.toString(), inv);
+    }
+
+    const catalog = products.map((p) => {
+      const inv = invMap.get(p._id.toString());
+      return {
+        ...p,
+        quantityAvailable: inv?.quantityAvailable ?? 0,
+        isAvailable: inv?.isAvailable ?? true,
+        hasRecord: !!inv,
+      };
+    });
+
+    return sendSuccess(res, 200, 'Catalog fetched', catalog);
+  } catch (err) {
+    logger.error('getCatalog error:', err);
+    return sendError(res, 500, 'Failed to fetch catalog', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
 
 // ── GET /api/vendors/inventory ────────────────────────────────────
 // Vendor: view their full inventory (all products they've set stock for)
@@ -210,6 +259,7 @@ const getAvailableInventory = async (req, res) => {
 };
 
 module.exports = {
+  getCatalog,
   getInventory,
   upsertInventory,
   toggleInventoryAvailability,

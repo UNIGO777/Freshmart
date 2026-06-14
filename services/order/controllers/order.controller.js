@@ -85,7 +85,7 @@ const placeOrder = async (req, res) => {
 
     // ── Resolve products & snapshot prices ───────────────────────
     const productIds = items.map((i) => i.productId);
-    const products = await Product.find({ _id: { $in: productIds }, isAvailableToday: true }).lean();
+    const products = await Product.find({ _id: { $in: productIds }, active: true, isAvailableToday: true }).lean();
 
     if (products.length !== productIds.length) {
       return sendError(res, 400, 'Some products are not available today', ERROR_CODES.STOCK_UNAVAILABLE);

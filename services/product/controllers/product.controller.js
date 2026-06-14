@@ -146,7 +146,7 @@ const getProducts = async (req, res) => {
       // without needing a search engine. The collection is small enough
       // that a full collection scan here is fine; add Atlas Search later
       // if the catalogue grows beyond a few thousand SKUs.
-      const baseFilter = includeAll ? {} : { isAvailableToday: true };
+      const baseFilter = includeAll ? {} : { active: true, isAvailableToday: true };
       if (category) {
         const normalised = category.toLowerCase();
         baseFilter.category = normalised;
@@ -183,7 +183,7 @@ const getProducts = async (req, res) => {
     if (cached) return sendSuccess(res, 200, 'Products fetched (cache)', cached);
 
     const VALID_CATEGORIES = ['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other'];
-    const filter = includeAll ? {} : { isAvailableToday: true };
+    const filter = includeAll ? {} : { active: true, isAvailableToday: true };
     if (category) {
       const normalised = category.toLowerCase();
       if (!VALID_CATEGORIES.includes(normalised)) {
@@ -228,7 +228,7 @@ const getCategories = async (req, res) => {
 // ── GET /api/products/:id ─────────────────────────────────────────
 const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).lean();
+    const product = await Product.findOne({ _id: req.params.id, active: true }).lean();
     if (!product) return sendError(res, 404, 'Product not found', ERROR_CODES.NOT_FOUND);
     return sendSuccess(res, 200, 'Product fetched', product);
   } catch (err) {
@@ -415,6 +415,7 @@ const getStaleProducts = async (req, res) => {
 
     const stale = await Product.find({
       lastPricedAt: { $lt: startOfToday },
+      active: true,
       isAvailableToday: true,
     })
       .select('name category buyingPrice sellingPrice lastPricedAt')

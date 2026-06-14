@@ -35,6 +35,7 @@ const checkStock = async (customerLocation, items) => {
   const productIds = items.map((i) => i.productId);
   const products = await Product.find({
     _id: { $in: productIds },
+    active: true,
     isAvailableToday: true,
   }).lean();
 

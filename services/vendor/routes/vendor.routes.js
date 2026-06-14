@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const {
+  getCatalog,
   getInventory,
   upsertInventory,
   toggleInventoryAvailability,
@@ -21,6 +22,7 @@ const vendorAuth = [authenticate, requireRole(ROLES.VENDOR, ROLES.ADMIN)];
 router.get('/inventory/available', getAvailableInventory);
 
 // Vendor inventory management
+router.get('/inventory/catalog', ...vendorAuth, getCatalog);
 router.get('/inventory', ...vendorAuth, getInventory);
 router.put('/inventory/bulk', ...vendorAuth, bulkUpdateInventory);
 router.put('/inventory/:productId', ...vendorAuth, upsertInventory);
