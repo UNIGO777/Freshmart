@@ -6,6 +6,8 @@ const { redisClient } = require('../../../shared/db/redis');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const logger = require('../../../shared/utils/logger');
+const Vendor = require('../../user/models/Vendor.model');
+const Inventory = require('../../vendor/models/Inventory.model');
 
 // ── Redis cache helpers ───────────────────────────────────────────
 const CACHE_TTL = 60; // 60 seconds — writes call invalidateProductCache() immediately
@@ -39,6 +41,63 @@ const invalidateProductCache = async () => {
     logger.warn('Redis invalidation failed:', err.message);
   }
 };
+
+// ── Nearby inventory helpers ─────────────────────────────────────
+const MAX_SEARCH_RADIUS_KM = 15; // upper bound matching check-serviceability tiers
+
+function haversineKm(lat1, lng1, lat2, lng2) {
+  const toRad = (d) => (d * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+/**
+ * Returns a Set of product IDs available from at least one vendor
+ * whose service area covers the customer's location.
+ */
+async function getNearbyAvailableProductIds(lat, lng) {
+  // 1. Find all vendors within the max possible radius
+  const candidates = await Vendor.find({
+    isApproved: true,
+    isActive: true,
+    isOnline: true,
+    location: {
+      $nearSphere: {
+        $geometry: { type: 'Point', coordinates: [lng, lat] },
+        $maxDistance: MAX_SEARCH_RADIUS_KM * 1000,
+      },
+    },
+  })
+    .select('_id location serviceRadiusKm')
+    .lean();
+
+  if (candidates.length === 0) return new Set();
+
+  // 2. Filter by each vendor's own serviceRadiusKm
+  const nearbyVendors = candidates.filter((v) => {
+    const [vLng, vLat] = v.location.coordinates;
+    const distKm = haversineKm(lat, lng, vLat, vLng);
+    return distKm <= (v.serviceRadiusKm || 5);
+  });
+
+  if (nearbyVendors.length === 0) return new Set();
+
+  // 3. Get stocked product IDs from those vendors' inventory
+  const vendorIds = nearbyVendors.map((v) => v._id);
+  const records = await Inventory.find({
+    vendorId: { $in: vendorIds },
+    isAvailable: true,
+    quantityAvailable: { $gt: 0 },
+  })
+    .select('productId')
+    .lean();
+
+  return new Set(records.map((r) => r.productId.toString()));
+}
 
 // ── Search helpers ────────────────────────────────────────────────
 
@@ -134,6 +193,17 @@ const getProducts = async (req, res) => {
     // products that are not available today. Storefront callers omit it.
     const includeAll = req.query.available === 'all';
 
+    // ── Location-based inventory filter ──────────────────────────
+    const lat = parseFloat(req.query.lat);
+    const lng = parseFloat(req.query.lng);
+    const hasLocation = !includeAll && !isNaN(lat) && !isNaN(lng) &&
+      lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+
+    let nearbyProductIds = null;
+    if (hasLocation) {
+      nearbyProductIds = await getNearbyAvailableProductIds(lat, lng);
+    }
+
     // ── Search path (bypasses cache) ──────────────────────────────
     if (search) {
       const term = search.trim();
@@ -152,7 +222,12 @@ const getProducts = async (req, res) => {
         baseFilter.category = normalised;
       }
 
-      const allProducts = await Product.find(baseFilter).lean();
+      let allProducts = await Product.find(baseFilter).lean();
+
+      // Filter by nearby vendor inventory
+      if (nearbyProductIds) {
+        allProducts = allProducts.filter(p => nearbyProductIds.has(p._id.toString()));
+      }
 
       // Score every product
       const scored = allProducts
@@ -176,10 +251,11 @@ const getProducts = async (req, res) => {
       return sendSuccess(res, 200, 'Search results', localiseProducts(results, lang));
     }
 
+    // Skip cache when location is provided — inventory/vendor status changes
+    // in real time (vendor goes online/offline) and cached results go stale instantly.
     const key = cacheKey(category);
-    // The admin "all products" view bypasses the (storefront-only) cache so it
-    // always reflects the latest data and never pollutes the public cache.
-    const cached = includeAll ? null : await getFromCache(key);
+    const useCache = !includeAll && !hasLocation;
+    const cached = useCache ? await getFromCache(key) : null;
     if (cached) return sendSuccess(res, 200, 'Products fetched (cache)', cached);
 
     const VALID_CATEGORIES = ['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other'];
@@ -192,10 +268,16 @@ const getProducts = async (req, res) => {
       filter.category = normalised;
     }
 
-    const products = await Product.find(filter).sort({ category: 1, name: 1 }).lean();
+    let products = await Product.find(filter).sort({ category: 1, name: 1 }).lean();
+
+    // Filter by nearby vendor inventory
+    if (nearbyProductIds) {
+      products = products.filter(p => nearbyProductIds.has(p._id.toString()));
+    }
+
     const response = localiseProducts(products, lang);
 
-    if (!includeAll) await setCache(key, response);
+    if (useCache) await setCache(key, response);
     return sendSuccess(res, 200, 'Products fetched', response);
   } catch (err) {
     logger.error('getProducts error:', err);

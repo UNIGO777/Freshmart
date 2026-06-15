@@ -45,7 +45,27 @@ app.patch('/set-offline', async (req, res) => {
   const { vendorId } = req.body;
   if (!vendorId) return res.status(400).json({ success: false, message: 'vendorId required' });
   try {
-    await Vendor.updateOne({ _id: vendorId, isOnline: true }, { isOnline: false });
+    const vendor = await Vendor.findOneAndUpdate(
+      { _id: vendorId, isOnline: true },
+      { isOnline: false },
+      { new: true },
+    );
+    // Notify customers so product lists update in real time
+    if (vendor) {
+      const SOCKET_URL = process.env.SOCKET_URL || 'http://localhost:3010';
+      const axios = require('axios');
+      axios.post(`${SOCKET_URL}/internal/emit`, {
+        room: 'serviceability:broadcast',
+        event: 'vendor:availability',
+        payload: {
+          vendorId: vendor._id,
+          isOnline: false,
+          location: vendor.location,
+          serviceRadiusKm: vendor.serviceRadiusKm,
+          categories: vendor.categories,
+        },
+      }, { timeout: 3000 }).catch(() => {});
+    }
     return res.json({ success: true });
   } catch (err) {
     logger.error('set-offline error:', err);

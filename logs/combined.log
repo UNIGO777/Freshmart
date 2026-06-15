@@ -50096,3 +50096,1156 @@
 2026-06-15 03:08:34 [[32minfo[39m]: Auth Service running on port 3011
 2026-06-15 03:08:34 [[32minfo[39m]: Redis connected
 2026-06-15 03:08:34 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-15 03:23:24 [[32minfo[39m]: Socket disconnected: Cw6krS8tmTOqGNlLAAAF (admin:6a0000d3b8b024f8eff26d15) — transport close
+2026-06-15 03:40:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 03:40:14 [[32minfo[39m]: Socket disconnected: NWc_lyjdnrAGXCPKAAAB (vendor:6a2559a376e12c06b58540f3) — transport close
+2026-06-15 03:40:14 [[32minfo[39m]: Socket disconnected: iRw1wlSPOtK1Qa4SAAAD (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-15 03:40:15 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 03:40:15 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-15 03:57:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 03:57:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 03:57:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 03:57:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:14:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:14:39 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:14:39 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:14:39 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:14:39 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:14:39 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:14:39 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:31:27 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:31:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:31:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:31:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:31:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:31:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:31:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:48:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:48:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:48:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:48:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:48:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:48:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:48:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 04:48:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:03:53 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:04:02 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:04:02 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:04:02 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:04:02 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:04:02 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:20:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:20:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:20:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:20:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:20:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:20:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:20:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:20:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:24:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:24:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:24:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:40:44 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:40:44 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:40:44 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:56:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:56:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:56:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:56:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 05:56:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:12:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:12:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:12:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:12:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:12:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:25:26 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:25:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:25:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:25:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:25:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:25:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:30:11 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:30:11 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:30:11 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:30:11 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:33:21 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:33:21 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 06:53:26 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:09:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:09:04 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:09:04 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:09:04 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:09:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:44:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:44:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:44:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:44:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:44:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:44:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:44:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:44:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 07:44:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:02:27 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:02:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:02:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:02:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:02:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:02:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:02:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:02:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:02:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:20:13 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:27:27 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:27:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:27:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:27:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:27:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:27:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:27:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:27:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:44:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:47:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:47:18 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 08:47:18 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:02:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:20:27 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:20:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:20:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:20:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:20:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:20:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:20:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:28:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:46:04 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:46:05 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:46:06 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:46:06 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 09:46:06 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:01:12 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:18:20 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:18:24 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:18:24 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:18:24 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:18:24 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:29:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:45:11 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:53:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:54:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:54:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:54:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:54:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:54:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:54:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:54:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 10:54:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:10:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:10:48 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:10:48 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:10:48 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:10:48 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:10:48 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:10:48 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:10:48 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:10:48 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:27:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:30:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:30:33 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:30:33 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:30:33 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:30:33 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:30:33 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:38:58 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:59:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:59:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:59:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:59:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:59:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:59:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:59:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:59:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 11:59:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:01:57 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:17:40 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:17:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:17:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:17:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:17:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:27:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:31:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:31:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:31:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:31:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:31:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:31:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:31:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:31:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:42:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:42:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:42:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:42:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:42:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:42:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 12:59:49 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 13:15:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 13:32:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 13:44:40 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 13:44:53 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 13:44:53 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 13:44:54 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 13:44:54 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 13:44:55 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 13:44:55 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:19:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:19:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:19:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:19:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:19:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:19:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:19:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:28:13 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:30:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:30:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:30:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:30:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:37:17 [[31merror[39m]: MongoServerSelectionError: connection <monitor> to 159.41.226.164:27017 timed out
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at process.processTimers (node:internal/timers:526:9)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+2026-06-15 14:37:18 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:37:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:37:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:37:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:37:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:37:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:37:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:43:44 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:43:57 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:43:57 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:43:57 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:48:26 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:48:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:48:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:48:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:48:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:48:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:49:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:49:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:49:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:49:54 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:49:58 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:49:58 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 14:49:58 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:05:53 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:06:02 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:06:02 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:06:02 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:06:02 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:06:02 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:21:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:22:00 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:22:00 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:22:00 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:22:00 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:22:00 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:22:00 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:37:50 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:37:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:37:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:37:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:38:00 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:42:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:42:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:42:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:42:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:47:50 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:47:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:47:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:47:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:47:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:51:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:51:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:52:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:52:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:52:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:54:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:54:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:54:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:54:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:54:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:54:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 15:58:16 [[32minfo[39m]: Search "a": 212 matched, 11 fallback
+2026-06-15 15:58:16 [[32minfo[39m]: Search "atta": 9 matched, 214 fallback
+2026-06-15 15:58:23 [[32minfo[39m]: Search "atta": 3 matched, 44 fallback
+2026-06-15 15:58:30 [[32minfo[39m]: Search "aata": 1 matched, 46 fallback
+2026-06-15 15:58:33 [[32minfo[39m]: Search "aata": 4 matched, 219 fallback
+2026-06-15 15:59:08 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-15 15:59:08 [[33mwarn[39m]: Redis reconnecting…
+2026-06-15 15:59:08 [[33mwarn[39m]: isRefreshTokenRevoked check failed (fail-open): read ETIMEDOUT
+2026-06-15 15:59:09 [[32minfo[39m]: Redis connected
+2026-06-15 15:59:35 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-15 15:59:35 [[33mwarn[39m]: Redis reconnecting…
+2026-06-15 15:59:35 [[33mwarn[39m]: Redis invalidation failed:
+2026-06-15 15:59:35 [[32minfo[39m]: Redis connected
+2026-06-15 15:59:47 [[32minfo[39m]: Socket connected: AU7LB7s2OALeZW2GAAAN (admin:6a0000d3b8b024f8eff26d15)
+2026-06-15 15:59:56 [[32minfo[39m]: Search "AARA": 1 matched, 222 fallback
+2026-06-15 15:59:57 [[32minfo[39m]: Search "AATA": 4 matched, 219 fallback
+2026-06-15 16:00:05 [[32minfo[39m]: Search "AATA": 0 matched, 37 fallback
+2026-06-15 16:00:10 [[32minfo[39m]: Search "AATA": 0 matched, 37 fallback
+2026-06-15 16:00:11 [[32minfo[39m]: Search "AATA": 0 matched, 37 fallback
+2026-06-15 16:00:12 [[31merror[39m]: ValidationError: Product validation failed: unit: `dozen` is not a valid enum value for path `unit`.
+    at model.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2864:36)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async model.$__save (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/model.js:393:7)
+    at async model.save (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/model.js:667:5)
+    at async toggleActive (/Users/namanjain/FreshMart/Freshmart/services/product/controllers/product.controller.js:350:5)
+2026-06-15 16:00:14 [[31merror[39m]: ValidationError: Product validation failed: unit: `dozen` is not a valid enum value for path `unit`.
+    at model.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2864:36)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async model.$__save (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/model.js:393:7)
+    at async model.save (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/model.js:667:5)
+    at async toggleActive (/Users/namanjain/FreshMart/Freshmart/services/product/controllers/product.controller.js:350:5)
+2026-06-15 16:00:17 [[32minfo[39m]: Search "AATA": 0 matched, 37 fallback
+2026-06-15 16:00:19 [[32minfo[39m]: Search "AATA": 0 matched, 37 fallback
+2026-06-15 16:00:21 [[31merror[39m]: ValidationError: Product validation failed: unit: `dozen` is not a valid enum value for path `unit`.
+    at model.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2864:36)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async model.$__save (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/model.js:393:7)
+    at async model.save (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/model.js:667:5)
+    at async toggleActive (/Users/namanjain/FreshMart/Freshmart/services/product/controllers/product.controller.js:350:5)
+2026-06-15 16:00:23 [[32minfo[39m]: Search "AATA": 0 matched, 37 fallback
+2026-06-15 16:00:28 [[32minfo[39m]: Search "AATA": 0 matched, 37 fallback
+2026-06-15 16:00:35 [[32minfo[39m]: Search "AATA": 0 matched, 37 fallback
+2026-06-15 16:00:42 [[32minfo[39m]: Search "AATA": 3 matched, 57 fallback
+2026-06-15 16:00:45 [[32minfo[39m]: Search "AATA": 3 matched, 57 fallback
+2026-06-15 16:00:48 [[32minfo[39m]: Search "AATA": 3 matched, 57 fallback
+2026-06-15 16:00:50 [[32minfo[39m]: Search "AATA": 3 matched, 57 fallback
+2026-06-15 16:00:55 [[32minfo[39m]: Search "AATA": 3 matched, 57 fallback
+2026-06-15 16:00:56 [[32minfo[39m]: Search "AATA": 3 matched, 57 fallback
+2026-06-15 16:00:57 [[32minfo[39m]: Search "AATA": 0 matched, 34 fallback
+2026-06-15 16:01:00 [[32minfo[39m]: Search "AATA": 0 matched, 34 fallback
+2026-06-15 16:01:02 [[32minfo[39m]: Search "AATA": 0 matched, 34 fallback
+2026-06-15 16:01:03 [[32minfo[39m]: Search "AATA": 0 matched, 34 fallback
+2026-06-15 16:01:06 [[32minfo[39m]: Search "AATA": 0 matched, 34 fallback
+2026-06-15 16:01:07 [[32minfo[39m]: Search "AATA": 0 matched, 34 fallback
+2026-06-15 16:01:09 [[32minfo[39m]: Search "AATA": 0 matched, 21 fallback
+2026-06-15 16:01:11 [[32minfo[39m]: Search "AATA": 0 matched, 21 fallback
+2026-06-15 16:01:13 [[32minfo[39m]: Search "AATA": 0 matched, 21 fallback
+2026-06-15 16:01:14 [[32minfo[39m]: Search "AATA": 0 matched, 21 fallback
+2026-06-15 16:01:15 [[32minfo[39m]: Search "AATA": 0 matched, 21 fallback
+2026-06-15 16:01:17 [[32minfo[39m]: Search "AATA": 0 matched, 24 fallback
+2026-06-15 16:01:19 [[32minfo[39m]: Search "AATA": 0 matched, 24 fallback
+2026-06-15 16:01:20 [[32minfo[39m]: Search "AATA": 0 matched, 24 fallback
+2026-06-15 16:01:22 [[32minfo[39m]: Search "AATA": 0 matched, 24 fallback
+2026-06-15 16:01:24 [[32minfo[39m]: Search "AATA": 0 matched, 24 fallback
+2026-06-15 16:01:25 [[32minfo[39m]: Search "AATA": 0 matched, 24 fallback
+2026-06-15 16:01:26 [[32minfo[39m]: Search "AATA": 0 matched, 24 fallback
+2026-06-15 16:01:28 [[32minfo[39m]: Search "AATA": 1 matched, 46 fallback
+2026-06-15 16:01:29 [[32minfo[39m]: Search "AATA": 1 matched, 46 fallback
+2026-06-15 16:01:33 [[32minfo[39m]: Search "AATA": 1 matched, 46 fallback
+2026-06-15 16:01:34 [[32minfo[39m]: Search "AATA": 1 matched, 46 fallback
+2026-06-15 16:01:38 [[32minfo[39m]: Search "AATA": 1 matched, 46 fallback
+2026-06-15 16:01:40 [[32minfo[39m]: Search "AATA": 3 matched, 57 fallback
+2026-06-15 16:01:41 [[32minfo[39m]: Search "AATA": 0 matched, 37 fallback
+2026-06-15 16:01:42 [[32minfo[39m]: Search "AATA": 4 matched, 219 fallback
+2026-06-15 16:27:15 [[32minfo[39m]: Socket disconnected: AU7LB7s2OALeZW2GAAAN (admin:6a0000d3b8b024f8eff26d15) — transport close
+2026-06-15 16:28:02 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:30:20 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:30:20 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:37:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:37:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:37:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:37:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:39:52 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:39:52 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:39:52 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:39:52 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:39:52 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:39:52 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:55:58 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:55:58 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:55:58 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:55:58 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:55:58 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 16:55:58 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:12:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:12:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:12:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:12:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:12:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:12:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:29:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:29:40 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:29:40 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:29:40 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:29:40 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:29:41 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:35:17 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:35:17 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:35:27 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:35:27 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:35:27 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:35:27 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:37:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:37:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:37:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:37:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:37:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:43:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:43:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:43:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:43:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:43:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:43:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:44:50 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:44:50 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:44:50 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:44:50 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:44:50 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:44:50 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:44:50 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:44:50 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 17:44:50 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:01:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:01:53 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:01:53 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:01:53 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:01:53 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:01:53 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:18:57 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:19:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:19:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:19:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:19:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:19:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:19:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:25:44 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:41:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:41:52 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:41:52 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:41:52 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:41:52 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:41:52 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 18:59:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 19:16:21 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 19:31:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 19:31:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 19:31:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 19:31:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 19:31:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 19:31:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 19:44:24 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:00:03 [[31merror[39m]: MongoServerSelectionError: connection <monitor> to 159.41.226.164:27017 timed out
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:260:22)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-15 20:00:18 [[31merror[39m]: MongoServerSelectionError: connection <monitor> to 159.41.226.164:27017 timed out
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-15 20:00:33 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-15 20:00:48 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-15 20:01:03 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-15 20:19:00 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at process.processTimers (node:internal/timers:526:9)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+2026-06-15 20:19:05 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:19:05 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:19:06 [[32minfo[39m]: Search "AATA": 4 matched, 219 fallback
+2026-06-15 20:19:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:19:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:19:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:19:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:19:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:19:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:45:27 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:45:27 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:46:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:46:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:46:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:46:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:46:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:46:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:46:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:46:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:48:12 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 20:48:12 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:03:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:03:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:03:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:03:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:03:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:03:57 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:03:57 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:19:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:19:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:19:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:19:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:19:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:19:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:19:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:19:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:36:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:36:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:36:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:36:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:36:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:36:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:36:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:36:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:38:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:38:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:38:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:38:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:38:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:38:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:38:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:38:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:39:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:39:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:39:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:39:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:39:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:39:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:39:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:39:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:46:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:46:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:46:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:46:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:46:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:46:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:46:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:48:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:48:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:48:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:48:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:48:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:49:04 [[31merror[39m]: MongoServerSelectionError: connection <monitor> to 159.41.226.164:27017 timed out
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:157:18)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-15 21:49:05 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:51:04 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:54:24 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:54:26 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:54:26 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:54:26 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:54:26 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:54:26 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:54:26 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:57:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:57:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:57:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 21:57:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:04:03 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:04:16 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:04:16 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:04:16 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:07:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:07:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:07:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:07:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:07:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:07:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:07:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:07:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:07:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:08:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:08:56 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:08:56 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:08:56 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:08:57 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:08:57 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:14:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:14:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:14:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:14:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:14:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:16:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:16:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:16:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:16:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:16:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:16:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:16:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:21:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:21:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:21:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:21:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:21:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:21:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:21:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:21:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:23:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:38:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:47:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:47:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:47:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:47:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:47:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:47:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:47:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:52:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:52:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:52:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:52:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:52:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:52:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:52:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:52:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:52:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:57:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:57:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:57:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:57:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:57:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:57:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:57:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 22:57:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:00:54 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:01:05 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:01:05 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:01:05 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:03:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:03:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:03:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:03:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:04:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:07:59 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:08:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:08:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:08:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:08:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:08:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:08:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:08:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:08:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:09:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:09:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:09:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:09:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:09:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:09:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:15:06 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:15:17 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:15:17 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:15:17 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:15:17 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:15:17 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:33:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:33:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:33:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:33:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:33:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:33:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:44:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:44:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:44:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:44:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-15 23:46:01 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-15 23:46:01 [[33mwarn[39m]: Redis reconnecting…
+2026-06-15 23:46:01 [[33mwarn[39m]: isRefreshTokenRevoked check failed (fail-open): read ETIMEDOUT
+2026-06-15 23:46:01 [[33mwarn[39m]: isRefreshTokenRevoked check failed (fail-open): read ETIMEDOUT
+2026-06-15 23:46:01 [[32minfo[39m]: Redis connected
+2026-06-15 23:46:07 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-15 23:46:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-15 23:46:07 [[32minfo[39m]: Redis connected
+2026-06-15 23:48:22 [[32minfo[39m]: Socket connected: P8wi8D3zVm8orDwGAAAe (customer:6a046e383863ae91b27233f0)
+2026-06-15 23:48:22 [[32minfo[39m]: Socket connected: Efyo7w5Eb2j_SXDBAAAf (customer:6a046e383863ae91b27233f0)
+2026-06-15 23:48:24 [[32minfo[39m]: Socket connected: EEFauPh7YZ3Qtl4qAAAh (customer:6a046e383863ae91b27233f0)
+2026-06-15 23:48:28 [[32minfo[39m]: Socket disconnected: P8wi8D3zVm8orDwGAAAe (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-15 23:48:28 [[32minfo[39m]: Socket disconnected: Efyo7w5Eb2j_SXDBAAAf (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-15 23:48:28 [[32minfo[39m]: Socket disconnected: EEFauPh7YZ3Qtl4qAAAh (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-15 23:48:28 [[32minfo[39m]: Socket connected: nMgOjzA7mSmX8F-sAAAk (customer:6a046e383863ae91b27233f0)
+2026-06-15 23:48:28 [[32minfo[39m]: Socket connected: 94UtOaQjfjMiNc9NAAAl (customer:6a046e383863ae91b27233f0)
+2026-06-15 23:48:30 [[32minfo[39m]: Socket connected: DaYzmRs2X5MSJo4VAAAn (vendor:6a2559a376e12c06b58540f3)
+2026-06-15 23:48:37 [[32minfo[39m]: Socket disconnected: DaYzmRs2X5MSJo4VAAAn (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-15 23:48:37 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-15 23:48:38 [[32minfo[39m]: Socket connected: uay6Jw2VeEp3fANTAAAp (vendor:6a2559a376e12c06b58540f3)
+2026-06-15 23:48:53 [[32minfo[39m]: Socket connected: d9j00wVY1uX_7B5zAAAr (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:00:32 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 00:15:01 [[32minfo[39m]: Socket disconnected: uay6Jw2VeEp3fANTAAAp (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-16 00:15:01 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 00:22:56 [[32minfo[39m]: Socket disconnected: nMgOjzA7mSmX8F-sAAAk (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-16 00:22:56 [[32minfo[39m]: Socket disconnected: d9j00wVY1uX_7B5zAAAr (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-16 00:22:56 [[32minfo[39m]: Socket disconnected: 94UtOaQjfjMiNc9NAAAl (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-16 00:38:51 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-16 00:38:53 [[32minfo[39m]: Redis connected
+2026-06-16 00:38:53 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 00:38:53 [[32minfo[39m]: Redis connected
+2026-06-16 00:38:53 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 00:38:53 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 00:38:53 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 00:38:54 [[32minfo[39m]: Redis connected
+2026-06-16 00:38:54 [[32minfo[39m]: Redis connected
+2026-06-16 00:38:54 [[32minfo[39m]: Redis connected
+2026-06-16 00:38:54 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:38:54 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:38:54 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:38:54 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-16 00:38:54 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-16 00:38:54 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-16 00:38:54 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:38:54 [[32minfo[39m]: User Service running on port 3002
+2026-06-16 00:38:54 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:38:54 [[32minfo[39m]: Product Service running on port 3003
+2026-06-16 00:38:54 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:38:54 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:38:54 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-16 00:38:54 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:38:54 [[32minfo[39m]: Order Service running on port 3004
+2026-06-16 00:38:54 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-16 00:38:55 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:38:55 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-16 00:38:55 [[32minfo[39m]: Redis connected
+2026-06-16 00:38:55 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-16 00:39:04 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-16 00:39:05 [[32minfo[39m]: Redis connected
+2026-06-16 00:39:05 [[32minfo[39m]: Redis connected
+2026-06-16 00:39:05 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 00:39:05 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 00:39:06 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 00:39:06 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 00:39:06 [[32minfo[39m]: Redis connected
+2026-06-16 00:39:06 [[32minfo[39m]: Redis connected
+2026-06-16 00:39:06 [[32minfo[39m]: Redis connected
+2026-06-16 00:39:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:06 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-16 00:39:06 [[32minfo[39m]: User Service running on port 3002
+2026-06-16 00:39:06 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-16 00:39:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:06 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-16 00:39:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:06 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-16 00:39:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:07 [[32minfo[39m]: Product Service running on port 3003
+2026-06-16 00:39:07 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:07 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:07 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-16 00:39:07 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:07 [[32minfo[39m]: Order Service running on port 3004
+2026-06-16 00:39:07 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-16 00:39:07 [[32minfo[39m]: Redis connected
+2026-06-16 00:39:07 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-16 00:39:29 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-16 00:39:30 [[32minfo[39m]: Redis connected
+2026-06-16 00:39:30 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 00:39:30 [[32minfo[39m]: Redis connected
+2026-06-16 00:39:30 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 00:39:30 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 00:39:30 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 00:39:31 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:31 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-16 00:39:31 [[32minfo[39m]: Redis connected
+2026-06-16 00:39:31 [[32minfo[39m]: Redis connected
+2026-06-16 00:39:31 [[32minfo[39m]: Redis connected
+2026-06-16 00:39:31 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:31 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-16 00:39:31 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:31 [[32minfo[39m]: User Service running on port 3002
+2026-06-16 00:39:31 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:31 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-16 00:39:32 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:32 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:32 [[32minfo[39m]: Product Service running on port 3003
+2026-06-16 00:39:32 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-16 00:39:32 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:32 [[32minfo[39m]: Order Service running on port 3004
+2026-06-16 00:39:32 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:32 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-16 00:39:32 [[32minfo[39m]: Redis connected
+2026-06-16 00:39:32 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-16 00:39:33 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:39:34 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-16 00:41:03 [[32minfo[39m]: Socket connected: MsZ7CLJBNgpKlXixAAAC (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:41:03 [[32minfo[39m]: Socket connected: ZsmGAchq_la_YhW3AAAD (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:41:05 [[32minfo[39m]: Socket connected: T0UesxdyZih6RHqRAAAF (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:41:16 [[32minfo[39m]: Socket connected: 1gxo2MK5r1JCCEk_AAAH (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 00:50:32 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-16 00:50:32 [[32minfo[39m]: Redis connected
+2026-06-16 00:50:32 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 00:50:33 [[32minfo[39m]: Socket connected: mWvuq2fjhcGMcx75AAAB (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 00:50:33 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 00:50:33 [[32minfo[39m]: Redis connected
+2026-06-16 00:50:33 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 00:50:33 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 00:50:33 [[32minfo[39m]: Socket connected: la4l8-phGke0aA2TAAAD (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:50:34 [[32minfo[39m]: Redis connected
+2026-06-16 00:50:34 [[32minfo[39m]: Redis connected
+2026-06-16 00:50:34 [[32minfo[39m]: Redis connected
+2026-06-16 00:50:34 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:50:34 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:50:34 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-16 00:50:34 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-16 00:50:34 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:50:34 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:50:34 [[32minfo[39m]: User Service running on port 3002
+2026-06-16 00:50:34 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-16 00:50:34 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:50:34 [[32minfo[39m]: Socket connected: fvhOe4eQieUOnBBVAAAF (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:50:34 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-16 00:50:34 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:50:34 [[32minfo[39m]: Order Service running on port 3004
+2026-06-16 00:50:35 [[32minfo[39m]: Socket connected: POQGiAd7Myd8hra2AAAH (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:50:35 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:50:35 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:50:35 [[32minfo[39m]: Product Service running on port 3003
+2026-06-16 00:50:35 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-16 00:50:35 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:50:35 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-16 00:50:35 [[32minfo[39m]: Redis connected
+2026-06-16 00:50:35 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-16 00:50:47 [[32minfo[39m]: Socket disconnected: mWvuq2fjhcGMcx75AAAB (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-16 00:50:47 [[32minfo[39m]: Socket disconnected: la4l8-phGke0aA2TAAAD (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 00:50:48 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 00:50:49 [[32minfo[39m]: Socket connected: fTdS06Eym5l7qY5NAAAJ (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 00:50:54 [[32minfo[39m]: Socket connected: gZ-bwBLMnD9cwb81AAAL (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:50:59 [[32minfo[39m]: Socket disconnected: gZ-bwBLMnD9cwb81AAAL (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 00:50:59 [[32minfo[39m]: Socket disconnected: fTdS06Eym5l7qY5NAAAJ (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-16 00:50:59 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 00:51:01 [[32minfo[39m]: Socket connected: jxqpSMirh2scvVutAAAN (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 00:51:05 [[32minfo[39m]: Socket disconnected: jxqpSMirh2scvVutAAAN (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-16 00:51:05 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 00:51:06 [[32minfo[39m]: Socket connected: Y-529oW_oVY2KAEYAAAP (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 00:51:13 [[32minfo[39m]: Socket disconnected: Y-529oW_oVY2KAEYAAAP (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-16 00:51:13 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 00:51:14 [[32minfo[39m]: Socket connected: Arfq32jdfHUnVlpWAAAR (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 00:51:18 [[32minfo[39m]: Socket connected: lVYG7wa7ruDukF2qAAAT (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:51:19 [[32minfo[39m]: Socket connected: zgeUCBF2Yh1StIk-AAAV (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:52:03 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-16 00:52:03 [[32minfo[39m]: Socket connected: ZwkL0hu15SJhuqi8AAAC (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:52:03 [[32minfo[39m]: Socket connected: GlXuav2cb9uYwFJgAAAD (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 00:52:03 [[32minfo[39m]: Socket connected: QlOo_4Z06dscs_lPAAAF (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:52:04 [[32minfo[39m]: Redis connected
+2026-06-16 00:52:04 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 00:52:04 [[32minfo[39m]: Redis connected
+2026-06-16 00:52:04 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 00:52:04 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 00:52:05 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 00:52:05 [[32minfo[39m]: Redis connected
+2026-06-16 00:52:05 [[32minfo[39m]: Redis connected
+2026-06-16 00:52:05 [[32minfo[39m]: Redis connected
+2026-06-16 00:52:05 [[32minfo[39m]: Socket connected: QclMeYsPU9ZivNUAAAAH (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:52:05 [[32minfo[39m]: Socket connected: dhnUfUNkbvsjlLeQAAAJ (customer:6a046e383863ae91b27233f0)
+2026-06-16 00:52:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:52:06 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-16 00:52:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:52:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:52:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:52:06 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-16 00:52:06 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-16 00:52:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:52:06 [[32minfo[39m]: User Service running on port 3002
+2026-06-16 00:52:06 [[32minfo[39m]: Product Service running on port 3003
+2026-06-16 00:52:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:52:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:52:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:52:06 [[32minfo[39m]: Order Service running on port 3004
+2026-06-16 00:52:06 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-16 00:52:06 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-16 00:52:06 [[32minfo[39m]: MongoDB connected
+2026-06-16 00:52:06 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-16 00:52:06 [[32minfo[39m]: Redis connected
+2026-06-16 00:52:06 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-16 01:17:05 [[32minfo[39m]: Socket disconnected: GlXuav2cb9uYwFJgAAAD (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-16 01:17:06 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 01:30:46 [[32minfo[39m]: Socket disconnected: dhnUfUNkbvsjlLeQAAAJ (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 01:30:46 [[32minfo[39m]: Socket disconnected: QclMeYsPU9ZivNUAAAAH (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 01:30:46 [[32minfo[39m]: Socket disconnected: ZwkL0hu15SJhuqi8AAAC (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 01:30:46 [[32minfo[39m]: Socket disconnected: QlOo_4Z06dscs_lPAAAF (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-16 01:31:04 [[32minfo[39m]: Socket connected: Z1-1rQ9CGpN72JDmAAAP (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:38:30 [[32minfo[39m]: Socket disconnected: Z1-1rQ9CGpN72JDmAAAP (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 01:38:48 [[32minfo[39m]: Socket connected: xOt06a7c0Ey1uH2CAAAS (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:38:48 [[32minfo[39m]: Socket connected: PUf_eC73RCK2UsZaAAAT (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:38:51 [[32minfo[39m]: Socket connected: tlqnBq7dsuwdPyzDAAAV (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:41:52 [[32minfo[39m]: Socket disconnected: PUf_eC73RCK2UsZaAAAT (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 01:41:52 [[32minfo[39m]: Socket disconnected: xOt06a7c0Ey1uH2CAAAS (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 01:41:52 [[32minfo[39m]: Socket disconnected: tlqnBq7dsuwdPyzDAAAV (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 01:42:12 [[32minfo[39m]: Socket connected: ySAUe-qA6mHxjGymAAAY (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:42:12 [[32minfo[39m]: Socket connected: kbzASFPkjIJ-dEB8AAAZ (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:42:13 [[32minfo[39m]: Socket connected: EvDElYgCi388aeC2AAAb (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:49:18 [[32minfo[39m]: Socket disconnected: kbzASFPkjIJ-dEB8AAAZ (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-16 01:49:18 [[32minfo[39m]: Socket disconnected: ySAUe-qA6mHxjGymAAAY (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-16 01:49:20 [[32minfo[39m]: Socket disconnected: EvDElYgCi388aeC2AAAb (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-16 01:53:05 [[32minfo[39m]: Socket connected: 5ZbhpMxAtYRDKY4oAAAn (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:54:33 [[32minfo[39m]: Socket connected: gR6_MZAAiTzq82ldAAAt (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:54:40 [[32minfo[39m]: Socket connected: svqZsjR6y4JAccxaAAAv (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 01:54:48 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 01:55:32 [[32minfo[39m]: Socket disconnected: gR6_MZAAiTzq82ldAAAt (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 01:55:32 [[32minfo[39m]: Socket disconnected: svqZsjR6y4JAccxaAAAv (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-16 01:55:33 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 01:55:33 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 01:55:33 [[32minfo[39m]: Socket disconnected: 5ZbhpMxAtYRDKY4oAAAn (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 01:55:35 [[32minfo[39m]: Socket connected: KGYQHLlRerfoNmbRAAAy (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:55:35 [[32minfo[39m]: Socket connected: NrmLUI7F7r3S4djTAAAz (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:55:35 [[32minfo[39m]: Socket connected: FL92mvGfU13we1UgAAA1 (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:55:47 [[32minfo[39m]: Socket connected: 0Kd7Z7mlkLgqs3SXAAA4 (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:55:47 [[32minfo[39m]: Socket connected: 0Rj5ER-lLJDX2MfzAAA5 (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:55:49 [[32minfo[39m]: Socket connected: uL9rvef0Gv8n4HReAAA7 (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 01:55:49 [[32minfo[39m]: Socket connected: B81XlYdqwOlKnPzMAAA9 (customer:6a046e383863ae91b27233f0)
+2026-06-16 01:55:52 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 01:55:59 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 01:56:03 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 01:56:31 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 01:56:35 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 01:58:00 [[32minfo[39m]: Socket disconnected: NrmLUI7F7r3S4djTAAAz (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-16 01:58:00 [[32minfo[39m]: Socket disconnected: KGYQHLlRerfoNmbRAAAy (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-16 01:58:00 [[32minfo[39m]: Socket disconnected: FL92mvGfU13we1UgAAA1 (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-16 01:58:14 [[32minfo[39m]: Socket disconnected: uL9rvef0Gv8n4HReAAA7 (vendor:6a2559a376e12c06b58540f3) — ping timeout
+2026-06-16 01:58:14 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 01:58:14 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:01:08 [[32minfo[39m]: Socket connected: sxEVI8T62MHDgUAgAAA_ (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 02:01:09 [[32minfo[39m]: Socket connected: cXF5w6O_U9XyVexxAABB (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:01:10 [[32minfo[39m]: Socket connected: to4dAdYmiHxPwuzSAABD (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:01:11 [[32minfo[39m]: Socket connected: JigwCS4HpNqon5EiAABF (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:01:14 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:01:19 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:01:23 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:02:17 [[32minfo[39m]: Socket disconnected: JigwCS4HpNqon5EiAABF (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 02:02:17 [[32minfo[39m]: Socket disconnected: to4dAdYmiHxPwuzSAABD (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 02:02:17 [[32minfo[39m]: Socket disconnected: cXF5w6O_U9XyVexxAABB (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 02:02:17 [[32minfo[39m]: Socket disconnected: sxEVI8T62MHDgUAgAAA_ (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-16 02:02:17 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 02:02:17 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:02:18 [[32minfo[39m]: Socket disconnected: 0Kd7Z7mlkLgqs3SXAAA4 (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-16 02:02:18 [[32minfo[39m]: Socket disconnected: B81XlYdqwOlKnPzMAAA9 (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-16 02:02:18 [[32minfo[39m]: Socket disconnected: 0Rj5ER-lLJDX2MfzAAA5 (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-16 02:02:20 [[32minfo[39m]: Socket connected: 6wABvT5G40VAVCTEAABI (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:02:20 [[32minfo[39m]: Socket connected: kGOu4h4HGhriw7T-AABJ (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:02:21 [[32minfo[39m]: Socket connected: woCotXRm95vC0EIIAABL (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:02:24 [[32minfo[39m]: Socket connected: Qqdix5cmCmRdhDDkAABN (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 02:02:31 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:02:33 [[32minfo[39m]: Socket connected: fM1ysuR8ppBTaO1VAABP (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:02:33 [[32minfo[39m]: Socket connected: 7hR07LJNFA5ZmtEOAABR (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:02:35 [[32minfo[39m]: Socket connected: EcNj4BoTTsHsaIgrAABT (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:03:42 [[32minfo[39m]: Socket connected: P6k_xRlcmfR8ynazAABV (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 02:03:45 [[32minfo[39m]: Socket disconnected: P6k_xRlcmfR8ynazAABV (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-16 02:03:45 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 02:03:45 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:03:56 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:04:00 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:04:04 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:04:35 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:04:38 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:06:33 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:06:38 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:07:40 [[32minfo[39m]: Socket disconnected: 6wABvT5G40VAVCTEAABI (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-16 02:07:40 [[32minfo[39m]: Socket disconnected: kGOu4h4HGhriw7T-AABJ (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-16 02:07:42 [[32minfo[39m]: Socket disconnected: woCotXRm95vC0EIIAABL (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-16 02:07:45 [[32minfo[39m]: Socket disconnected: Qqdix5cmCmRdhDDkAABN (vendor:6a2559a376e12c06b58540f3) — ping timeout
+2026-06-16 02:07:45 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 02:07:45 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:07:48 [[32minfo[39m]: Socket connected: A_AOC3zPQJDOaoCbAABX (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:07:48 [[32minfo[39m]: Socket connected: dJQtSCZqSIpVeaT3AABZ (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 02:07:49 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:07:50 [[32minfo[39m]: Socket connected: l0G-wV0Umw8HPVy1AABb (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:07:50 [[32minfo[39m]: Socket connected: ioor-DSUFj6EgwlfAABd (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:07:52 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:07:57 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:08:09 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-16 02:08:09 [[32minfo[39m]: Socket connected: _tOUfPcrlKE4vi2SAAAB (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 02:08:09 [[32minfo[39m]: Socket connected: tD7XObOsatQwvyYTAAAD (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:08:10 [[32minfo[39m]: Socket connected: 5KT2lHhLzsoeTo35AAAH (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:08:11 [[32minfo[39m]: Socket connected: j52bpjwRwzDBINM8AAAJ (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:08:11 [[32minfo[39m]: Redis connected
+2026-06-16 02:08:11 [[32minfo[39m]: Redis connected
+2026-06-16 02:08:11 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 02:08:11 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 02:08:12 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 02:08:12 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 02:08:12 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:12 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:12 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-16 02:08:12 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-16 02:08:12 [[32minfo[39m]: Redis connected
+2026-06-16 02:08:12 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:12 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-16 02:08:12 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:12 [[32minfo[39m]: User Service running on port 3002
+2026-06-16 02:08:12 [[32minfo[39m]: Redis connected
+2026-06-16 02:08:12 [[32minfo[39m]: Redis connected
+2026-06-16 02:08:13 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:13 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-16 02:08:13 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:13 [[32minfo[39m]: Product Service running on port 3003
+2026-06-16 02:08:13 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:13 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:13 [[32minfo[39m]: Order Service running on port 3004
+2026-06-16 02:08:15 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-16 02:08:15 [[32minfo[39m]: Socket connected: BOqgxgNwrcKNAmygAAAB (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:08:16 [[32minfo[39m]: Socket connected: bsa7CH5gh4gKDGvvAAAD (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:08:16 [[32minfo[39m]: Redis connected
+2026-06-16 02:08:16 [[32minfo[39m]: Redis connected
+2026-06-16 02:08:16 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 02:08:16 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 02:08:16 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 02:08:16 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 02:08:17 [[32minfo[39m]: Socket connected: 4rnDQDiqs2DUdwEEAAAF (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 02:08:17 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:17 [[32minfo[39m]: Redis connected
+2026-06-16 02:08:17 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-16 02:08:17 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:17 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-16 02:08:17 [[32minfo[39m]: Socket connected: 1BcB1zSK-6EqQMWTAAAH (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:08:17 [[32minfo[39m]: Redis connected
+2026-06-16 02:08:17 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:17 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-16 02:08:17 [[32minfo[39m]: Redis connected
+2026-06-16 02:08:18 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:18 [[32minfo[39m]: User Service running on port 3002
+2026-06-16 02:08:18 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:18 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:18 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-16 02:08:18 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:18 [[32minfo[39m]: Product Service running on port 3003
+2026-06-16 02:08:18 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-16 02:08:18 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:18 [[32minfo[39m]: Order Service running on port 3004
+2026-06-16 02:08:18 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:08:18 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-16 02:08:18 [[32minfo[39m]: Redis connected
+2026-06-16 02:08:18 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-16 02:08:29 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:08:32 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:08:53 [[32minfo[39m]: Redis connected
+2026-06-16 02:08:53 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 02:08:54 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 02:09:00 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-16 02:09:00 [[32minfo[39m]: Redis connected
+2026-06-16 02:09:00 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-16 02:09:01 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-16 02:09:01 [[32minfo[39m]: Socket connected: WQhZJWPmZ642l6LIAAAB (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:09:01 [[32minfo[39m]: Socket connected: MQ11jA_0OYBh0AmtAAAD (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 02:09:02 [[32minfo[39m]: Redis connected
+2026-06-16 02:09:02 [[32minfo[39m]: Socket connected: BWi9A3oWlOB4CJsCAAAF (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:09:02 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:09:02 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-16 02:09:02 [[32minfo[39m]: Socket connected: Yjsd9NJQW3nOiDNDAAAH (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:09:02 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:09:02 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-16 02:09:02 [[32minfo[39m]: Redis connected
+2026-06-16 02:09:02 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:09:02 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:09:02 [[32minfo[39m]: Redis connected
+2026-06-16 02:09:02 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-16 02:09:02 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-16 02:09:03 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:09:03 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:09:03 [[32minfo[39m]: User Service running on port 3002
+2026-06-16 02:09:03 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-16 02:09:03 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:09:03 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:09:03 [[32minfo[39m]: Order Service running on port 3004
+2026-06-16 02:09:03 [[32minfo[39m]: Product Service running on port 3003
+2026-06-16 02:09:04 [[32minfo[39m]: MongoDB connected
+2026-06-16 02:09:04 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-16 02:09:04 [[32minfo[39m]: Redis connected
+2026-06-16 02:09:04 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-16 02:09:07 [[32minfo[39m]: Socket disconnected: BWi9A3oWlOB4CJsCAAAF (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 02:09:07 [[32minfo[39m]: Socket disconnected: Yjsd9NJQW3nOiDNDAAAH (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 02:09:07 [[32minfo[39m]: Socket disconnected: WQhZJWPmZ642l6LIAAAB (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 02:09:07 [[32minfo[39m]: Socket disconnected: MQ11jA_0OYBh0AmtAAAD (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-16 02:09:07 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 02:09:07 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:09:09 [[32minfo[39m]: Socket connected: xS5vOGRs7-Wmf2QqAAAK (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:09:09 [[32minfo[39m]: Socket connected: EA_4O0q2a_OzJYI0AAAL (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:09:11 [[32minfo[39m]: Socket connected: 9q--hF0SZZLoNIbkAAAN (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:09:28 [[32minfo[39m]: Socket connected: 1_O6MT71Kl1PhUrcAAAV (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 02:09:31 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:10:53 [[32minfo[39m]: Socket disconnected: 1_O6MT71Kl1PhUrcAAAV (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-16 02:10:53 [[32minfo[39m]: Socket disconnected: 9q--hF0SZZLoNIbkAAAN (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-16 02:10:53 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 02:10:53 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:10:54 [[32minfo[39m]: Socket connected: k-AXssobHdprK7ekAAAZ (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:10:54 [[32minfo[39m]: Socket connected: msRCSDRTnL7x0EMyAAAb (customer:6a046e383863ae91b27233f0)
+2026-06-16 02:11:23 [[32minfo[39m]: OTP sent to 7000610047
+2026-06-16 02:11:41 [[32minfo[39m]: Socket connected: xNGRbVkoStHqi7tsAAAd (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 02:11:46 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:11:54 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:11:58 [[32minfo[39m]: Socket disconnected: xNGRbVkoStHqi7tsAAAd (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-16 02:11:58 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 02:12:00 [[32minfo[39m]: Socket connected: et3mAoN2DyqZz5adAAAf (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 02:12:03 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:14:41 [[32minfo[39m]: Socket disconnected: et3mAoN2DyqZz5adAAAf (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-16 02:14:41 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 02:14:41 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:14:42 [[32minfo[39m]: Socket connected: dHz4DrxtbQhf9fpyAAAh (vendor:6a2559a376e12c06b58540f3)
+2026-06-16 02:14:48 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:15:46 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-16 02:19:59 [[32minfo[39m]: Socket disconnected: k-AXssobHdprK7ekAAAZ (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-16 02:20:02 [[32minfo[39m]: Socket disconnected: dHz4DrxtbQhf9fpyAAAh (vendor:6a2559a376e12c06b58540f3) — ping timeout
+2026-06-16 02:20:02 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-16 02:20:21 [[32minfo[39m]: Socket disconnected: EA_4O0q2a_OzJYI0AAAL (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-16 02:20:21 [[32minfo[39m]: Socket disconnected: xS5vOGRs7-Wmf2QqAAAK (customer:6a046e383863ae91b27233f0) — ping timeout
