@@ -51249,3 +51249,285 @@
 2026-06-16 02:20:02 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
 2026-06-16 02:20:21 [[32minfo[39m]: Socket disconnected: EA_4O0q2a_OzJYI0AAAL (customer:6a046e383863ae91b27233f0) — ping timeout
 2026-06-16 02:20:21 [[32minfo[39m]: Socket disconnected: xS5vOGRs7-Wmf2QqAAAK (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-16 02:40:56 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 02:40:59 [[32minfo[39m]: Socket disconnected: msRCSDRTnL7x0EMyAAAb (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-16 02:41:04 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 02:41:04 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 02:41:04 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 02:41:04 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 02:41:04 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 02:41:04 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 02:41:04 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 02:56:49 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 02:56:49 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 02:56:49 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:08:16 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:08:16 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:08:16 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:08:16 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:24:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:24:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:24:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:24:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:24:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:24:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:40:14 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:40:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:40:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:40:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:40:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:43:46 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:43:55 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 03:43:55 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:00:56 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:01:05 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:01:05 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:01:05 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:01:05 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:18:27 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:18:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:18:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:18:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:18:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:18:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:25:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:25:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:25:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:25:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:25:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:42:55 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:42:55 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:42:55 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:42:55 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:42:55 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:42:55 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:50:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:50:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:50:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:50:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:50:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:50:07 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:54:44 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:54:44 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:54:44 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 04:54:44 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:10:25 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:10:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:10:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:10:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:10:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:10:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:15:25 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:15:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:15:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:15:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:15:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:15:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:15:34 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:18:39 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:18:39 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:18:39 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:18:39 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:18:39 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:26:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:26:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:26:45 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:43:29 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:43:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:43:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:43:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:43:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:43:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:59:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:59:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:59:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 05:59:32 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 06:27:40 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 06:27:40 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 06:27:40 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 06:27:40 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 06:27:40 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 06:52:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 06:52:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 06:52:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 06:52:10 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 07:24:18 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 07:46:39 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 08:20:20 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 08:20:21 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 08:20:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 08:29:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 08:29:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 09:03:55 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 09:03:55 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 09:03:55 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 09:21:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 09:21:30 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 09:21:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 09:30:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 09:30:38 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 09:30:43 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 09:47:53 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 10:05:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 10:05:01 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 10:31:39 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 10:47:17 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 10:47:20 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 10:47:20 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 10:47:20 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 10:47:20 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 10:47:20 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 10:47:20 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 11:00:42 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 11:00:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 11:00:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 11:00:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 11:00:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 11:00:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 11:00:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 11:00:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 11:00:51 [[33mwarn[39m]: MongoDB disconnected
+2026-06-16 11:34:32 [[32minfo[39m]: Redis connected
+2026-06-16 11:34:32 [[32minfo[39m]: Redis connected
+2026-06-16 11:34:32 [[32minfo[39m]: Redis connected
+2026-06-16 11:34:32 [[32minfo[39m]: Redis connected
+2026-06-16 11:34:33 [[32minfo[39m]: MongoDB connected
+2026-06-16 11:34:33 [[32minfo[39m]: MongoDB connected
+2026-06-16 11:34:33 [[32minfo[39m]: MongoDB connected
+2026-06-16 11:34:33 [[32minfo[39m]: MongoDB connected
+2026-06-16 11:34:33 [[32minfo[39m]: MongoDB connected
+2026-06-16 11:34:33 [[32minfo[39m]: MongoDB connected
+2026-06-18 14:47:01 [[32minfo[39m]: Redis connected
+2026-06-18 14:47:01 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-18 14:47:01 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-18 14:47:28 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-18 14:47:28 [[33mwarn[39m]: MongoDB disconnected
+2026-06-18 14:47:29 [[32minfo[39m]: Redis connected
+2026-06-18 14:47:29 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-18 14:47:29 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-18 14:47:29 [[32minfo[39m]: Redis connected
+2026-06-18 14:47:29 [[32minfo[39m]: Redis connected
+2026-06-18 14:47:30 [[32minfo[39m]: Redis connected
+2026-06-18 14:47:30 [[32minfo[39m]: MongoDB connected
+2026-06-18 14:47:30 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-18 14:47:30 [[32minfo[39m]: MongoDB connected
+2026-06-18 14:47:30 [[32minfo[39m]: User Service running on port 3002
+2026-06-18 14:47:30 [[32minfo[39m]: MongoDB connected
+2026-06-18 14:47:30 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-18 14:47:30 [[32minfo[39m]: MongoDB connected
+2026-06-18 14:47:30 [[32minfo[39m]: MongoDB connected
+2026-06-18 14:47:30 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-18 14:47:30 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-18 14:47:30 [[32minfo[39m]: MongoDB connected
+2026-06-18 14:47:30 [[32minfo[39m]: MongoDB connected
+2026-06-18 14:47:30 [[32minfo[39m]: Order Service running on port 3004
+2026-06-18 14:47:30 [[32minfo[39m]: Product Service running on port 3003
+2026-06-18 14:47:30 [[32minfo[39m]: MongoDB connected
+2026-06-18 14:47:30 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-18 14:47:31 [[32minfo[39m]: Redis connected
+2026-06-18 14:47:31 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-18 14:52:13 [[32minfo[39m]: OTP sent to 7000610047
+2026-06-18 14:57:59 [[32minfo[39m]: Socket connected: GVqZSxA7L-EZy8Q2AAAD (admin:6a0000d3b8b024f8eff26d15)
+2026-06-18 15:22:25 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-18 15:22:34 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-18 15:22:36 [[32minfo[39m]: Redis connected
+2026-06-18 15:22:36 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-18 15:22:36 [[32minfo[39m]: Redis connected
+2026-06-18 15:22:37 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-18 15:22:37 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-18 15:22:38 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-18 15:22:39 [[32minfo[39m]: MongoDB connected
+2026-06-18 15:22:39 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-18 15:22:39 [[32minfo[39m]: MongoDB connected
+2026-06-18 15:22:40 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-18 15:22:40 [[32minfo[39m]: MongoDB connected
+2026-06-18 15:22:40 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-18 15:22:40 [[32minfo[39m]: Redis connected
+2026-06-18 15:22:41 [[32minfo[39m]: Redis connected
+2026-06-18 15:22:41 [[32minfo[39m]: Redis connected
+2026-06-18 15:22:41 [[32minfo[39m]: MongoDB connected
+2026-06-18 15:22:41 [[32minfo[39m]: User Service running on port 3002
+2026-06-18 15:22:41 [[32minfo[39m]: MongoDB connected
+2026-06-18 15:22:41 [[32minfo[39m]: MongoDB connected
+2026-06-18 15:22:41 [[32minfo[39m]: Order Service running on port 3004
+2026-06-18 15:22:41 [[32minfo[39m]: MongoDB connected
+2026-06-18 15:22:41 [[32minfo[39m]: MongoDB connected
+2026-06-18 15:22:42 [[32minfo[39m]: Product Service running on port 3003
+2026-06-18 15:22:42 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-18 15:22:41 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-18 15:22:43 [[32minfo[39m]: MongoDB connected
+2026-06-18 15:22:43 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-18 15:22:43 [[32minfo[39m]: Redis connected
+2026-06-18 15:22:43 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-18 15:38:43 [[32minfo[39m]: Socket connected: TpdjyTupkhPoXePmAAAH (customer:6a046e383863ae91b27233f0)
+2026-06-18 15:38:48 [[32minfo[39m]: Socket connected: 4QycDMCjK7a6RR7OAAAJ (rider:6a33c33d168dbc08fb748114)
+2026-06-18 15:38:49 [[31merror[39m]: TypeError: Cannot read properties of undefined (reading 'id')
+    at getRiderEarnings (/Users/namanjain/FreshMart/Freshmart/services/delivery/controllers/delivery.controller.js:250:49)
+    at Layer.handleRequest (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/layer.js:152:17)
+    at next (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/route.js:117:3)
+    at handle (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/layer.js:152:17)
+    at /Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:295:15
+    at processParams (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:582:12)
+    at next (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:291:5)
+    at Function.handle (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:186:3)
+2026-06-18 15:38:49 [[31merror[39m]: TypeError: Cannot read properties of undefined (reading 'id')
+    at getRiderJobs (/Users/namanjain/FreshMart/Freshmart/services/delivery/controllers/delivery.controller.js:47:27)
+    at Layer.handleRequest (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/layer.js:152:17)
+    at next (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/route.js:117:3)
+    at handle (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/layer.js:152:17)
+    at /Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:295:15
+    at processParams (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:582:12)
+    at next (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:291:5)
+    at Function.handle (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:186:3)
+2026-06-18 15:38:57 [[31merror[39m]: TypeError: Cannot read properties of undefined (reading 'id')
+    at getRiderJobs (/Users/namanjain/FreshMart/Freshmart/services/delivery/controllers/delivery.controller.js:47:27)
+    at Layer.handleRequest (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/layer.js:152:17)
+    at next (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/route.js:117:3)
+    at handle (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/layer.js:152:17)
+    at /Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:295:15
+    at processParams (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:582:12)
+    at next (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:291:5)
+    at Function.handle (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:186:3)
+2026-06-18 15:38:59 [[31merror[39m]: TypeError: Cannot read properties of undefined (reading 'id')
+    at getRiderEarnings (/Users/namanjain/FreshMart/Freshmart/services/delivery/controllers/delivery.controller.js:250:49)
+    at Layer.handleRequest (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/layer.js:152:17)
+    at next (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/route.js:117:3)
+    at handle (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/layer.js:152:17)
+    at /Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:295:15
+    at processParams (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:582:12)
+    at next (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:291:5)
+    at Function.handle (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:186:3)
+2026-06-18 15:52:04 [[32minfo[39m]: Socket connected: i5zaWQI817t0klRfAAAL (admin:6a0000d3b8b024f8eff26d15)
+2026-06-18 15:54:33 [[31merror[39m]: TypeError: Cannot read properties of undefined (reading 'id')
+    at toggleStatus (/Users/namanjain/FreshMart/Freshmart/services/delivery/controllers/delivery.controller.js:28:16)
+    at Layer.handleRequest (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/layer.js:152:17)
+    at next (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/route.js:117:3)
+    at handle (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/layer.js:152:17)
+    at /Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:295:15
+    at processParams (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:582:12)
+    at next (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:291:5)
+    at Function.handle (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:186:3)
+2026-06-18 15:54:34 [[31merror[39m]: TypeError: Cannot read properties of undefined (reading 'id')
+    at toggleStatus (/Users/namanjain/FreshMart/Freshmart/services/delivery/controllers/delivery.controller.js:28:16)
+    at Layer.handleRequest (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/layer.js:152:17)
+    at next (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/route.js:117:3)
+    at handle (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/Users/namanjain/FreshMart/Freshmart/node_modules/router/lib/layer.js:152:17)
+    at /Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:295:15
+    at processParams (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:582:12)
+    at next (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:291:5)
+    at Function.handle (/Users/namanjain/FreshMart/Freshmart/node_modules/router/index.js:186:3)
+2026-06-18 16:40:47 [[32minfo[39m]: Socket disconnected: i5zaWQI817t0klRfAAAL (admin:6a0000d3b8b024f8eff26d15) — transport close
+2026-06-18 16:44:43 [[32minfo[39m]: Socket disconnected: TpdjyTupkhPoXePmAAAH (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-18 16:44:43 [[32minfo[39m]: Socket disconnected: 4QycDMCjK7a6RR7OAAAJ (rider:6a33c33d168dbc08fb748114) — transport close

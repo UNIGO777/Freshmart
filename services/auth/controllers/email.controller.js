@@ -235,12 +235,13 @@ const loginAdmin = async (req, res) => {
 // a new token pair scoped to the other role.
 // Requires a valid JWT (authenticate middleware must run first).
 const Vendor = require('../../user/models/Vendor.model');
+const Rider = require('../../user/models/Rider.model');
 
 const switchRole = async (req, res) => {
   try {
     const { targetRole } = req.body;
-    if (!targetRole || ![ROLES.CUSTOMER, ROLES.VENDOR].includes(targetRole)) {
-      return sendError(res, 400, 'targetRole must be "customer" or "vendor"', ERROR_CODES.VALIDATION_ERROR);
+    if (!targetRole || ![ROLES.CUSTOMER, ROLES.VENDOR, ROLES.RIDER].includes(targetRole)) {
+      return sendError(res, 400, 'targetRole must be "customer", "vendor" or "rider"', ERROR_CODES.VALIDATION_ERROR);
     }
 
     if (req.user.role === targetRole) {
@@ -275,6 +276,30 @@ const switchRole = async (req, res) => {
           ...(vendor.email ? [{ email: vendor.email }] : []),
           ...(vendor.phone ? [{ phone: vendor.phone }] : []),
         ],
+      }).select('_id').lean();
+
+      if (!customer) return sendError(res, 404, 'No customer account linked', ERROR_CODES.NOT_FOUND);
+      targetId = customer._id.toString();
+    } else if (req.user.role === ROLES.CUSTOMER && targetRole === ROLES.RIDER) {
+      // Customer wants to switch to rider — find linked rider by phone
+      const customer = await Customer.findById(req.user.id).select('phone').lean();
+      if (!customer) return sendError(res, 404, 'Customer not found', ERROR_CODES.USER_NOT_FOUND);
+
+      const rider = await Rider.findOne({
+        ...(customer.phone ? { phone: customer.phone } : {}),
+      }).select('_id isActive').lean();
+
+      if (!rider) return sendError(res, 404, 'No rider account linked', ERROR_CODES.NOT_FOUND);
+      if (!rider.isActive) return sendError(res, 403, 'Rider account is inactive', ERROR_CODES.FORBIDDEN);
+
+      targetId = rider._id.toString();
+    } else if (req.user.role === ROLES.RIDER && targetRole === ROLES.CUSTOMER) {
+      // Rider wants to switch back to customer
+      const rider = await Rider.findById(req.user.id).select('phone').lean();
+      if (!rider) return sendError(res, 404, 'Rider not found', ERROR_CODES.USER_NOT_FOUND);
+
+      const customer = await Customer.findOne({
+        ...(rider.phone ? { phone: rider.phone } : {}),
       }).select('_id').lean();
 
       if (!customer) return sendError(res, 404, 'No customer account linked', ERROR_CODES.NOT_FOUND);

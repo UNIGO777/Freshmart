@@ -117,8 +117,11 @@ const createRider = async (req, res) => {
       customerId,
     } = req.body;
 
-    if (!name || !phone || !password) {
-      return sendError(res, 400, 'name, phone and password are required', ERROR_CODES.MISSING_FIELDS);
+    if (!name || !phone) {
+      return sendError(res, 400, 'name and phone are required', ERROR_CODES.MISSING_FIELDS);
+    }
+    if (!customerId && !password) {
+      return sendError(res, 400, 'password is required when no customerId is provided', ERROR_CODES.MISSING_FIELDS);
     }
     if (!drivingLicenseNumber || !drivingLicenseNumber.trim()) {
       return sendError(res, 400, 'Driving license number is required', ERROR_CODES.MISSING_FIELDS);
@@ -147,12 +150,12 @@ const createRider = async (req, res) => {
     }
 
     const bcrypt = require('bcryptjs');
-    const passwordHash = await bcrypt.hash(password, 12);
+    const passwordHash = password ? await bcrypt.hash(password, 12) : undefined;
 
     const rider = await Rider.create({
       name,
       phone: normalizedPhone,
-      passwordHash,
+      ...(passwordHash ? { passwordHash } : {}),
       vehicleType: vehicleType || 'bike',
       isApproved: true,
       isActive: true,

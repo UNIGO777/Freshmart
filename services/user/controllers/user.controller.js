@@ -39,6 +39,15 @@ const getProfile = async (req, res) => {
       }
     }
 
+    // Check if this customer's phone is also registered as a rider
+    if (req.user.role === ROLES.CUSTOMER && user.phone) {
+      const rider = await Rider.findOne({ phone: user.phone }).select('_id').lean();
+      if (rider) {
+        user.isAlsoRider = true;
+        user.riderId = rider._id;
+      }
+    }
+
     return sendSuccess(res, 200, 'Profile fetched', user);
   } catch (err) {
     logger.error('getProfile error:', err);
