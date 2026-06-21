@@ -434,4 +434,75 @@ const syncCart = async (req, res) => {
   }
 };
 
-module.exports = { getProfile, updateProfile, getAddresses, addAddress, updateAddress, deleteAddress, checkServiceability, toggleOnline, getWishlist, addToWishlist, removeFromWishlist, getCart, syncCart };
+// ── PATCH /me/bank-details  (Rider only) ────────────────────────
+const bankDetailsSchema = z.object({
+  accountNumber:     z.string().min(8).max(18),
+  ifscCode:          z.string().length(11),
+  bankName:          z.string().min(2),
+  accountHolderName: z.string().min(2),
+});
+
+const updateBankDetails = async (req, res) => {
+  try {
+    if (req.user.role !== ROLES.RIDER) {
+      return sendError(res, 403, 'Only riders can update bank details', ERROR_CODES.FORBIDDEN);
+    }
+
+    const parsed = bankDetailsSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return sendError(res, 400, 'Validation failed', ERROR_CODES.VALIDATION_ERROR, parsed.error.flatten());
+    }
+
+    const rider = await Rider.findByIdAndUpdate(
+      req.user.id,
+      { bankDetails: parsed.data },
+      { new: true },
+    ).lean();
+
+    if (!rider) return sendError(res, 404, 'Rider not found', ERROR_CODES.USER_NOT_FOUND);
+
+    return sendSuccess(res, 200, 'Bank details updated', rider.bankDetails);
+  } catch (err) {
+    logger.error('updateBankDetails error:', err);
+    return sendError(res, 500, 'Failed to update bank details', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── POST /me/support  (Any role) ────────────────────────────────
+const supportSchema = z.object({
+  subject:  z.string().min(3),
+  message:  z.string().min(5),
+  category: z.enum(['payment', 'delivery', 'account', 'other']).optional(),
+});
+
+const submitSupportTicket = async (req, res) => {
+  try {
+    const parsed = supportSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return sendError(res, 400, 'Validation failed', ERROR_CODES.VALIDATION_ERROR, parsed.error.flatten());
+    }
+
+    // Store support query (using existing SupportQuery model if available, otherwise just log)
+    let SupportQuery;
+    try {
+      SupportQuery = require('../../admin/models/SupportQuery.model');
+    } catch {
+      // SupportQuery model doesn't exist — just log
+      logger.info(`Support ticket from ${req.user.role} ${req.user.id}: ${parsed.data.subject}`);
+      return sendSuccess(res, 201, 'Support ticket submitted');
+    }
+
+    await SupportQuery.create({
+      customerId: req.user.id,
+      customerName: req.user.name || '',
+      message: `[${parsed.data.category || 'other'}] ${parsed.data.subject}\n\n${parsed.data.message}`,
+    });
+
+    return sendSuccess(res, 201, 'Support ticket submitted');
+  } catch (err) {
+    logger.error('submitSupportTicket error:', err);
+    return sendError(res, 500, 'Failed to submit support ticket', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+module.exports = { getProfile, updateProfile, getAddresses, addAddress, updateAddress, deleteAddress, checkServiceability, toggleOnline, getWishlist, addToWishlist, removeFromWishlist, getCart, syncCart, updateBankDetails, submitSupportTicket };

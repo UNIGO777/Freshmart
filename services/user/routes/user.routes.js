@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getProfile, updateProfile, getAddresses, addAddress, updateAddress, deleteAddress, toggleOnline, getWishlist, addToWishlist, removeFromWishlist, getCart, syncCart } = require('../controllers/user.controller');
+const { getProfile, updateProfile, getAddresses, addAddress, updateAddress, deleteAddress, toggleOnline, getWishlist, addToWishlist, removeFromWishlist, getCart, syncCart, updateBankDetails, submitSupportTicket } = require('../controllers/user.controller');
 
 const router = Router();
 
@@ -24,5 +24,9 @@ router.put('/me/cart', syncCart);
 
 // Vendor online/offline toggle
 router.patch('/toggle-online', toggleOnline);
+
+// Rider bank details + Support ticket (any role)
+router.patch('/me/bank-details', updateBankDetails);
+router.post('/me/support', submitSupportTicket);
 
 module.exports = router;

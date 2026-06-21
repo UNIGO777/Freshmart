@@ -3,8 +3,12 @@ const { z } = require('zod');
 const axios = require('axios');
 const Rider = require('../../user/models/Rider.model');
 const RiderLocation = require('../models/RiderLocation.model');
+const RiderWallet = require('../models/RiderWallet.model');
+const WalletTransaction = require('../models/WalletTransaction.model');
+const RiderSession = require('../models/RiderSession.model');
 const DeliveryJob = require('../models/DeliveryJob.model');
 const { DELIVERY_JOB_STATUS } = require('../models/DeliveryJob.model');
+const DeliveryRateConfig = require('../../admin/models/DeliveryRateConfig.model');
 const { handleRiderAccept, handleRiderReject } = require('../logic/riderAssigner');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
@@ -23,13 +27,28 @@ const toggleStatus = async (req, res) => {
       return sendError(res, 400, 'isOnline (boolean) is required', ERROR_CODES.MISSING_FIELDS);
     }
     const { isOnline } = parsed.data;
+    const riderId = req.user.id;
 
     const rider = await Rider.findByIdAndUpdate(
-      req.user.id,
-      { isOnline: parsed.data.isOnline },
+      riderId,
+      { isOnline },
       { new: true, select: 'isOnline isOnDelivery name phone vehicleType' },
     );
     if (!rider) return sendError(res, 404, 'Rider not found', ERROR_CODES.NOT_FOUND);
+
+    // Track online sessions
+    if (isOnline) {
+      // Going online — create a new session
+      await RiderSession.create({ riderId, startedAt: new Date() });
+    } else {
+      // Going offline — close the most recent open session
+      const openSession = await RiderSession.findOne({ riderId, endedAt: null }).sort({ startedAt: -1 });
+      if (openSession) {
+        openSession.endedAt = new Date();
+        openSession.durationMinutes = Math.round((openSession.endedAt - openSession.startedAt) / 60000);
+        await openSession.save();
+      }
+    }
 
     return sendSuccess(res, 200, `Rider is now ${isOnline ? 'online' : 'offline'}`, rider);
   } catch (err) {
@@ -147,14 +166,74 @@ const markDelivered = async (req, res) => {
     job.deliveredAt = new Date();
     await job.save();
 
-    // Mark rider as available again
-    await Rider.findByIdAndUpdate(req.user.id, {
+    const riderId = req.user.id;
+
+    // Mark rider as available + update earnings counters + performance
+    const riderDoc = await Rider.findByIdAndUpdate(riderId, {
       isOnDelivery: false,
       $inc: {
-        'earnings.today':    job.riderEarnings,
-        'earnings.thisWeek': job.riderEarnings,
-        'earnings.total':    job.riderEarnings,
+        'earnings.today':              job.riderEarnings,
+        'earnings.thisWeek':           job.riderEarnings,
+        'earnings.total':              job.riderEarnings,
+        'performance.totalCompleted':  1,
       },
+    }, { new: true, select: 'performance' });
+
+    // Recalculate completion rate and on-time rate
+    if (riderDoc?.performance) {
+      const p = riderDoc.performance;
+      const updates = {};
+      if (p.totalAccepted > 0) {
+        updates['performance.completionRate'] = Math.round((p.totalCompleted / p.totalAccepted) * 100);
+      }
+      // On-time: delivered within 45 minutes of assignment
+      if (job.assignedAt && job.deliveredAt) {
+        const deliveryMins = (job.deliveredAt - job.assignedAt) / 60000;
+        const isOnTime = deliveryMins <= 45;
+        // Incremental on-time calculation: track via completed count
+        // Simple approach: if on-time, rate stays same or goes up
+        if (isOnTime && p.totalCompleted > 0) {
+          // Weighted update: onTimeRate = ((prevRate * (completed-1)) + 100) / completed
+          updates['performance.onTimeRate'] = Math.round(
+            ((p.onTimeRate * (p.totalCompleted - 1)) + 100) / p.totalCompleted,
+          );
+        } else if (p.totalCompleted > 0) {
+          updates['performance.onTimeRate'] = Math.round(
+            ((p.onTimeRate * (p.totalCompleted - 1)) + 0) / p.totalCompleted,
+          );
+        }
+      }
+      if (Object.keys(updates).length > 0) {
+        await Rider.findByIdAndUpdate(riderId, updates);
+      }
+    }
+
+    // Credit rider wallet
+    const wallet = await RiderWallet.findOneAndUpdate(
+      { riderId },
+      {
+        $inc: { balance: job.riderEarnings, totalEarned: job.riderEarnings },
+        $setOnInsert: { riderId },
+      },
+      { upsert: true, new: true },
+    );
+
+    // Create wallet transaction
+    await WalletTransaction.create({
+      riderId,
+      type: 'earning',
+      amount: job.riderEarnings,
+      balanceAfter: wallet.balance,
+      jobId: job._id,
+      description: `Delivery #${job._id.toString().slice(-6).toUpperCase()} — ${job.distanceKm} km × ₹${job.ratePerKm}/km${job.surgeMultiplier > 1 ? ` × ${job.surgeMultiplier}x surge` : ''}`,
+      status: 'completed',
+    });
+
+    // Emit wallet update to rider via socket
+    emitToRiderSocket(riderId, 'wallet:updated', {
+      balance: wallet.balance,
+      earned: job.riderEarnings,
+      jobId: job._id,
     });
 
     // Sync Order Service (non-fatal)
@@ -276,6 +355,16 @@ const getRiderEarnings = async (req, res) => {
 
 // ── Helpers ───────────────────────────────────────────────────────
 
+const emitToRiderSocket = (riderId, event, payload) => {
+  axios
+    .post(
+      `http://localhost:${process.env.PORT_SOCKET || 3010}/internal/emit`,
+      { room: `rider:${riderId}`, event, payload },
+      { timeout: 3000 },
+    )
+    .catch((err) => logger.warn(`emitToRiderSocket(${event}) failed: ${err.message}`));
+};
+
 const syncOrderService = (job, status, extra = {}) => {
   axios
     .post(
@@ -304,6 +393,242 @@ const emitOrderStatus = (job, status) => {
     .catch((err) => logger.warn(`emitOrderStatus(${status}) failed: ${err.message}`));
 };
 
+// ── GET /rider/wallet ─────────────────────────────────────────────
+const getRiderWallet = async (req, res) => {
+  try {
+    const riderId = req.user.id;
+    let wallet = await RiderWallet.findOne({ riderId }).lean();
+    if (!wallet) {
+      wallet = await RiderWallet.create({ riderId });
+      wallet = wallet.toObject();
+    }
+
+    const recentTransactions = await WalletTransaction.find({ riderId })
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .lean();
+
+    return sendSuccess(res, 200, 'Wallet fetched', { wallet, recentTransactions });
+  } catch (err) {
+    logger.error('getRiderWallet error:', err);
+    return sendError(res, 500, 'Failed to fetch wallet', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── GET /rider/wallet/transactions ───────────────────────────────
+const getWalletTransactions = async (req, res) => {
+  try {
+    const riderId = req.user.id;
+    const { type, page = 1, limit = 20 } = req.query;
+
+    const filter = { riderId };
+    if (type && ['earning', 'withdrawal', 'deduction'].includes(type)) {
+      filter.type = type;
+    }
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const [transactions, total] = await Promise.all([
+      WalletTransaction.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(parseInt(limit))
+        .lean(),
+      WalletTransaction.countDocuments(filter),
+    ]);
+
+    return sendSuccess(res, 200, 'Transactions fetched', {
+      transactions,
+      total,
+      page: parseInt(page),
+      totalPages: Math.ceil(total / parseInt(limit)),
+    });
+  } catch (err) {
+    logger.error('getWalletTransactions error:', err);
+    return sendError(res, 500, 'Failed to fetch transactions', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── GET /rider/wallet/withdrawals ────────────────────────────────
+const getWalletWithdrawals = async (req, res) => {
+  try {
+    const riderId = req.user.id;
+    const { page = 1, limit = 20 } = req.query;
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    const filter = { riderId, type: { $in: ['withdrawal', 'deduction'] } };
+    const [transactions, total] = await Promise.all([
+      WalletTransaction.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(parseInt(limit))
+        .lean(),
+      WalletTransaction.countDocuments(filter),
+    ]);
+
+    return sendSuccess(res, 200, 'Withdrawals fetched', {
+      transactions,
+      total,
+      page: parseInt(page),
+      totalPages: Math.ceil(total / parseInt(limit)),
+    });
+  } catch (err) {
+    logger.error('getWalletWithdrawals error:', err);
+    return sendError(res, 500, 'Failed to fetch withdrawals', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── GET /rider/earnings/daily ────────────────────────────────────
+const getDailyEarnings = async (req, res) => {
+  try {
+    const riderId = req.user.id;
+    const days = parseInt(req.query.days) || 7;
+
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
+    startDate.setHours(0, 0, 0, 0);
+
+    const dailyData = await DeliveryJob.aggregate([
+      {
+        $match: {
+          riderId: new (require('mongoose').Types.ObjectId)(riderId),
+          status: DELIVERY_JOB_STATUS.DELIVERED,
+          deliveredAt: { $gte: startDate },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: '%Y-%m-%d', date: '$deliveredAt' },
+          },
+          totalEarnings: { $sum: '$riderEarnings' },
+          baseEarnings: {
+            $sum: {
+              $multiply: ['$distanceKm', '$ratePerKm'],
+            },
+          },
+          surgeEarnings: {
+            $sum: {
+              $subtract: [
+                '$riderEarnings',
+                { $multiply: ['$distanceKm', '$ratePerKm'] },
+              ],
+            },
+          },
+          deliveryCount: { $sum: 1 },
+          totalDistanceKm: { $sum: '$distanceKm' },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    return sendSuccess(res, 200, 'Daily earnings fetched', { dailyData, days });
+  } catch (err) {
+    logger.error('getDailyEarnings error:', err);
+    return sendError(res, 500, 'Failed to fetch daily earnings', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── GET /rider/performance ───────────────────────────────────────
+const getRiderPerformance = async (req, res) => {
+  try {
+    const rider = await Rider.findById(req.user.id)
+      .select('performance rating')
+      .lean();
+    if (!rider) return sendError(res, 404, 'Rider not found', ERROR_CODES.NOT_FOUND);
+
+    return sendSuccess(res, 200, 'Performance fetched', {
+      ...rider.performance,
+      rating: rider.rating?.average ?? 0,
+      ratingCount: rider.rating?.count ?? 0,
+    });
+  } catch (err) {
+    logger.error('getRiderPerformance error:', err);
+    return sendError(res, 500, 'Failed to fetch performance', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── GET /rider/surge-status ──────────────────────────────────────
+const getSurgeStatus = async (req, res) => {
+  try {
+    const config = await DeliveryRateConfig.getConfig();
+    return sendSuccess(res, 200, 'Surge status fetched', {
+      surgeActive: config.surgeActive,
+      surgeMultiplier: config.surgeMultiplier,
+      surgeReason: config.surgeReason,
+      ratePerKm: config.ratePerKm,
+    });
+  } catch (err) {
+    logger.error('getSurgeStatus error:', err);
+    return sendError(res, 500, 'Failed to fetch surge status', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── GET /rider/online-hours ──────────────────────────────────────
+const getOnlineHours = async (req, res) => {
+  try {
+    const riderId = req.user.id;
+
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const weekStart = new Date();
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay()); // Sunday
+    weekStart.setHours(0, 0, 0, 0);
+
+    const [todaySessions, weekSessions, currentSession] = await Promise.all([
+      RiderSession.aggregate([
+        { $match: { riderId: new (require('mongoose').Types.ObjectId)(riderId), startedAt: { $gte: todayStart }, endedAt: { $ne: null } } },
+        { $group: { _id: null, totalMinutes: { $sum: '$durationMinutes' } } },
+      ]),
+      RiderSession.aggregate([
+        { $match: { riderId: new (require('mongoose').Types.ObjectId)(riderId), startedAt: { $gte: weekStart }, endedAt: { $ne: null } } },
+        { $group: { _id: null, totalMinutes: { $sum: '$durationMinutes' } } },
+      ]),
+      RiderSession.findOne({ riderId, endedAt: null }).sort({ startedAt: -1 }).lean(),
+    ]);
+
+    // If currently online, add current session duration to today's total
+    let currentSessionMinutes = 0;
+    if (currentSession) {
+      currentSessionMinutes = Math.round((Date.now() - currentSession.startedAt.getTime()) / 60000);
+    }
+
+    const todayMinutes = (todaySessions[0]?.totalMinutes ?? 0) + currentSessionMinutes;
+    const weekMinutes = (weekSessions[0]?.totalMinutes ?? 0) + currentSessionMinutes;
+
+    return sendSuccess(res, 200, 'Online hours fetched', {
+      today: { minutes: todayMinutes, hours: Math.round(todayMinutes / 6) / 10 },
+      thisWeek: { minutes: weekMinutes, hours: Math.round(weekMinutes / 6) / 10 },
+      currentlyOnline: !!currentSession,
+      currentSessionStartedAt: currentSession?.startedAt ?? null,
+    });
+  } catch (err) {
+    logger.error('getOnlineHours error:', err);
+    return sendError(res, 500, 'Failed to fetch online hours', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── GET /rider/today-completed ───────────────────────────────────
+const getTodayCompleted = async (req, res) => {
+  try {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const jobs = await DeliveryJob.find({
+      riderId: req.user.id,
+      status: DELIVERY_JOB_STATUS.DELIVERED,
+      deliveredAt: { $gte: todayStart },
+    })
+      .sort({ deliveredAt: -1 })
+      .lean();
+
+    return sendSuccess(res, 200, 'Today completed fetched', { jobs });
+  } catch (err) {
+    logger.error('getTodayCompleted error:', err);
+    return sendError(res, 500, 'Failed to fetch today completed', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
 module.exports = {
   toggleStatus,
   getRiderJobs,
@@ -313,4 +638,12 @@ module.exports = {
   markDelivered,
   updateLocation,
   getRiderEarnings,
+  getRiderWallet,
+  getWalletTransactions,
+  getWalletWithdrawals,
+  getDailyEarnings,
+  getRiderPerformance,
+  getSurgeStatus,
+  getOnlineHours,
+  getTodayCompleted,
 };

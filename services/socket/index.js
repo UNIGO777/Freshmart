@@ -96,6 +96,22 @@ io.on('connection', (socket) => {
         logger.warn(`Failed to auto-offline vendor ${userId}: ${err.message}`);
       }
     }
+
+    // Auto-offline riders on disconnect + close open session
+    if (role === 'rider') {
+      try {
+        const axios = require('axios');
+        const DELIVERY_URL = `http://localhost:${process.env.PORT_DELIVERY || 3006}`;
+        await axios.post(
+          `${DELIVERY_URL}/internal/rider-disconnect`,
+          { riderId: userId },
+          { timeout: 5000 },
+        );
+        logger.info(`Rider ${userId} auto-set offline on disconnect`);
+      } catch (err) {
+        logger.warn(`Failed to auto-offline rider ${userId}: ${err.message}`);
+      }
+    }
   });
 
   socket.on('error', (err) => {

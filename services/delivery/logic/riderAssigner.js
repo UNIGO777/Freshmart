@@ -3,10 +3,23 @@ const axios = require('axios');
 const Rider = require('../../user/models/Rider.model');
 const DeliveryJob = require('../models/DeliveryJob.model');
 const { DELIVERY_JOB_STATUS } = require('../models/DeliveryJob.model');
+const DeliveryRateConfig = require('../../admin/models/DeliveryRateConfig.model');
 const { findNearbyRiders, BATCH_SIZE } = require('./nearbyFinder');
 const { redisClient } = require('../../../shared/db/redis');
 const { triggerNotification } = require('../../../shared/utils/notify');
 const logger = require('../../../shared/utils/logger');
+
+// ── Haversine distance (km) ──────────────────────────────────────
+const haversineKm = (lat1, lng1, lat2, lng2) => {
+  const toRad = (deg) => (deg * Math.PI) / 180;
+  const R = 6371; // Earth radius in km
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+};
 
 const ASSIGNMENT_TIMEOUT_SEC = Number(process.env.RIDER_ASSIGNMENT_TIMEOUT_SEC) || 30;
 
@@ -63,14 +76,27 @@ const initiateRiderAssignment = async ({
   orderId, subOrderId, vendorId, customerId,
   pickupLocation, dropLocation, deliveryFee,
 }) => {
-  // Rider keeps 80% of the delivery fee
-  const riderEarnings = Math.round((deliveryFee || 30) * 0.8);
+  // Fetch current rate config and lock it on this job
+  const config = await DeliveryRateConfig.getConfig();
+  const ratePerKm = config.ratePerKm;
+  const surgeMultiplier = config.surgeActive ? config.surgeMultiplier : 1;
+
+  // Calculate distance between pickup and drop
+  const distanceKm = Math.round(
+    haversineKm(pickupLocation.lat, pickupLocation.lng, dropLocation.lat, dropLocation.lng) * 100,
+  ) / 100; // Round to 2 decimals
+
+  // Earnings = distance × rate × surge (locked at assignment time)
+  const riderEarnings = Math.round(distanceKm * ratePerKm * surgeMultiplier);
 
   const job = await DeliveryJob.create({
     orderId, subOrderId, vendorId, customerId,
     pickupLocation, dropLocation,
     deliveryFee: deliveryFee || 30,
     riderEarnings,
+    ratePerKm,
+    surgeMultiplier,
+    distanceKm,
     status: DELIVERY_JOB_STATUS.PENDING,
     batchIndex: 0,
   });
@@ -125,6 +151,12 @@ const offerToRiderBatch = async (job, riders) => {
   job.status = DELIVERY_JOB_STATUS.OFFERED;
   await job.save();
 
+  // Increment totalOffered for all riders in this batch
+  await Rider.updateMany(
+    { _id: { $in: riders.map((r) => r._id) } },
+    { $inc: { 'performance.totalOffered': 1 } },
+  );
+
   for (const rider of riders) {
     const riderId = rider._id.toString();
     await emitToRider(riderId, 'job:request', {
@@ -134,6 +166,9 @@ const offerToRiderBatch = async (job, riders) => {
       pickupLocation:  job.pickupLocation,
       dropLocation:    job.dropLocation,
       earnings:        job.riderEarnings,
+      distanceKm:      job.distanceKm,
+      ratePerKm:       job.ratePerKm,
+      surgeMultiplier: job.surgeMultiplier,
       expiresIn:       ASSIGNMENT_TIMEOUT_SEC,
     });
     // FCM push so rider is alerted even if the app is in the background
@@ -201,8 +236,17 @@ const handleRiderAccept = async (jobId, riderId) => {
 
   await redisClient.del(jobOfferKey(jobId));
 
-  // Mark rider as busy
-  await Rider.findByIdAndUpdate(riderId, { isOnDelivery: true });
+  // Mark rider as busy + update performance
+  const riderUpdate = await Rider.findByIdAndUpdate(riderId, {
+    isOnDelivery: true,
+    $inc: { 'performance.totalAccepted': 1 },
+  }, { new: true, select: 'performance' });
+
+  // Recalculate acceptance rate
+  if (riderUpdate?.performance?.totalOffered > 0) {
+    const rate = Math.round((riderUpdate.performance.totalAccepted / riderUpdate.performance.totalOffered) * 100);
+    await Rider.findByIdAndUpdate(riderId, { 'performance.acceptanceRate': rate });
+  }
 
   // Dismiss other offered riders
   const otherRiderIds = offer.riderIds.filter((id) => id !== riderId);
@@ -257,6 +301,17 @@ const handleRiderReject = async (jobId, riderId) => {
   if (!alreadyRejected.includes(riderId)) {
     job.rejectedRiderIds.push(riderId);
     await job.save();
+
+    // Update performance: increment totalRejected and recalculate acceptanceRate
+    const riderDoc = await Rider.findByIdAndUpdate(
+      riderId,
+      { $inc: { 'performance.totalRejected': 1 } },
+      { new: true, select: 'performance' },
+    );
+    if (riderDoc?.performance?.totalOffered > 0) {
+      const rate = Math.round((riderDoc.performance.totalAccepted / riderDoc.performance.totalOffered) * 100);
+      await Rider.findByIdAndUpdate(riderId, { 'performance.acceptanceRate': rate });
+    }
   }
 
   // Check if entire batch has responded (all either rejected or offer expired)

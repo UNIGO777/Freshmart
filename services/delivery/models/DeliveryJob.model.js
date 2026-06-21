@@ -75,8 +75,11 @@ const deliveryJobSchema = new mongoose.Schema(
     offerExpiresAt: { type: Date },
 
     // ── Financials ─────────────────────────────────────────────────
-    deliveryFee:   { type: Number, default: 0 }, // Total delivery fee charged to customer
-    riderEarnings: { type: Number, default: 0 }, // Rider's cut from this job
+    deliveryFee:     { type: Number, default: 0 }, // Total delivery fee charged to customer
+    riderEarnings:   { type: Number, default: 0 }, // Rider's cut = distanceKm × ratePerKm × surgeMultiplier
+    ratePerKm:       { type: Number, default: 0 }, // Locked at job creation time
+    surgeMultiplier: { type: Number, default: 1 }, // Locked at job creation time
+    distanceKm:      { type: Number, default: 0 }, // Haversine distance: pickup → drop
 
     // ── Status timestamps ──────────────────────────────────────────
     assignedAt:  { type: Date },

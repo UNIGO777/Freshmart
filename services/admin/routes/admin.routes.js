@@ -27,6 +27,11 @@ const { listBanners, createBanner, updateBanner,
         reorderBanners }                            = require('../controllers/banner.controller');
 const { listDeals, createDeal, updateDeal,
         toggleDeal, deleteDeal }                    = require('../controllers/deal.controller');
+const { getDeliveryConfig, updateRate,
+        updateSurge }                               = require('../controllers/delivery-config.controller');
+const { listRiderWallets, getWalletStats,
+        getRiderWalletDetail, processWithdrawal,
+        processDeduction }                          = require('../controllers/riderWallet.controller');
 
 // Auth (double-checked inside the service — gateway already enforces ADMIN)
 const { authenticate } = require('../../../gateway/middleware/auth.middleware');
@@ -97,6 +102,18 @@ router.put('/banners/reorder',      reorderBanners);   // must be before /:id
 router.patch('/banners/:id',        updateBanner);
 router.patch('/banners/:id/toggle', toggleBanner);
 router.delete('/banners/:id',       deleteBanner);
+
+// ── Rider Wallets ─────────────────────────────────────────────────
+router.get('/rider-wallets/stats',             getWalletStats);      // must be before :riderId
+router.get('/rider-wallets',                   listRiderWallets);
+router.get('/rider-wallets/:riderId',          getRiderWalletDetail);
+router.post('/rider-wallets/:riderId/withdraw', processWithdrawal);
+router.post('/rider-wallets/:riderId/deduct',   processDeduction);
+
+// ── Delivery Config (rate + surge) ────────────────────────────────
+router.get('/delivery-config',           getDeliveryConfig);
+router.patch('/delivery-config/rate',    updateRate);
+router.patch('/delivery-config/surge',   updateSurge);
 
 // ── Deal of the Day ───────────────────────────────────────────────
 router.get('/deals',                listDeals);

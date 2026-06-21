@@ -20,6 +20,7 @@ const deliveryRoutes = require('./routes/delivery.routes');
 const RiderLocation = require('./models/RiderLocation.model');
 const Rider = require('../user/models/Rider.model');
 const { initiateRiderAssignment, sweepExpiredOffers } = require('./logic/riderAssigner');
+const { authenticate } = require('../../gateway/middleware/auth.middleware');
 const logger = require('../../shared/utils/logger');
 
 const app = express();
@@ -34,9 +35,6 @@ app.use(express.json({ limit: '10kb' }));
 app.get('/health', (_req, res) => {
   res.json({ success: true, service: 'delivery', timestamp: new Date().toISOString() });
 });
-
-// ── Public routes (through gateway auth) ─────────────────────────
-app.use('/', deliveryRoutes);
 
 // ── Internal: location ping from Socket Server ────────────────────
 // POST /internal/location-update  { riderId, lat, lng, orderId? }
@@ -94,6 +92,46 @@ app.post('/internal/assign-rider', async (req, res) => {
     return res.status(500).json({ success: false });
   }
 });
+
+// ── Internal: rider disconnect (auto-offline + close session) ────
+// Called by Socket Server when a rider's socket disconnects.
+const RiderSession = require('./models/RiderSession.model');
+const DeliveryJob = require('./models/DeliveryJob.model');
+
+app.post('/internal/rider-disconnect', async (req, res) => {
+  try {
+    const { riderId } = req.body;
+    if (!riderId) return res.status(400).json({ success: false, message: 'riderId required' });
+
+    // Skip if rider has an active delivery — they should stay online/trackable
+    const activeJob = await DeliveryJob.findOne({
+      riderId,
+      status: { $in: ['accepted', 'picked'] },
+    });
+    if (activeJob) {
+      return res.json({ success: true, skipped: true, reason: 'rider has active delivery' });
+    }
+
+    // Set rider offline
+    await Rider.findByIdAndUpdate(riderId, { isOnline: false });
+
+    // Close any open session
+    const openSession = await RiderSession.findOne({ riderId, endedAt: null }).sort({ startedAt: -1 });
+    if (openSession) {
+      openSession.endedAt = new Date();
+      openSession.durationMinutes = Math.round((openSession.endedAt - openSession.startedAt) / 60000);
+      await openSession.save();
+    }
+
+    return res.json({ success: true });
+  } catch (err) {
+    logger.error('internal/rider-disconnect error:', err);
+    return res.status(500).json({ success: false });
+  }
+});
+
+// ── Authenticated rider routes ───────────────────────────────────
+app.use('/', authenticate, deliveryRoutes);
 
 // ── Global error handler ──────────────────────────────────────────
 app.use((_req, res) => res.status(404).json({ success: false, message: 'Route not found', errorCode: 'NOT_FOUND' }));
