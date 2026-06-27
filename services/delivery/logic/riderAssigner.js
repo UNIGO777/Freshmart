@@ -22,6 +22,7 @@ const haversineKm = (lat1, lng1, lat2, lng2) => {
 };
 
 const ASSIGNMENT_TIMEOUT_SEC = Number(process.env.RIDER_ASSIGNMENT_TIMEOUT_SEC) || 30;
+const PORT_ORDER = process.env.PORT_ORDER || 3004;
 
 // ── Redis key helpers ─────────────────────────────────────────────
 /** Tracks the current active batch for a job. TTL = ASSIGNMENT_TIMEOUT_SEC. */
@@ -56,7 +57,7 @@ const emitToCustomer = async (customerId, event, payload) => {
 const syncSubOrderStatus = async (orderId, subOrderId, update) => {
   try {
     await axios.post(
-      `http://localhost:${process.env.PORT_ORDER || 3004}/internal/update-suborder`,
+      `http://localhost:${PORT_ORDER}/internal/update-suborder`,
       { orderId: orderId.toString(), subOrderId: subOrderId.toString(), update },
       { timeout: 5000 },
     );
@@ -65,16 +66,37 @@ const syncSubOrderStatus = async (orderId, subOrderId, update) => {
   }
 };
 
+/** Cancel order in Order Service when no rider is available. */
+const autoCancelOrder = async (job) => {
+  try {
+    await axios.post(
+      `http://localhost:${PORT_ORDER}/internal/cancel-order`,
+      { orderId: job.orderId.toString(), reason: 'no_rider_available' },
+      { timeout: 5000 },
+    );
+  } catch (err) {
+    logger.warn(`autoCancelOrder failed for order ${job.orderId}: ${err.message}`);
+  }
+
+  // Also notify customer via socket (in case the internal endpoint didn't)
+  await emitToCustomer(job.customerId.toString(), 'order:status', {
+    orderId: job.orderId,
+    status: 'no_rider_available',
+    message: 'No delivery rider available. Your order has been cancelled.',
+  });
+};
+
 // ── Core logic ────────────────────────────────────────────────────
 
 /**
- * Create a DeliveryJob and start the rider assignment process.
+ * Create a DeliveryJob and offer to nearby riders (single batch, no cascade).
  * Called by the Delivery Service's internal `/internal/assign-rider` endpoint
- * immediately after all sub-orders are confirmed.
+ * immediately after vendor acceptance.
  */
 const initiateRiderAssignment = async ({
   orderId, subOrderId, vendorId, customerId,
   pickupLocation, dropLocation, deliveryFee,
+  deliveryInstructions,
 }) => {
   // Fetch current rate config and lock it on this job
   const config = await DeliveryRateConfig.getConfig();
@@ -92,7 +114,8 @@ const initiateRiderAssignment = async ({
   const job = await DeliveryJob.create({
     orderId, subOrderId, vendorId, customerId,
     pickupLocation, dropLocation,
-    deliveryFee: deliveryFee || 30,
+    deliveryFee: deliveryFee || 0,
+    deliveryInstructions: deliveryInstructions || '',
     riderEarnings,
     ratePerKm,
     surgeMultiplier,
@@ -102,28 +125,15 @@ const initiateRiderAssignment = async ({
   });
 
   logger.info(`DeliveryJob ${job._id} created for order ${orderId}`);
-  await tryNextBatch(job);
-};
 
-/**
- * Find the next batch of nearby riders and offer them the job.
- * If none found, mark the job as FAILED.
- */
-const tryNextBatch = async (job) => {
-  const alreadyOffered = job.offeredRiderIds.map((id) => id.toString());
-  const riders = await findNearbyRiders(job.pickupLocation, alreadyOffered, BATCH_SIZE);
+  // Find up to 3 nearby riders — single batch, no cascade
+  const riders = await findNearbyRiders(job.pickupLocation, [], BATCH_SIZE);
 
   if (riders.length === 0) {
-    logger.warn(`No available riders for job ${job._id} — marking failed`);
+    logger.warn(`No available riders for job ${job._id} — cancelling order`);
     job.status = DELIVERY_JOB_STATUS.FAILED;
     await job.save();
-
-    await emitToCustomer(job.customerId.toString(), 'order:status', {
-      orderId: job.orderId,
-      subOrderId: job.subOrderId,
-      status: 'rider_assignment_failed',
-      message: 'No rider is available nearby. We will keep trying.',
-    });
+    await autoCancelOrder(job);
     return;
   }
 
@@ -139,10 +149,10 @@ const offerToRiderBatch = async (job, riders) => {
 
   const expiresAt = new Date(Date.now() + ASSIGNMENT_TIMEOUT_SEC * 1000);
 
-  // Redis key lives for exactly the offer window — expiry drives cascade
+  // Redis key lives for exactly the offer window — expiry drives timeout
   await redisClient.set(
     jobOfferKey(jobId),
-    JSON.stringify({ riderIds, batchIndex: job.batchIndex }),
+    JSON.stringify({ riderIds, batchIndex: 0 }),
     { EX: ASSIGNMENT_TIMEOUT_SEC },
   );
 
@@ -161,43 +171,42 @@ const offerToRiderBatch = async (job, riders) => {
     const riderId = rider._id.toString();
     await emitToRider(riderId, 'job:request', {
       jobId,
-      orderId:         job.orderId,
-      subOrderId:      job.subOrderId,
-      pickupLocation:  job.pickupLocation,
-      dropLocation:    job.dropLocation,
-      earnings:        job.riderEarnings,
-      distanceKm:      job.distanceKm,
-      ratePerKm:       job.ratePerKm,
-      surgeMultiplier: job.surgeMultiplier,
-      expiresIn:       ASSIGNMENT_TIMEOUT_SEC,
+      orderId:              job.orderId,
+      subOrderId:           job.subOrderId,
+      pickupLocation:       job.pickupLocation,
+      dropLocation:         job.dropLocation,
+      earnings:             job.riderEarnings,
+      distanceKm:           job.distanceKm,
+      ratePerKm:            job.ratePerKm,
+      surgeMultiplier:      job.surgeMultiplier,
+      deliveryInstructions: job.deliveryInstructions,
+      expiresIn:            ASSIGNMENT_TIMEOUT_SEC,
     });
     // FCM push so rider is alerted even if the app is in the background
     triggerNotification('job:request', riderId, 'rider', { jobId, orderId: job.orderId.toString(), expiresIn: ASSIGNMENT_TIMEOUT_SEC });
-    logger.info(`Job ${jobId} offered to rider ${riderId} (batch ${job.batchIndex})`);
+    logger.info(`Job ${jobId} offered to rider ${riderId}`);
   }
 };
 
 /**
- * Cascade to the next batch of riders, or fail the job if no more riders are available.
- * Called when the 30s offer window expires (by background sweep) or
- * when every rider in the current batch has explicitly rejected.
+ * When the offer window expires with no acceptance, fail the job and cancel order.
+ * No cascade — single batch only.
  */
-const cascadeOrFail = async (job) => {
-  // Re-fetch to get the freshest state — race condition guard
+const handleOfferExpiry = async (job) => {
+  // Re-fetch to get the freshest state
   job = await DeliveryJob.findById(job._id);
   if (!job || ![DELIVERY_JOB_STATUS.OFFERED, DELIVERY_JOB_STATUS.PENDING].includes(job.status)) return;
 
-  // Notify the previous batch their window has closed
-  const prevStart = job.batchIndex * BATCH_SIZE;
-  const prevBatchIds = job.offeredRiderIds.slice(prevStart);
-  for (const riderId of prevBatchIds) {
+  // Notify all offered riders their window has closed
+  for (const riderId of job.offeredRiderIds) {
     await emitToRider(riderId.toString(), 'job:expired', { jobId: job._id.toString() });
   }
 
-  job.batchIndex += 1;
+  // No cascade — fail immediately
+  job.status = DELIVERY_JOB_STATUS.FAILED;
   await job.save();
 
-  await tryNextBatch(job);
+  await autoCancelOrder(job);
 };
 
 // ── Public API ────────────────────────────────────────────────────
@@ -218,8 +227,8 @@ const handleRiderAccept = async (jobId, riderId) => {
   // Validate 30s window via Redis
   const offerRaw = await redisClient.get(jobOfferKey(jobId));
   if (!offerRaw) {
-    // TTL expired — cascade in background, reject this accept
-    cascadeOrFail(job).catch((err) => logger.error(`cascade error for job ${jobId}:`, err));
+    // TTL expired — handle expiry in background, reject this accept
+    handleOfferExpiry(job).catch((err) => logger.error(`expiry error for job ${jobId}:`, err));
     return { success: false, reason: 'Offer window has expired — you were too slow' };
   }
 
@@ -287,7 +296,7 @@ const handleRiderAccept = async (jobId, riderId) => {
 
 /**
  * Handle a rider explicitly rejecting a delivery job.
- * Cascades immediately if all riders in the current batch have now responded.
+ * If all riders in the batch have rejected, fail job and cancel order.
  *
  * @returns {{ success: boolean, reason?: string }}
  */
@@ -314,17 +323,20 @@ const handleRiderReject = async (jobId, riderId) => {
     }
   }
 
-  // Check if entire batch has responded (all either rejected or offer expired)
+  // Check if entire batch has responded (all rejected)
   const offerRaw = await redisClient.get(jobOfferKey(jobId));
   if (!offerRaw) return { success: true }; // TTL expired — sweep will handle it
 
   const offer = JSON.parse(offerRaw);
   const updatedRejected = job.rejectedRiderIds.map((id) => id.toString());
-  const allBatchResponded = offer.riderIds.every((id) => updatedRejected.includes(id));
+  const allBatchRejected = offer.riderIds.every((id) => updatedRejected.includes(id));
 
-  if (allBatchResponded) {
+  if (allBatchRejected) {
+    // All riders rejected — no cascade, fail immediately
     await redisClient.del(jobOfferKey(jobId));
-    await cascadeOrFail(job);
+    job.status = DELIVERY_JOB_STATUS.FAILED;
+    await job.save();
+    await autoCancelOrder(job);
   }
 
   return { success: true };
@@ -332,7 +344,7 @@ const handleRiderReject = async (jobId, riderId) => {
 
 /**
  * Background sweep: find jobs whose offer window expired in Redis (TTL gone)
- * but are still in OFFERED state in MongoDB — trigger cascade for each.
+ * but are still in OFFERED state in MongoDB — fail and cancel for each.
  *
  * Called every 15 seconds by a setInterval in delivery/index.js.
  */
@@ -349,8 +361,8 @@ const sweepExpiredOffers = async () => {
     logger.info(`[sweep] Expiring offer for job ${jobDoc._id}`);
     const job = await DeliveryJob.findById(jobDoc._id);
     if (job && job.status === DELIVERY_JOB_STATUS.OFFERED) {
-      cascadeOrFail(job).catch((err) =>
-        logger.error(`sweep cascade failed for job ${job._id}:`, err),
+      handleOfferExpiry(job).catch((err) =>
+        logger.error(`sweep expiry failed for job ${job._id}:`, err),
       );
     }
   }

@@ -12,9 +12,12 @@ const {
   recordVendorAcceptance,
   clearRoutingState,
   emitToCustomer,
+  emitToVendor,
+  findEligibleVendor,
 } = require('../logic/vendorRouter');
 const { buildSubOrders } = require('../logic/orderSplitter');
 const Rider = require('../../user/models/Rider.model');
+const DeliveryRateConfig = require('../../admin/models/DeliveryRateConfig.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const { ORDER_STATUS, SUB_ORDER_STATUS } = require('../../../shared/constants/orderStatus');
@@ -60,8 +63,8 @@ const checkStockController = async (req, res) => {
 };
 
 // ── POST /api/orders ──────────────────────────────────────────────
-// Customer: place an order (after verifying serviceability).
-// Payment has NOT happened yet — order enters awaiting_payment or routing.
+// Customer: place an order. COD only. Backend checks inventory and
+// finds closest vendor, sends request to vendor panel.
 const placeOrder = async (req, res) => {
   try {
     const schema = z.object({
@@ -72,8 +75,9 @@ const placeOrder = async (req, res) => {
         fullAddress: z.string(),
         label: z.string().optional(),
       }),
-      paymentMethod: z.enum(['upi', 'cod']),
+      paymentMethod: z.literal('cod'),
       couponCode: z.string().optional(),
+      deliveryInstructions: z.string().max(500).optional(),
     });
 
     const parsed = schema.safeParse(req.body);
@@ -81,7 +85,7 @@ const placeOrder = async (req, res) => {
       return sendError(res, 400, 'Validation failed', ERROR_CODES.VALIDATION_ERROR, parsed.error.flatten());
     }
 
-    const { items, deliveryAddress, paymentMethod, couponCode } = parsed.data;
+    const { items, deliveryAddress, couponCode, deliveryInstructions } = parsed.data;
 
     // ── Resolve products & snapshot prices ───────────────────────
     const productIds = items.map((i) => i.productId);
@@ -106,11 +110,10 @@ const placeOrder = async (req, res) => {
       };
     });
 
-    // ── Calculate totals ──────────────────────────────────────────
+    // ── Delivery fee from admin config ────────────────────────────
+    const deliveryConfig = await DeliveryRateConfig.getConfig();
     const subtotal = orderItems.reduce((sum, i) => sum + i.sellingPrice * i.quantity, 0);
-
-    // Basic delivery fee: flat ₹30 (distance-based logic goes in Phase 5)
-    const deliveryFee = 30;
+    const deliveryFee = subtotal >= deliveryConfig.freeDeliveryThreshold ? 0 : deliveryConfig.deliveryFee;
 
     // Coupon validation
     let discountAmount = 0;
@@ -126,60 +129,67 @@ const placeOrder = async (req, res) => {
 
     const totalAmount = subtotal + deliveryFee - discountAmount;
 
-    // ── Re-run stock check ────────────────────────────────────────
-    const stockResult = await checkStock(
-      { lat: deliveryAddress.lat, lng: deliveryAddress.lng },
-      items,
-    );
-
-    if (!stockResult.serviceable) {
-      return sendError(res, 400, 'Order not serviceable in your area', ERROR_CODES.NO_VENDOR_FOUND);
+    // ── Find eligible vendor with inventory context ───────────────
+    const eligibleVendors = await findEligibleVendor(deliveryAddress, orderItems);
+    if (eligibleVendors.length === 0) {
+      return sendError(res, 400, 'No vendors available in your area', ERROR_CODES.NO_VENDOR_FOUND);
     }
+
+    // Pick closest vendor (already sorted by $nearSphere)
+    const chosenVendor = eligibleVendors[0];
 
     // ── Create order ──────────────────────────────────────────────
     const order = await Order.create({
       customerId: req.user.id,
       items: orderItems,
       deliveryAddress,
-      paymentMethod,
+      deliveryInstructions: deliveryInstructions || '',
+      paymentMethod: 'cod',
       couponCode,
       discountAmount,
       deliveryFee,
       totalAmount,
-      status: ORDER_STATUS.AWAITING_PAYMENT,
+      status: ORDER_STATUS.CONFIRMED,
       routingMeta: {
         batchIndex: 0,
-        allVendorIds: [],
-        offeredVendorIds: [],
+        allVendorIds: [chosenVendor._id],
+        offeredVendorIds: [chosenVendor._id],
         rejectedVendorIds: [],
       },
     });
 
-    // ── Coupon usage & routing ────────────────────────────────────
-    // COD: the order is committed now, so mark the coupon used and route.
-    // UPI: defer coupon usage to payment success (confirmUpiOrder) so an
-    // abandoned or failed payment doesn't permanently burn the coupon.
-    if (paymentMethod === 'cod') {
-      if (validatedCoupon) {
-        markCouponUsed(validatedCoupon._id, req.user.id).catch((err) =>
-          logger.error('markCouponUsed error:', err),
-        );
-      }
-      const requiredCategories = [...new Set(orderItems.map((i) => i.category))];
-      // Persist CONFIRMED first, then fire routing as the sole subsequent
-      // writer of this document — avoids a lost-update race on routingMeta
-      // between two concurrent saves of the same Mongoose instance.
-      order.status = ORDER_STATUS.CONFIRMED;
-      await order.save();
-      initiateRouting(order, deliveryAddress, productIds, requiredCategories).catch((err) =>
-        logger.error(`Routing failed for order ${order._id}:`, err),
+    // Mark coupon used (COD — committed immediately)
+    if (validatedCoupon) {
+      markCouponUsed(validatedCoupon._id, req.user.id).catch((err) =>
+        logger.error('markCouponUsed error:', err),
       );
     }
+
+    // ── Send order to vendor with inventory context ───────────────
+    const vendorId = chosenVendor._id.toString();
+    await emitToVendor(vendorId, 'order:incoming', {
+      orderId: order._id.toString(),
+      items: order.items,
+      deliveryAddress: order.deliveryAddress,
+      deliveryInstructions: order.deliveryInstructions,
+      inventoryContext: chosenVendor.inventoryContext,
+      expiresIn: Number(process.env.VENDOR_OFFER_TTL_SEC) || 90,
+    });
+    triggerNotification('order:incoming', vendorId, 'vendor', {
+      orderId: order._id.toString(),
+      expiresIn: Number(process.env.VENDOR_OFFER_TTL_SEC) || 90,
+    });
+
+    // Notify customer: finding vendor
+    await emitToCustomer(order.customerId.toString(), 'order:status', {
+      orderId: order._id.toString(),
+      status: 'finding_vendor',
+    });
 
     notifyAdmin(
       'new_order',
       `New Order — ₹${totalAmount}`,
-      `Order #${order._id.toString().slice(-6).toUpperCase()} placed via ${paymentMethod.toUpperCase()}`,
+      `Order #${order._id.toString().slice(-6).toUpperCase()} placed via COD`,
       { orderId: order._id.toString(), totalAmount },
     );
 
@@ -189,7 +199,7 @@ const placeOrder = async (req, res) => {
       deliveryFee,
       discountAmount,
       status: order.status,
-      paymentMethod,
+      paymentMethod: 'cod',
     });
   } catch (err) {
     logger.error('placeOrder error:', err);
@@ -400,17 +410,14 @@ const getVendorIncoming = async (req, res) => {
 };
 
 // ── PATCH /api/orders/vendor/:id/accept ──────────────────────────
-// Vendor: accept an order, specifying which items they will fulfil.
-// Body: { acceptedItems: [{ productId, quantity }] }
+// Vendor: accept entire order → build sub-order → trigger rider assignment.
 const vendorAcceptOrder = async (req, res) => {
   try {
-    const { acceptedItems } = req.body;
-    if (!Array.isArray(acceptedItems) || acceptedItems.length === 0) {
-      return sendError(res, 400, 'acceptedItems required', ERROR_CODES.MISSING_FIELDS);
-    }
-
     const order = await Order.findById(req.params.id);
     if (!order) return sendError(res, 404, 'Order not found', ERROR_CODES.NOT_FOUND);
+    if (order.status === ORDER_STATUS.CANCELLED) {
+      return sendError(res, 400, 'Order has been cancelled', ERROR_CODES.VALIDATION_ERROR);
+    }
 
     const vendorId = req.user.id;
 
@@ -418,85 +425,64 @@ const vendorAcceptOrder = async (req, res) => {
     const wasOffered = order.routingMeta.offeredVendorIds.some((v) => v.toString() === vendorId);
     if (!wasOffered) return sendError(res, 403, 'This order was not offered to you', ERROR_CODES.FORBIDDEN);
 
-    // Record acceptance in Redis routing state
-    const { allCovered, coverageState } = await recordVendorAcceptance(
-      order._id.toString(),
+    // Fetch vendor location for pickup
+    const vendor = await Vendor.findById(vendorId).select('location businessName').lean();
+    const [vendorLng = 0, vendorLat = 0] = vendor?.location?.coordinates || [];
+
+    // Build single sub-order with all items
+    order.subOrders = [{
       vendorId,
-      acceptedItems,
-    );
-
-    // Move this vendor out of offered → mark sub-order created
-    order.routingMeta.offeredVendorIds = order.routingMeta.offeredVendorIds.filter(
-      (v) => v.toString() !== vendorId,
-    );
-
-    if (allCovered) {
-      // Build sub-orders for all accepting vendors
-      const subOrders = buildSubOrders(coverageState, order.deliveryAddress);
-
-      // Fetch vendor locations to populate pickupLocation on each sub-order
-      const vendorIds = subOrders.map((so) => so.vendorId);
-      const vendors = await Vendor.find({ _id: { $in: vendorIds } })
-        .select('location businessName')
-        .lean();
-      const vendorMap = Object.fromEntries(vendors.map((v) => [v._id.toString(), v]));
-
-      order.subOrders = subOrders.map((so) => {
-        const vendor = vendorMap[so.vendorId.toString()];
-        const [vendorLng = 0, vendorLat = 0] = vendor?.location?.coordinates || [];
-        return {
-          ...so,
-          vendorId: so.vendorId,
-          status: SUB_ORDER_STATUS.VENDOR_ACCEPTED,
-          vendorAcceptedAt: new Date(),
-          dropLocation: order.deliveryAddress,
-          pickupLocation: {
-            lat: vendorLat,
-            lng: vendorLng,
-            fullAddress: vendor?.businessName || '',
-          },
-        };
-      });
-      order.status = ORDER_STATUS.CONFIRMED;
-
-      await order.save();
-      await clearRoutingState(order._id);
-
-      // Notify customer via Socket and FCM push
-      await emitToCustomer(order.customerId.toString(), 'order:confirmed', { orderId: order._id });
-      triggerNotification('order:confirmed', order.customerId.toString(), 'customer', {
-        orderId: order._id.toString(),
-      });
-
-      // Phase 5: trigger rider assignment for each sub-order (fire-and-forget)
-      for (const subOrder of order.subOrders) {
-        axios
-          .post(
-            `http://localhost:${process.env.PORT_DELIVERY || 3006}/internal/assign-rider`,
-            {
-              orderId:        order._id.toString(),
-              subOrderId:     subOrder._id.toString(),
-              vendorId:       subOrder.vendorId.toString(),
-              customerId:     order.customerId.toString(),
-              pickupLocation: subOrder.pickupLocation,
-              dropLocation:   subOrder.dropLocation,
-              deliveryFee:    order.deliveryFee,
-            },
-            { timeout: 5000 },
-          )
-          .catch((err) =>
-            logger.warn(`assign-rider call failed for subOrder ${subOrder._id}: ${err.message}`),
-          );
-      }
-
-      return sendSuccess(res, 200, 'Order accepted — all items covered', { orderId: order._id });
-    }
-
-    // Not all covered — mark vendor as responded, check cascade
+      items: order.items.map((i) => ({
+        productId: i.productId,
+        quantity: i.quantity,
+        sellingPrice: i.sellingPrice,
+        buyingPrice: i.buyingPrice,
+      })),
+      status: SUB_ORDER_STATUS.VENDOR_ACCEPTED,
+      vendorAcceptedAt: new Date(),
+      pickupLocation: {
+        lat: vendorLat,
+        lng: vendorLng,
+        fullAddress: vendor?.businessName || '',
+      },
+      dropLocation: order.deliveryAddress,
+    }];
     await order.save();
-    await handleVendorResponse(order, vendorId);
 
-    return sendSuccess(res, 200, 'Acceptance recorded — waiting for more vendors', { orderId: order._id });
+    // Clean up routing state since vendor is now assigned
+    await clearRoutingState(order._id);
+
+    // Notify customer: vendor confirmed, now finding rider
+    await emitToCustomer(order.customerId.toString(), 'order:status', {
+      orderId: order._id.toString(),
+      status: 'vendor_confirmed',
+    });
+    triggerNotification('order:confirmed', order.customerId.toString(), 'customer', {
+      orderId: order._id.toString(),
+    });
+
+    // Trigger rider assignment for the single sub-order
+    const subOrder = order.subOrders[0];
+    axios
+      .post(
+        `http://localhost:${process.env.PORT_DELIVERY || 3006}/internal/assign-rider`,
+        {
+          orderId:              order._id.toString(),
+          subOrderId:           subOrder._id.toString(),
+          vendorId:             vendorId,
+          customerId:           order.customerId.toString(),
+          pickupLocation:       subOrder.pickupLocation,
+          dropLocation:         subOrder.dropLocation,
+          deliveryFee:          order.deliveryFee,
+          deliveryInstructions: order.deliveryInstructions || '',
+        },
+        { timeout: 5000 },
+      )
+      .catch((err) =>
+        logger.warn(`assign-rider call failed for subOrder ${subOrder._id}: ${err.message}`),
+      );
+
+    return sendSuccess(res, 200, 'Order accepted', { orderId: order._id });
   } catch (err) {
     logger.error('vendorAcceptOrder error:', err);
     return sendError(res, 500, 'Failed to accept order', ERROR_CODES.INTERNAL_ERROR);
@@ -504,21 +490,36 @@ const vendorAcceptOrder = async (req, res) => {
 };
 
 // ── PATCH /api/orders/vendor/:id/reject ──────────────────────────
+// Vendor rejects → cancel order → notify customer.
 const vendorRejectOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
     if (!order) return sendError(res, 404, 'Order not found', ERROR_CODES.NOT_FOUND);
+    if (order.status === ORDER_STATUS.CANCELLED) {
+      return sendSuccess(res, 200, 'Order already cancelled');
+    }
 
     const vendorId = req.user.id;
 
-    order.routingMeta.offeredVendorIds = order.routingMeta.offeredVendorIds.filter(
-      (v) => v.toString() !== vendorId,
-    );
+    order.status = ORDER_STATUS.CANCELLED;
+    order.cancelledAt = new Date();
+    order.cancelReason = 'vendor_rejected';
     order.routingMeta.rejectedVendorIds.push(vendorId);
     await order.save();
 
-    // Attempt cascade
-    await handleVendorResponse(order, vendorId);
+    // Release coupon if used
+    if (order.couponCode) {
+      releaseCouponByCode(order.couponCode, order.customerId).catch((err) =>
+        logger.error('releaseCoupon error:', err),
+      );
+    }
+
+    // Notify customer
+    await emitToCustomer(order.customerId.toString(), 'order:status', {
+      orderId: order._id.toString(),
+      status: 'vendor_rejected',
+      message: 'Vendor could not fulfil your order.',
+    });
 
     return sendSuccess(res, 200, 'Order rejected');
   } catch (err) {
@@ -668,6 +669,50 @@ const validateCouponController = async (req, res) => {
   }
 };
 
+// ── POST /internal/cancel-order ───────────────────────────────────
+// Called by Delivery Service when no rider is available.
+const internalCancelOrder = async (req, res) => {
+  try {
+    const { orderId, reason } = req.body;
+    if (!orderId) return res.status(400).json({ success: false, message: 'orderId required' });
+
+    const order = await Order.findById(orderId);
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+
+    // Only cancel if not already in a terminal state
+    if ([ORDER_STATUS.CANCELLED, ORDER_STATUS.DELIVERED].includes(order.status)) {
+      return res.json({ success: true, message: 'Order already in terminal state' });
+    }
+
+    order.status = ORDER_STATUS.CANCELLED;
+    order.cancelledAt = new Date();
+    order.cancelReason = reason || 'no_rider_available';
+    await order.save();
+
+    // Release coupon if used
+    if (order.couponCode) {
+      releaseCouponByCode(order.couponCode, order.customerId).catch((err) =>
+        logger.error('releaseCoupon error:', err),
+      );
+    }
+
+    // Notify customer
+    await emitToCustomer(order.customerId.toString(), 'order:status', {
+      orderId: order._id.toString(),
+      status: reason || 'no_rider_available',
+      message: reason === 'no_rider_available'
+        ? 'No delivery rider available. Your order has been cancelled.'
+        : 'Your order has been cancelled.',
+    });
+
+    logger.info(`Order ${orderId} cancelled internally: ${reason}`);
+    return res.json({ success: true });
+  } catch (err) {
+    logger.error('internalCancelOrder error:', err);
+    return res.status(500).json({ success: false });
+  }
+};
+
 module.exports = {
   checkStockController,
   placeOrder,
@@ -681,4 +726,5 @@ module.exports = {
   vendorAcceptOrder,
   vendorRejectOrder,
   validateCouponController,
+  internalCancelOrder,
 };

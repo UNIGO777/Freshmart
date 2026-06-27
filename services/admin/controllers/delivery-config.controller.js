@@ -68,4 +68,44 @@ const updateSurge = async (req, res) => {
   }
 };
 
-module.exports = { getDeliveryConfig, updateRate, updateSurge };
+// ── PATCH /delivery-config/fees ────────────────────────────────
+const updateFeesSchema = z.object({
+  deliveryFee:           z.number().min(0).optional(),
+  freeDeliveryThreshold: z.number().min(0).optional(),
+});
+
+const updateFees = async (req, res) => {
+  try {
+    const parsed = updateFeesSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return sendError(res, 400, 'Invalid fee values', ERROR_CODES.VALIDATION_ERROR);
+    }
+
+    const config = await DeliveryRateConfig.getConfig();
+    if (parsed.data.deliveryFee != null) config.deliveryFee = parsed.data.deliveryFee;
+    if (parsed.data.freeDeliveryThreshold != null) config.freeDeliveryThreshold = parsed.data.freeDeliveryThreshold;
+    config.updatedBy = req.user.id;
+    await config.save();
+
+    return sendSuccess(res, 200, 'Delivery fees updated', config);
+  } catch (err) {
+    logger.error('updateFees error:', err);
+    return sendError(res, 500, 'Failed to update fees', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── GET /delivery-config/customer (public — no auth) ───────────
+const getCustomerDeliveryConfig = async (_req, res) => {
+  try {
+    const config = await DeliveryRateConfig.getConfig();
+    return sendSuccess(res, 200, 'Delivery config', {
+      deliveryFee: config.deliveryFee,
+      freeDeliveryThreshold: config.freeDeliveryThreshold,
+    });
+  } catch (err) {
+    logger.error('getCustomerDeliveryConfig error:', err);
+    return sendError(res, 500, 'Failed to fetch config', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+module.exports = { getDeliveryConfig, updateRate, updateSurge, updateFees, getCustomerDeliveryConfig };

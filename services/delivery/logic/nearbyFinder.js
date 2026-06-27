@@ -1,7 +1,7 @@
 const Rider = require('../../user/models/Rider.model');
 
 const BATCH_SIZE = 3;
-const SEARCH_RADIUS_KM = 10; // Max km radius to search for available riders
+const SEARCH_RADIUS_KM = 5; // Max km radius to search for available riders
 
 /**
  * Find up to `limit` nearest online, unoccupied, approved riders to a location.

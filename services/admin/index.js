@@ -59,6 +59,10 @@ app.get('/api/deal-of-day', async (_req, res) => {
   }
 });
 
+// Public endpoint: delivery config for customer app (fee + threshold, no auth)
+const { getCustomerDeliveryConfig } = require('./controllers/delivery-config.controller');
+app.get('/api/delivery-config/customer', getCustomerDeliveryConfig);
+
 app.use('/', adminRoutes);
 
 app.use((_req, res) => res.status(404).json({ success: false, message: 'Route not found', errorCode: 'NOT_FOUND' }));

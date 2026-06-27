@@ -28,7 +28,8 @@ const { listBanners, createBanner, updateBanner,
 const { listDeals, createDeal, updateDeal,
         toggleDeal, deleteDeal }                    = require('../controllers/deal.controller');
 const { getDeliveryConfig, updateRate,
-        updateSurge }                               = require('../controllers/delivery-config.controller');
+        updateSurge, updateFees,
+        getCustomerDeliveryConfig }                 = require('../controllers/delivery-config.controller');
 const { listRiderWallets, getWalletStats,
         getRiderWalletDetail, processWithdrawal,
         processDeduction }                          = require('../controllers/riderWallet.controller');
@@ -110,10 +111,11 @@ router.get('/rider-wallets/:riderId',          getRiderWalletDetail);
 router.post('/rider-wallets/:riderId/withdraw', processWithdrawal);
 router.post('/rider-wallets/:riderId/deduct',   processDeduction);
 
-// ── Delivery Config (rate + surge) ────────────────────────────────
+// ── Delivery Config (rate + surge + fees) ────────────────────────
 router.get('/delivery-config',           getDeliveryConfig);
 router.patch('/delivery-config/rate',    updateRate);
 router.patch('/delivery-config/surge',   updateSurge);
+router.patch('/delivery-config/fees',    updateFees);
 
 // ── Deal of the Day ───────────────────────────────────────────────
 router.get('/deals',                listDeals);

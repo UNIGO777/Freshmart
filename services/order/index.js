@@ -16,6 +16,7 @@ const morgan = require('morgan');
 const connectDB = require('../../shared/db/mongoose');
 const { connectRedis } = require('../../shared/db/redis');
 const orderRoutes = require('./routes/order.routes');
+const { authenticate } = require('../../gateway/middleware/auth.middleware');
 const Order         = require('./models/Order.model');
 const VendorEarning = require('../vendor/models/VendorEarning.model');
 const { initiateRouting } = require('./logic/vendorRouter');
@@ -65,7 +66,11 @@ app.get('/health', (_req, res) => {
   res.json({ success: true, service: 'order', timestamp: new Date().toISOString() });
 });
 
-app.use('/', orderRoutes);
+// ── Internal: cancel order (called by Delivery Service when no rider) ─
+const { internalCancelOrder } = require('./controllers/order.controller');
+app.post('/internal/cancel-order', internalCancelOrder);
+
+app.use('/', authenticate, orderRoutes);
 
 // ── Internal endpoint — called by Payment Service after UPI success ─
 // Not exposed through gateway; only reachable service-to-service.

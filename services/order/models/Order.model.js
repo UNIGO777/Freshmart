@@ -48,6 +48,7 @@ const orderItemSchema = new mongoose.Schema(
     productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
     quantity: { type: Number, required: true, min: 1 },
     sellingPrice: { type: Number, required: true },
+    buyingPrice: { type: Number, required: true },
     name: String,        // Snapshot at time of order
     category: String,
   },
@@ -95,6 +96,8 @@ const orderSchema = new mongoose.Schema(
       enum: Object.values(PAYMENT_STATUS),
       default: PAYMENT_STATUS.PENDING,
     },
+
+    deliveryInstructions: { type: String, maxlength: 500, default: '' },
 
     couponCode: String,
     discountAmount: { type: Number, default: 0 },

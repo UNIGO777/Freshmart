@@ -57213,3 +57213,1745 @@
 2026-06-22 02:20:31 [[33mwarn[39m]: MongoDB disconnected
 2026-06-22 02:20:31 [[33mwarn[39m]: MongoDB disconnected
 2026-06-22 02:20:31 [[33mwarn[39m]: MongoDB disconnected
+2026-06-22 02:37:11 [[32minfo[39m]: Redis connected
+2026-06-22 02:37:14 [[32minfo[39m]: MongoDB connected
+2026-06-22 02:37:14 [[32minfo[39m]: MongoDB connected
+2026-06-22 02:37:15 [[32minfo[39m]: MongoDB connected
+2026-06-22 02:37:15 [[32minfo[39m]: MongoDB connected
+2026-06-22 02:37:19 [[32minfo[39m]: Redis connected
+2026-06-22 02:37:19 [[32minfo[39m]: Redis connected
+2026-06-22 02:37:19 [[32minfo[39m]: MongoDB connected
+2026-06-22 02:37:20 [[32minfo[39m]: Redis connected
+2026-06-22 02:37:24 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:12:23 [[32minfo[39m]: Redis connected
+2026-06-26 15:12:23 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-26 15:12:23 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-26 15:13:00 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-26 15:13:03 [[32minfo[39m]: Redis connected
+2026-06-26 15:13:03 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-26 15:13:03 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-26 15:13:04 [[32minfo[39m]: Redis connected
+2026-06-26 15:13:04 [[32minfo[39m]: Redis connected
+2026-06-26 15:13:04 [[32minfo[39m]: Redis connected
+2026-06-26 15:13:04 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:13:04 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-26 15:13:04 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:13:04 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:13:04 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-26 15:13:04 [[32minfo[39m]: User Service running on port 3002
+2026-06-26 15:13:04 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:13:04 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-26 15:13:04 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:13:04 [[32minfo[39m]: Product Service running on port 3003
+2026-06-26 15:13:04 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:13:04 [[32minfo[39m]: Order Service running on port 3004
+2026-06-26 15:13:04 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:13:04 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-26 15:13:05 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:13:05 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-26 15:13:06 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:13:06 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-26 15:13:06 [[32minfo[39m]: Redis connected
+2026-06-26 15:13:06 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-26 15:31:48 [[32minfo[39m]: Redis connected
+2026-06-26 15:31:52 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:31:53 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:31:53 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:31:56 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:31:58 [[32minfo[39m]: Redis connected
+2026-06-26 15:31:59 [[32minfo[39m]: Redis connected
+2026-06-26 15:31:59 [[32minfo[39m]: Redis connected
+2026-06-26 15:31:59 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:32:02 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:34:36 [[32minfo[39m]: Redis connected
+2026-06-26 15:34:36 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-26 15:34:36 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-26 15:35:07 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-26 15:35:08 [[32minfo[39m]: Redis connected
+2026-06-26 15:35:08 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-26 15:35:08 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:35:08 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-26 15:35:09 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-26 15:35:10 [[32minfo[39m]: Redis connected
+2026-06-26 15:35:10 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:35:10 [[32minfo[39m]: User Service running on port 3002
+2026-06-26 15:35:10 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:35:10 [[32minfo[39m]: Redis connected
+2026-06-26 15:35:10 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-26 15:35:10 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:35:10 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-26 15:35:11 [[32minfo[39m]: Redis connected
+2026-06-26 15:35:11 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:35:11 [[32minfo[39m]: Product Service running on port 3003
+2026-06-26 15:35:11 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:35:11 [[32minfo[39m]: Order Service running on port 3004
+2026-06-26 15:35:11 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:35:11 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:35:11 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-26 15:35:11 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:35:11 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-26 15:35:11 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-26 15:35:12 [[32minfo[39m]: Redis connected
+2026-06-26 15:35:12 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-26 15:36:29 [[32minfo[39m]: Socket connected: gxuXm02lhgTDYNm-AAAH (customer:6a046e383863ae91b27233f0)
+2026-06-26 15:37:14 [[32minfo[39m]: Socket disconnected: gxuXm02lhgTDYNm-AAAH (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-26 15:38:19 [[32minfo[39m]: Socket connected: EA_mXtFvFBpoZcgnAAAJ (customer:6a046e383863ae91b27233f0)
+2026-06-26 15:38:19 [[32minfo[39m]: Socket disconnected: EA_mXtFvFBpoZcgnAAAJ (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-26 15:38:21 [[32minfo[39m]: Socket connected: lRWe7orOBHtkf0k4AAAN (customer:6a046e383863ae91b27233f0)
+2026-06-26 15:38:22 [[32minfo[39m]: Socket connected: pk7F3Pbr5IMyUvdzAAAO (customer:6a046e383863ae91b27233f0)
+2026-06-26 15:38:22 [[32minfo[39m]: Socket connected: OrYMDCoqq1PP-W_7AAAP (customer:6a046e383863ae91b27233f0)
+2026-06-26 15:39:47 [[32minfo[39m]: Socket connected: QRtGykRfMQp2_HeGAAAR (vendor:6a2559a376e12c06b58540f3)
+2026-06-26 15:40:21 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-26 15:40:46 [[32minfo[39m]: Socket connected: s7AdKMiX3V393-oMAAAZ (customer:6a046e383863ae91b27233f0)
+2026-06-26 15:41:20 [[32minfo[39m]: Socket disconnected: QRtGykRfMQp2_HeGAAAR (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-26 15:41:21 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-26 15:41:21 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-26 15:41:24 [[32minfo[39m]: Socket connected: DDuGO1xSlwd_vAXhAAAb (rider:6a33c33d168dbc08fb748114)
+2026-06-26 15:42:32 [[32minfo[39m]: Socket disconnected: DDuGO1xSlwd_vAXhAAAb (rider:6a33c33d168dbc08fb748114) — client namespace disconnect
+2026-06-26 15:42:32 [[32minfo[39m]: Rider 6a33c33d168dbc08fb748114 auto-set offline on disconnect
+2026-06-26 15:42:37 [[32minfo[39m]: Socket connected: NPP1hXm3qnse9bcsAAAd (vendor:6a2559a376e12c06b58540f3)
+2026-06-26 15:42:43 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-26 15:43:39 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-26 15:43:47 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-26 15:44:16 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-26 15:44:22 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-26 15:45:47 [[32minfo[39m]: Socket disconnected: OrYMDCoqq1PP-W_7AAAP (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-26 15:45:47 [[32minfo[39m]: Socket disconnected: lRWe7orOBHtkf0k4AAAN (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-26 15:45:47 [[32minfo[39m]: Socket disconnected: pk7F3Pbr5IMyUvdzAAAO (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-26 15:55:42 [[32minfo[39m]: Redis connected
+2026-06-26 15:55:42 [[32minfo[39m]: Redis connected
+2026-06-26 15:55:42 [[32minfo[39m]: Redis connected
+2026-06-26 15:55:42 [[32minfo[39m]: Redis connected
+2026-06-26 15:55:43 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:55:43 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:55:43 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:55:43 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:55:43 [[32minfo[39m]: MongoDB connected
+2026-06-26 15:55:43 [[32minfo[39m]: MongoDB connected
+2026-06-27 13:41:58 [[32minfo[39m]: Redis connected
+2026-06-27 13:41:58 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 13:41:58 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 13:42:10 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 13:42:12 [[32minfo[39m]: Redis connected
+2026-06-27 13:42:12 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 13:42:12 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 13:42:13 [[32minfo[39m]: MongoDB connected
+2026-06-27 13:42:13 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 13:42:13 [[32minfo[39m]: Redis connected
+2026-06-27 13:42:13 [[32minfo[39m]: MongoDB connected
+2026-06-27 13:42:13 [[32minfo[39m]: MongoDB connected
+2026-06-27 13:42:13 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 13:42:13 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 13:42:13 [[32minfo[39m]: Redis connected
+2026-06-27 13:42:13 [[32minfo[39m]: Redis connected
+2026-06-27 13:42:14 [[32minfo[39m]: MongoDB connected
+2026-06-27 13:42:14 [[32minfo[39m]: MongoDB connected
+2026-06-27 13:42:14 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 13:42:14 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 13:42:14 [[32minfo[39m]: MongoDB connected
+2026-06-27 13:42:14 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 13:42:14 [[32minfo[39m]: MongoDB connected
+2026-06-27 13:42:14 [[32minfo[39m]: MongoDB connected
+2026-06-27 13:42:14 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 13:42:14 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 13:42:14 [[32minfo[39m]: MongoDB connected
+2026-06-27 13:42:14 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 13:42:15 [[32minfo[39m]: Redis connected
+2026-06-27 13:42:15 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 14:10:03 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 14:10:03 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:04 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:04 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:05 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:05 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:05 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:05 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:05 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:06 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:06 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:06 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 14:10:06 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:06 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:06 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:06 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:06 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:06 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:06 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:06 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 14:10:07 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:07 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:07 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:08 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:08 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:08 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:08 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:08 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:08 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:08 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:08 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:08 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:08 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:08 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:08 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:08 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:08 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:08 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:08 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:08 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:08 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:09 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:09 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:09 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:09 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:09 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:09 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:09 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:09 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:09 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:09 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:09 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:09 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:10 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:10 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:10 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:10 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:11 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:11 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:11 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:11 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:11 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:11 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:11 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:11 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:10:13 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:13 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:13 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:13 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:13 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:14 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:10:14 [[32minfo[39m]: Redis connected
+2026-06-27 14:10:14 [[32minfo[39m]: Redis connected
+2026-06-27 14:10:14 [[32minfo[39m]: Redis connected
+2026-06-27 14:10:14 [[32minfo[39m]: Redis connected
+2026-06-27 14:10:14 [[32minfo[39m]: Redis connected
+2026-06-27 14:10:14 [[32minfo[39m]: Redis connected
+2026-06-27 14:10:27 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:10:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:10:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:10:35 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:10:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:10:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:10:36 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:10:37 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:36:40 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 14:36:40 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 14:36:40 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 14:36:40 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:40 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:40 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:40 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 14:36:40 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 14:36:40 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:40 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:41 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 14:36:41 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:45 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/Freshmart/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:630:28)
+    at TLSSocket.emit (node:events:509:20)
+    at Socket._onTimeout (node:net:611:8)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+2026-06-27 14:36:45 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/Freshmart/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:630:28)
+    at TLSSocket.emit (node:events:509:20)
+    at Socket._onTimeout (node:net:611:8)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+2026-06-27 14:36:45 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/Freshmart/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:630:28)
+    at TLSSocket.emit (node:events:509:20)
+    at Socket._onTimeout (node:net:611:8)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+2026-06-27 14:36:45 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/Freshmart/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:630:28)
+    at TLSSocket.emit (node:events:509:20)
+    at Socket._onTimeout (node:net:611:8)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+2026-06-27 14:36:45 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/Freshmart/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:630:28)
+    at TLSSocket.emit (node:events:509:20)
+    at Socket._onTimeout (node:net:611:8)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+2026-06-27 14:36:45 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:46 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:46 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:46 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:46 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:46 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/Freshmart/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:630:28)
+    at TLSSocket.emit (node:events:509:20)
+    at Socket._onTimeout (node:net:611:8)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+2026-06-27 14:36:46 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:49 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:49 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:49 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:49 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:49 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:49 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:49 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:50 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:50 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:50 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:50 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:50 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:50 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:50 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:50 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:50 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:50 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:50 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:50 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:50 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:50 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:50 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:50 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:51 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:51 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:51 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:51 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:51 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:51 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:51 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:51 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:51 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:51 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:51 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:51 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:52 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:52 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:53 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:53 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:53 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:53 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:53 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:53 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:53 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:53 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:53 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:53 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:55 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:55 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 14:36:55 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:55 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:55 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:55 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:55 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:55 [[32minfo[39m]: Redis connected
+2026-06-27 14:36:55 [[32minfo[39m]: Redis connected
+2026-06-27 14:36:55 [[32minfo[39m]: Redis connected
+2026-06-27 14:36:55 [[32minfo[39m]: Redis connected
+2026-06-27 14:36:55 [[32minfo[39m]: Redis connected
+2026-06-27 14:36:57 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 14:36:57 [[32minfo[39m]: Redis connected
+2026-06-27 14:37:00 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:37:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:37:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:37:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:37:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:37:09 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 14:37:09 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:06:29 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 16:06:29 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 16:06:29 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 16:06:30 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 16:06:30 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 16:06:31 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 16:06:32 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:06:31 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:06:31 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:06:31 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:06:31 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:06:31 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:06:46 [[32minfo[39m]: Redis connected
+2026-06-27 16:06:46 [[32minfo[39m]: Redis connected
+2026-06-27 16:06:46 [[32minfo[39m]: Redis connected
+2026-06-27 16:06:47 [[32minfo[39m]: Redis connected
+2026-06-27 16:06:47 [[32minfo[39m]: Redis connected
+2026-06-27 16:06:34 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:06:47 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:06:57 [[32minfo[39m]: Redis connected
+2026-06-27 16:07:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:07:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:07:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:07:08 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:07:09 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:07:09 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:35:48 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 16:35:48 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 16:35:48 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:48 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:48 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 16:35:48 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:49 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 16:35:49 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:49 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 16:35:49 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:51 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-27 16:35:51 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:53 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/Freshmart/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:630:28)
+    at TLSSocket.emit (node:events:509:20)
+    at Socket._onTimeout (node:net:611:8)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+2026-06-27 16:35:53 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/Freshmart/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:630:28)
+    at TLSSocket.emit (node:events:509:20)
+    at Socket._onTimeout (node:net:611:8)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+2026-06-27 16:35:53 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:53 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:53 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/Freshmart/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:630:28)
+    at TLSSocket.emit (node:events:509:20)
+    at Socket._onTimeout (node:net:611:8)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+2026-06-27 16:35:53 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:54 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/Freshmart/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:630:28)
+    at TLSSocket.emit (node:events:509:20)
+    at Socket._onTimeout (node:net:611:8)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+2026-06-27 16:35:54 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:54 [[31merror[39m]: Error: Connection timeout
+    at TLSSocket.onTimeout (/Users/namanjain/FreshMart/Freshmart/node_modules/@redis/client/dist/lib/client/socket.js:225:46)
+    at Object.onceWrapper (node:events:630:28)
+    at TLSSocket.emit (node:events:509:20)
+    at Socket._onTimeout (node:net:611:8)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+2026-06-27 16:35:55 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:55 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:56 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:56 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:57 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:57 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:57 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:57 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:57 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:57 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:57 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:57 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:57 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:57 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:57 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:57 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:57 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:57 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:57 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:57 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:58 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:58 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:58 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:58 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:58 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:58 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:58 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:58 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:59 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:59 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:59 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:59 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:59 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:59 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:35:59 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:35:59 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:36:00 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:00 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:00 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:36:00 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:36:01 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:01 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:02 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:02 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:02 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:36:02 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:36:02 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:36:02 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:02 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:02 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:36:02 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:36:02 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-27 16:36:04 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:04 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:04 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:04 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:04 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:04 [[33mwarn[39m]: Redis reconnecting…
+2026-06-27 16:36:04 [[32minfo[39m]: Redis connected
+2026-06-27 16:36:04 [[32minfo[39m]: Redis connected
+2026-06-27 16:36:04 [[32minfo[39m]: Redis connected
+2026-06-27 16:36:04 [[32minfo[39m]: Redis connected
+2026-06-27 16:36:05 [[32minfo[39m]: Redis connected
+2026-06-27 16:36:05 [[32minfo[39m]: Redis connected
+2026-06-27 16:36:18 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:36:19 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:36:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:36:22 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:36:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:36:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:36:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 16:36:23 [[33mwarn[39m]: MongoDB disconnected
+2026-06-27 17:17:08 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:17:10 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:10 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:17:10 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:10 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:17:10 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:17:11 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:17:12 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:12 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:12 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:17:12 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:12 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:12 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:17:12 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:17:12 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:12 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:17:12 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:12 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:12 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:12 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:17:13 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:13 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:17:13 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:13 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:13 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:17:13 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:13 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:17:13 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:17:13 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:13 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:17:18 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:17:20 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:20 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:17:20 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:20 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:17:20 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:17:20 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:17:21 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:21 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:17:21 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:21 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:17:21 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:21 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:22 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:17:22 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:22 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:22 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:22 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:17:22 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:22 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:22 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:17:22 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:22 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:17:22 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:17:23 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:23 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:17:23 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:23 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:17:23 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:23 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:17:37 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:17:38 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:38 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:17:39 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:17:39 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:39 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:17:39 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:17:40 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:40 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:17:40 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:40 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:17:40 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:40 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:17:41 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:42 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:42 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:17:42 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:42 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:42 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:42 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:17:46 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:17:47 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:47 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:17:47 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:47 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:17:47 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:17:48 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:17:49 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:49 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:17:49 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:49 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:49 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:17:49 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:17:49 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:49 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:17:49 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:50 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:50 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:50 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:17:50 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:51 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:51 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:17:51 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:51 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:17:51 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:51 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:17:52 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:17:52 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:17:52 [[32minfo[39m]: Redis connected
+2026-06-27 17:17:52 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:18:07 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:18:09 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:09 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:18:09 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:09 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:18:09 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:18:10 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:18:10 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:10 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:18:14 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:18:16 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:16 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:16 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:18:16 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:18:16 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:18:17 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:18:17 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:18 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:18:18 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:18 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:18:18 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:18 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:18 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:18 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:18:18 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:18 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:18 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:18:19 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:19 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:18:19 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:19 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:18:19 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:19 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:18:19 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:19 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:18:19 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:19 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:18:19 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:19 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:18:34 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:18:36 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:36 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:18:36 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:18:36 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:36 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:18:37 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:18:39 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:39 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:18:39 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:39 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:18:39 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:39 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:18:39 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:39 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:18:41 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:41 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:41 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:18:45 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:18:46 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:46 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:18:46 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:47 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:18:47 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:18:47 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:18:48 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:48 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:18:48 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:48 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:18:49 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:49 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:18:49 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:49 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:50 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:18:50 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:50 [[32minfo[39m]: Redis connected
+2026-06-27 17:18:50 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:18:50 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:05 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:19:09 [[32minfo[39m]: Redis connected
+2026-06-27 17:19:09 [[32minfo[39m]: Redis connected
+2026-06-27 17:19:09 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:19:09 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:19:11 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:19:12 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:19:14 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:14 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:15 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:19:15 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:19:15 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:15 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:19:16 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:17 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:19:17 [[32minfo[39m]: Redis connected
+2026-06-27 17:19:19 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:19 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:19:19 [[32minfo[39m]: Redis connected
+2026-06-27 17:19:30 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:19:34 [[32minfo[39m]: Redis connected
+2026-06-27 17:19:34 [[32minfo[39m]: Redis connected
+2026-06-27 17:19:34 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:19:34 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:19:35 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:19:36 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:19:37 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:37 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:19:38 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:38 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:19:38 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:38 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:19:39 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:39 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:19:42 [[32minfo[39m]: Redis connected
+2026-06-27 17:19:42 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:42 [[32minfo[39m]: Redis connected
+2026-06-27 17:19:42 [[32minfo[39m]: Redis connected
+2026-06-27 17:19:42 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:19:44 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:44 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:44 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:19:44 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:19:44 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:45 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:19:46 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:19:46 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:19:46 [[32minfo[39m]: Redis connected
+2026-06-27 17:19:46 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:20:05 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:20:08 [[32minfo[39m]: Redis connected
+2026-06-27 17:20:08 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:20:09 [[32minfo[39m]: Redis connected
+2026-06-27 17:20:10 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:20:10 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:20:12 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:20:14 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:14 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:20:14 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:14 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:15 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:20:15 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:20:18 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:18 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:18 [[32minfo[39m]: Redis connected
+2026-06-27 17:20:18 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:20:18 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:20:18 [[32minfo[39m]: Redis connected
+2026-06-27 17:20:18 [[32minfo[39m]: Redis connected
+2026-06-27 17:20:19 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:19 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:20:19 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:19 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:20:19 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:19 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:20:26 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:20:27 [[32minfo[39m]: Redis connected
+2026-06-27 17:20:27 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:20:28 [[32minfo[39m]: Redis connected
+2026-06-27 17:20:28 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:20:28 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:20:29 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:20:29 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:29 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:20:30 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:30 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:20:30 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:30 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:20:30 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:30 [[32minfo[39m]: Redis connected
+2026-06-27 17:20:30 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:20:30 [[32minfo[39m]: Redis connected
+2026-06-27 17:20:31 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:31 [[32minfo[39m]: Redis connected
+2026-06-27 17:20:31 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:20:31 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:31 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:20:31 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:31 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:20:31 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:31 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:20:32 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:20:32 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:20:32 [[32minfo[39m]: Redis connected
+2026-06-27 17:20:32 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:21:15 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:21:18 [[32minfo[39m]: Redis connected
+2026-06-27 17:21:19 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:21:21 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:21:21 [[32minfo[39m]: Redis connected
+2026-06-27 17:21:21 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:21:23 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:21:24 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:24 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:21:24 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:25 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:21:25 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:25 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:21:26 [[32minfo[39m]: Redis connected
+2026-06-27 17:21:26 [[32minfo[39m]: Redis connected
+2026-06-27 17:21:26 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:27 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:21:27 [[32minfo[39m]: Redis connected
+2026-06-27 17:21:27 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:27 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:21:27 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:27 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:21:27 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:27 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:21:27 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:27 [[32minfo[39m]: Redis connected
+2026-06-27 17:21:27 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:21:27 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:27 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:21:27 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:21:48 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:21:51 [[32minfo[39m]: Redis connected
+2026-06-27 17:21:52 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:21:52 [[32minfo[39m]: Redis connected
+2026-06-27 17:21:52 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:21:52 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:21:53 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:21:53 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:53 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:21:54 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:54 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:21:54 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:54 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:21:55 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:55 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:21:55 [[32minfo[39m]: Redis connected
+2026-06-27 17:21:56 [[32minfo[39m]: Redis connected
+2026-06-27 17:21:56 [[32minfo[39m]: Redis connected
+2026-06-27 17:21:56 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:56 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:21:56 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:56 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:21:56 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:56 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:21:56 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:56 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:21:57 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:21:57 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:21:57 [[32minfo[39m]: Redis connected
+2026-06-27 17:21:57 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:22:08 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:22:10 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:10 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:22:11 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:22:11 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:11 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:22:12 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:22:12 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:12 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:22:13 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:13 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:13 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:22:13 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:13 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:22:13 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:13 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:22:13 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:13 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:14 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:22:14 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:14 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:14 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:22:14 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:15 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:22:15 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:15 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:22:16 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:16 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:22:17 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:17 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:22:25 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:22:27 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:27 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:22:28 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:22:28 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:28 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:22:29 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:22:29 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:29 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:22:30 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:30 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:30 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:22:30 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:22:31 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:31 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:31 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:31 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:22:31 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:37 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:22:38 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:38 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:22:38 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:38 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:22:39 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:22:39 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:22:41 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:41 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:22:41 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:41 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:22:42 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:42 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:22:42 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:42 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:22:42 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:42 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:42 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:43 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:43 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:22:43 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:43 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:22:43 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:43 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:43 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:22:43 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:22:43 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:22:43 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:22:44 [[32minfo[39m]: Redis connected
+2026-06-27 17:22:44 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:23:49 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:23:52 [[32minfo[39m]: Redis connected
+2026-06-27 17:23:52 [[32minfo[39m]: Redis connected
+2026-06-27 17:23:52 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:23:52 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:23:52 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:23:53 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:23:53 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:23:53 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:23:54 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:23:54 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:23:54 [[32minfo[39m]: Redis connected
+2026-06-27 17:23:54 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:23:54 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:23:54 [[32minfo[39m]: Redis connected
+2026-06-27 17:23:55 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:23:55 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:23:55 [[32minfo[39m]: Redis connected
+2026-06-27 17:23:55 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:23:55 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:23:55 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:23:55 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:23:55 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:23:55 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:23:55 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:23:55 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:23:56 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:23:56 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:23:56 [[32minfo[39m]: Redis connected
+2026-06-27 17:23:56 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:24:08 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:24:10 [[32minfo[39m]: Redis connected
+2026-06-27 17:24:10 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:24:11 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:24:12 [[32minfo[39m]: Redis connected
+2026-06-27 17:24:12 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:24:14 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:24:15 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:24:15 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:24:15 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:24:15 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:24:16 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:24:16 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:24:16 [[32minfo[39m]: Redis connected
+2026-06-27 17:24:17 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:24:17 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:24:17 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:24:17 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:24:18 [[32minfo[39m]: Redis connected
+2026-06-27 17:24:18 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:24:18 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:24:18 [[32minfo[39m]: Redis connected
+2026-06-27 17:24:19 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:24:19 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:24:19 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:24:19 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:24:20 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:24:20 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:24:21 [[32minfo[39m]: Redis connected
+2026-06-27 17:24:21 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:52:38 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:52:40 [[32minfo[39m]: Redis connected
+2026-06-27 17:52:40 [[32minfo[39m]: Redis connected
+2026-06-27 17:52:40 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:52:40 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:52:40 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:52:40 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:52:42 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:52:42 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:52:42 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:52:45 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:52:46 [[32minfo[39m]: Redis connected
+2026-06-27 17:52:46 [[32minfo[39m]: Redis connected
+2026-06-27 17:52:46 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:52:46 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:52:47 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:52:47 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:52:47 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:52:47 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:52:47 [[32minfo[39m]: Redis connected
+2026-06-27 17:52:47 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:52:47 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:52:47 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:52:47 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:52:48 [[32minfo[39m]: Redis connected
+2026-06-27 17:52:48 [[32minfo[39m]: Redis connected
+2026-06-27 17:52:48 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:52:48 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:52:48 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:52:48 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:52:48 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:52:48 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:52:48 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:52:48 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:52:48 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:52:48 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:52:48 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:52:48 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:52:48 [[32minfo[39m]: Redis connected
+2026-06-27 17:52:48 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:53:45 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:53:46 [[32minfo[39m]: Redis connected
+2026-06-27 17:53:47 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:53:47 [[32minfo[39m]: Redis connected
+2026-06-27 17:53:47 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:53:47 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:53:48 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:53:49 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:53:49 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:53:49 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:53:49 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:53:49 [[32minfo[39m]: Redis connected
+2026-06-27 17:53:49 [[32minfo[39m]: Redis connected
+2026-06-27 17:53:49 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:53:49 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:53:49 [[32minfo[39m]: Redis connected
+2026-06-27 17:53:49 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:53:49 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:53:49 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:53:49 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:53:49 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:53:49 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:53:49 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:53:50 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:53:50 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:53:49 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:53:50 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:53:50 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:53:50 [[32minfo[39m]: Redis connected
+2026-06-27 17:53:50 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 17:55:32 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 17:55:33 [[32minfo[39m]: Redis connected
+2026-06-27 17:55:33 [[32minfo[39m]: Redis connected
+2026-06-27 17:55:33 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:55:33 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 17:55:33 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:55:33 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 17:55:34 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:55:34 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 17:55:34 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:55:34 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 17:55:34 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:55:35 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 17:55:35 [[32minfo[39m]: Redis connected
+2026-06-27 17:55:35 [[32minfo[39m]: Redis connected
+2026-06-27 17:55:35 [[32minfo[39m]: Redis connected
+2026-06-27 17:55:36 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:55:36 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:55:36 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 17:55:36 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:55:36 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:55:36 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:55:36 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 17:55:36 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 17:55:36 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 17:55:36 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 17:55:36 [[32minfo[39m]: MongoDB connected
+2026-06-27 17:55:36 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 17:55:37 [[32minfo[39m]: Redis connected
+2026-06-27 17:55:37 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 18:08:20 [[32minfo[39m]: Socket connected: KN6qR4Uj5wY5_vHUAAAH (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:08:30 [[32minfo[39m]: Socket connected: kp90mzWcrA9enqefAAAJ (vendor:6a2559a376e12c06b58540f3)
+2026-06-27 18:09:10 [[32minfo[39m]: Socket disconnected: KN6qR4Uj5wY5_vHUAAAH (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-27 18:09:10 [[32minfo[39m]: Socket disconnected: kp90mzWcrA9enqefAAAJ (vendor:6a2559a376e12c06b58540f3) — transport close
+2026-06-27 18:09:10 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-27 18:09:10 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-27 18:09:29 [[32minfo[39m]: Socket connected: jNHCtAMskNb6K8xFAAAN (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:09:29 [[32minfo[39m]: Socket connected: g470r4pBV_QUoEndAAAO (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:09:29 [[32minfo[39m]: Socket connected: kqaG7w50iszRgR_aAAAP (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:09:45 [[32minfo[39m]: Socket connected: mIgkv8FSM20NzhadAAAR (vendor:6a2559a376e12c06b58540f3)
+2026-06-27 18:09:53 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-27 18:10:00 [[32minfo[39m]: Socket disconnected: mIgkv8FSM20NzhadAAAR (vendor:6a2559a376e12c06b58540f3) — client namespace disconnect
+2026-06-27 18:10:01 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-27 18:10:01 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-27 18:21:47 [[32minfo[39m]: Socket disconnected: jNHCtAMskNb6K8xFAAAN (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-27 18:21:48 [[32minfo[39m]: Socket connected: mX_GE1_wrY9xBH_uAAAT (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:21:57 [[32minfo[39m]: Socket disconnected: mX_GE1_wrY9xBH_uAAAT (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-27 18:21:58 [[32minfo[39m]: Socket connected: Q-m_hwZQjZgN1iguAAAV (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:22:08 [[32minfo[39m]: Socket disconnected: kqaG7w50iszRgR_aAAAP (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-27 18:22:08 [[32minfo[39m]: Socket disconnected: g470r4pBV_QUoEndAAAO (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-27 18:22:08 [[32minfo[39m]: Socket disconnected: Q-m_hwZQjZgN1iguAAAV (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-27 18:22:33 [[32minfo[39m]: Socket connected: G5paHkFUpgohDT4ZAAAZ (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:22:33 [[32minfo[39m]: Socket connected: 05x5LnzBn_aM84H0AAAa (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:22:33 [[32minfo[39m]: Socket connected: cVMJ60J7OGAy7hZ3AAAb (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:22:56 [[32minfo[39m]: Socket disconnected: cVMJ60J7OGAy7hZ3AAAb (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-27 18:22:56 [[32minfo[39m]: Socket disconnected: 05x5LnzBn_aM84H0AAAa (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-27 18:22:56 [[32minfo[39m]: Socket disconnected: G5paHkFUpgohDT4ZAAAZ (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-27 18:23:06 [[32minfo[39m]: Socket connected: TS_QC7nUOnSguKfnAAAf (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:23:06 [[32minfo[39m]: Socket connected: C9hUU7FDM0zKpj6bAAAg (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:23:06 [[32minfo[39m]: Socket connected: WBWL1cJPyLDfKKx9AAAh (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:23:13 [[32minfo[39m]: Socket disconnected: TS_QC7nUOnSguKfnAAAf (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-27 18:23:14 [[32minfo[39m]: Socket connected: dQh2ux83RPzdWo6kAAAj (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:26:26 [[32minfo[39m]: Socket connected: Q1w5C0n5NQTJjp9NAAAr (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:26:31 [[32minfo[39m]: Socket connected: 6HnYlFZedi3v6tdgAAAt (vendor:6a2559a376e12c06b58540f3)
+2026-06-27 18:26:44 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-27 18:27:38 [[34mdebug[39m]: [internal/emit] → room="vendor:6a2559a376e12c06b58540f3" event="order:incoming"
+2026-06-27 18:27:38 [[34mdebug[39m]: [internal/emit] → room="customer:6a046e383863ae91b27233f0" event="order:status"
+2026-06-27 18:27:38 [[33mwarn[39m]: notifyAdmin failed (new_order): 
+2026-06-27 18:27:38 [[34mdebug[39m]: No FCM token for vendor:6a2559a376e12c06b58540f3 — skipping push
+2026-06-27 18:27:39 [[32minfo[39m]: Socket connected: QtUU0W8oeBHDtIqTAAAv (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:27:50 [[34mdebug[39m]: [internal/emit] → room="customer:6a046e383863ae91b27233f0" event="order:status"
+2026-06-27 18:27:51 [[32minfo[39m]: Socket disconnected: QtUU0W8oeBHDtIqTAAAv (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-27 18:28:43 [[34mdebug[39m]: [internal/emit] → room="vendor:6a2559a376e12c06b58540f3" event="order:incoming"
+2026-06-27 18:28:43 [[34mdebug[39m]: [internal/emit] → room="customer:6a046e383863ae91b27233f0" event="order:status"
+2026-06-27 18:28:43 [[33mwarn[39m]: notifyAdmin failed (new_order): 
+2026-06-27 18:28:43 [[34mdebug[39m]: No FCM token for vendor:6a2559a376e12c06b58540f3 — skipping push
+2026-06-27 18:28:45 [[32minfo[39m]: Socket connected: MPPinS98cAdwwPufAAAx (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:28:54 [[31merror[39m]: ValidationError: Order validation failed: subOrders.0.items.0.buyingPrice: Path `buyingPrice` is required.
+    at Document.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:3444:32)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2866:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 0)
+    at async SchemaDocumentArray.doValidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/schema/documentArray.js:268:3)
+    at async Promise.all (index 1)
+    at async EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2857:30)
+    at async Promise.all (index 0)
+2026-06-27 18:28:56 [[31merror[39m]: ValidationError: Order validation failed: subOrders.0.items.0.buyingPrice: Path `buyingPrice` is required.
+    at Document.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:3444:32)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2866:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 0)
+    at async SchemaDocumentArray.doValidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/schema/documentArray.js:268:3)
+    at async Promise.all (index 1)
+    at async EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2857:30)
+    at async Promise.all (index 0)
+2026-06-27 18:28:57 [[31merror[39m]: ValidationError: Order validation failed: subOrders.0.items.0.buyingPrice: Path `buyingPrice` is required.
+    at Document.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:3444:32)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2866:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 0)
+    at async SchemaDocumentArray.doValidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/schema/documentArray.js:268:3)
+    at async Promise.all (index 1)
+    at async EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2857:30)
+    at async Promise.all (index 0)
+2026-06-27 18:28:58 [[31merror[39m]: ValidationError: Order validation failed: subOrders.0.items.0.buyingPrice: Path `buyingPrice` is required.
+    at Document.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:3444:32)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2866:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 0)
+    at async SchemaDocumentArray.doValidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/schema/documentArray.js:268:3)
+    at async Promise.all (index 1)
+    at async EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2857:30)
+    at async Promise.all (index 0)
+2026-06-27 18:28:59 [[31merror[39m]: ValidationError: Order validation failed: subOrders.0.items.0.buyingPrice: Path `buyingPrice` is required.
+    at Document.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:3444:32)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2866:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 0)
+    at async SchemaDocumentArray.doValidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/schema/documentArray.js:268:3)
+    at async Promise.all (index 1)
+    at async EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2857:30)
+    at async Promise.all (index 0)
+2026-06-27 18:28:59 [[31merror[39m]: ValidationError: Order validation failed: subOrders.0.items.0.buyingPrice: Path `buyingPrice` is required.
+    at Document.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:3444:32)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2866:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 0)
+    at async SchemaDocumentArray.doValidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/schema/documentArray.js:268:3)
+    at async Promise.all (index 1)
+    at async EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2857:30)
+    at async Promise.all (index 0)
+2026-06-27 18:28:59 [[31merror[39m]: ValidationError: Order validation failed: subOrders.0.items.0.buyingPrice: Path `buyingPrice` is required.
+    at Document.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:3444:32)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2866:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 0)
+    at async SchemaDocumentArray.doValidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/schema/documentArray.js:268:3)
+    at async Promise.all (index 1)
+    at async EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2857:30)
+    at async Promise.all (index 0)
+2026-06-27 18:29:00 [[31merror[39m]: ValidationError: Order validation failed: subOrders.0.items.0.buyingPrice: Path `buyingPrice` is required.
+    at Document.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:3444:32)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2866:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 0)
+    at async SchemaDocumentArray.doValidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/schema/documentArray.js:268:3)
+    at async Promise.all (index 1)
+    at async EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2857:30)
+    at async Promise.all (index 0)
+2026-06-27 18:29:02 [[31merror[39m]: ValidationError: Order validation failed: subOrders.0.items.0.buyingPrice: Path `buyingPrice` is required.
+    at Document.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:3444:32)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at Subdocument.invalidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/types/subdocument.js:231:12)
+    at EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2866:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 0)
+    at async SchemaDocumentArray.doValidate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/schema/documentArray.js:268:3)
+    at async Promise.all (index 1)
+    at async EmbeddedDocument.validate (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/document.js:2857:30)
+    at async Promise.all (index 0)
+2026-06-27 18:29:03 [[34mdebug[39m]: [internal/emit] → room="customer:6a046e383863ae91b27233f0" event="order:status"
+2026-06-27 18:29:03 [[32minfo[39m]: Socket disconnected: MPPinS98cAdwwPufAAAx (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-27 18:30:00 [[32minfo[39m]: [cron] Reset earnings.today for 1 riders
+2026-06-27 18:32:33 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 18:32:38 [[32minfo[39m]: Socket Server running on port 3010
+2026-06-27 18:32:39 [[32minfo[39m]: Redis connected
+2026-06-27 18:32:40 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 18:32:40 [[32minfo[39m]: Redis connected
+2026-06-27 18:32:40 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-27 18:32:40 [[32minfo[39m]: Socket connected: d7yE5LoTxdICCtzbAAAD (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:32:41 [[32minfo[39m]: Socket connected: vLH09OHxcmSmb-AJAAAF (vendor:6a2559a376e12c06b58540f3)
+2026-06-27 18:32:41 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 18:32:41 [[32minfo[39m]: API Gateway running on port 3000
+2026-06-27 18:32:42 [[32minfo[39m]: MongoDB connected
+2026-06-27 18:32:42 [[32minfo[39m]: Notification Service running on port 3008
+2026-06-27 18:32:42 [[32minfo[39m]: MongoDB connected
+2026-06-27 18:32:42 [[32minfo[39m]: MongoDB connected
+2026-06-27 18:32:42 [[32minfo[39m]: Payment Service running on port 3007
+2026-06-27 18:32:42 [[32minfo[39m]: Vendor Service running on port 3005
+2026-06-27 18:32:43 [[32minfo[39m]: Redis connected
+2026-06-27 18:32:44 [[32minfo[39m]: MongoDB connected
+2026-06-27 18:32:44 [[32minfo[39m]: User Service running on port 3002
+2026-06-27 18:32:44 [[32minfo[39m]: Redis connected
+2026-06-27 18:32:44 [[32minfo[39m]: Redis connected
+2026-06-27 18:32:44 [[32minfo[39m]: MongoDB connected
+2026-06-27 18:32:44 [[32minfo[39m]: Product Service running on port 3003
+2026-06-27 18:32:44 [[32minfo[39m]: MongoDB connected
+2026-06-27 18:32:44 [[32minfo[39m]: Admin Service running on port 3009
+2026-06-27 18:32:44 [[32minfo[39m]: MongoDB connected
+2026-06-27 18:32:44 [[32minfo[39m]: MongoDB connected
+2026-06-27 18:32:44 [[32minfo[39m]: Order Service running on port 3004
+2026-06-27 18:32:44 [[32minfo[39m]: Delivery Service running on port 3006
+2026-06-27 18:32:45 [[32minfo[39m]: MongoDB connected
+2026-06-27 18:32:45 [[32minfo[39m]: Auth Service running on port 3011
+2026-06-27 18:32:45 [[32minfo[39m]: Redis connected
+2026-06-27 18:32:45 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-27 18:33:50 [[32minfo[39m]: Socket disconnected: d7yE5LoTxdICCtzbAAAD (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-27 18:33:51 [[32minfo[39m]: Socket disconnected: vLH09OHxcmSmb-AJAAAF (vendor:6a2559a376e12c06b58540f3) — ping timeout
+2026-06-27 18:33:51 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-27 18:33:51 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-27 18:33:58 [[32minfo[39m]: Socket connected: b6vABeNxUY43pNdHAAAN (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:33:58 [[32minfo[39m]: Socket connected: ZRKRUBPXa5m0Sy_3AAAO (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:33:58 [[32minfo[39m]: Socket connected: SfF0RZAle_AOc9JzAAAP (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:34:10 [[32minfo[39m]: Socket connected: DgUTnDCgCmeYmf40AAAS (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:34:10 [[32minfo[39m]: Socket connected: l-RkPE8f2P4HQxarAAAT (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:34:12 [[32minfo[39m]: Socket connected: 0C6E_fswHRXs8to4AAAV (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:34:34 [[32minfo[39m]: Socket connected: FY5S5BuZ-1TySbpZAAAX (vendor:6a2559a376e12c06b58540f3)
+2026-06-27 18:34:38 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-27 18:35:14 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-27 18:35:18 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-27 18:36:11 [[32minfo[39m]: Socket connected: HGnJHTLEJ19RVXvEAAAZ (vendor:6a2559a376e12c06b58540f3)
+2026-06-27 18:36:12 [[32minfo[39m]: Socket connected: Wv4iXTA5htrLRz-sAAAb (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:36:12 [[32minfo[39m]: Socket connected: wikBbBdsZLeVIKSvAAAd (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:36:14 [[32minfo[39m]: Socket connected: kafKyHVdNgTt0yNLAAAf (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:36:14 [[32minfo[39m]: Socket disconnected: FY5S5BuZ-1TySbpZAAAX (vendor:6a2559a376e12c06b58540f3) — transport close
+2026-06-27 18:36:14 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-27 18:36:14 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-27 18:36:14 [[32minfo[39m]: Socket disconnected: l-RkPE8f2P4HQxarAAAT (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-27 18:36:14 [[32minfo[39m]: Socket disconnected: DgUTnDCgCmeYmf40AAAS (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-27 18:36:14 [[32minfo[39m]: Socket disconnected: 0C6E_fswHRXs8to4AAAV (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-27 18:37:03 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-27 18:37:04 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-27 18:37:11 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-27 18:37:38 [[34mdebug[39m]: [internal/emit] → room="vendor:6a2559a376e12c06b58540f3" event="order:incoming"
+2026-06-27 18:37:38 [[34mdebug[39m]: [internal/emit] → room="customer:6a046e383863ae91b27233f0" event="order:status"
+2026-06-27 18:37:38 [[33mwarn[39m]: notifyAdmin failed (new_order): 
+2026-06-27 18:37:38 [[34mdebug[39m]: No FCM token for vendor:6a2559a376e12c06b58540f3 — skipping push
+2026-06-27 18:37:38 [[32minfo[39m]: Socket connected: F_1xxCVg3fxrXMASAAAh (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:37:43 [[34mdebug[39m]: [internal/emit] → room="customer:6a046e383863ae91b27233f0" event="order:status"
+2026-06-27 18:37:43 [[32minfo[39m]: Socket disconnected: F_1xxCVg3fxrXMASAAAh (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-27 18:37:50 [[34mdebug[39m]: [internal/emit] → room="vendor:6a2559a376e12c06b58540f3" event="order:incoming"
+2026-06-27 18:37:50 [[34mdebug[39m]: [internal/emit] → room="customer:6a046e383863ae91b27233f0" event="order:status"
+2026-06-27 18:37:50 [[33mwarn[39m]: notifyAdmin failed (new_order): 
+2026-06-27 18:37:50 [[34mdebug[39m]: No FCM token for vendor:6a2559a376e12c06b58540f3 — skipping push
+2026-06-27 18:37:51 [[32minfo[39m]: Socket connected: ZthFhKXkuJdBibRAAAAj (customer:6a046e383863ae91b27233f0)
+2026-06-27 18:37:54 [[34mdebug[39m]: [internal/emit] → room="customer:6a046e383863ae91b27233f0" event="order:status"
+2026-06-27 18:37:54 [[34mdebug[39m]: No FCM token for customer:6a046e383863ae91b27233f0 — skipping push
+2026-06-27 18:37:55 [[32minfo[39m]: DeliveryJob 6a3fcb2a3e0e70acfbaba1c4 created for order 6a3fcb26095686a4b590adb7
+2026-06-27 18:37:55 [[33mwarn[39m]: No available riders for job 6a3fcb2a3e0e70acfbaba1c4 — cancelling order
+2026-06-27 18:37:55 [[34mdebug[39m]: [internal/emit] → room="customer:6a046e383863ae91b27233f0" event="order:status"
+2026-06-27 18:37:55 [[32minfo[39m]: Order 6a3fcb26095686a4b590adb7 cancelled internally: no_rider_available
+2026-06-27 18:37:55 [[32minfo[39m]: Socket disconnected: ZthFhKXkuJdBibRAAAAj (customer:6a046e383863ae91b27233f0) — client namespace disconnect
+2026-06-27 18:37:55 [[34mdebug[39m]: [internal/emit] → room="customer:6a046e383863ae91b27233f0" event="order:status"
+2026-06-27 18:39:18 [[32minfo[39m]: Socket disconnected: b6vABeNxUY43pNdHAAAN (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-27 18:39:18 [[32minfo[39m]: Socket disconnected: ZRKRUBPXa5m0Sy_3AAAO (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-27 18:39:18 [[32minfo[39m]: Socket disconnected: SfF0RZAle_AOc9JzAAAP (customer:6a046e383863ae91b27233f0) — ping timeout
+2026-06-28 01:27:36 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-28 01:27:36 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-28 01:27:36 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:36 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:36 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-28 01:27:36 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-28 01:27:36 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-28 01:27:37 [[31merror[39m]: Error: read ETIMEDOUT
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+2026-06-28 01:27:36 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:37 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:37 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:37 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:37 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:37 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:37 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:37 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:37 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:37 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:38 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:38 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:39 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:39 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:39 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:39 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:39 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:39 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:39 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:39 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:39 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:39 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:39 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:39 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:39 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:39 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:40 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:40 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:40 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:40 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:40 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:40 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:40 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:40 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:40 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:40 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:41 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:41 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:41 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:41 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:41 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:41 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:41 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:41 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:42 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:42 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:42 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:42 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:42 [[31merror[39m]: MongoServerSelectionError: getaddrinfo ENOTFOUND landacers-shard-00-00.jy24n.mongodb.net
+    at Topology.selectServer (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/sdam/topology.js:348:38)
+    at async executeOperationWithRetries (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:260:22)
+    at async executeOperation (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/operations/execute_operation.js:83:16)
+    at async FindCursor._initialize (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/find_cursor.js:62:26)
+    at async FindCursor.cursorInit (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:654:13)
+    at async FindCursor.next (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:326:17)
+    at async [Symbol.asyncIterator] (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:254:34)
+    at async FindCursor.toArray (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/node_modules/mongodb/lib/cursor/abstract_cursor.js:406:26)
+    at async model.Query._find (/Users/namanjain/FreshMart/Freshmart/node_modules/mongoose/lib/query.js:2473:14)
+2026-06-28 01:27:44 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:44 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:44 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:44 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:44 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:44 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:44 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:44 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:44 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:44 [[31merror[39m]: Error: getaddrinfo ENOTFOUND glowing-sawfish-119751.upstash.io
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:121:26)
+2026-06-28 01:27:44 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:44 [[32minfo[39m]: Redis connected
+2026-06-28 01:27:45 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:45 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:45 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:45 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:45 [[33mwarn[39m]: Redis reconnecting…
+2026-06-28 01:27:45 [[32minfo[39m]: Redis connected
+2026-06-28 01:27:45 [[32minfo[39m]: Redis connected
+2026-06-28 01:27:45 [[32minfo[39m]: Redis connected
+2026-06-28 01:27:45 [[32minfo[39m]: Redis connected
+2026-06-28 01:27:45 [[32minfo[39m]: Redis connected
+2026-06-28 01:27:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-28 01:27:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-28 01:27:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-28 01:27:47 [[32minfo[39m]: Socket disconnected: HGnJHTLEJ19RVXvEAAAZ (vendor:6a2559a376e12c06b58540f3) — transport close
+2026-06-28 01:27:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-28 01:27:47 [[33mwarn[39m]: MongoDB disconnected
+2026-06-28 01:27:47 [[32minfo[39m]: Socket disconnected: Wv4iXTA5htrLRz-sAAAb (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-28 01:27:47 [[32minfo[39m]: Socket disconnected: kafKyHVdNgTt0yNLAAAf (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-28 01:27:47 [[32minfo[39m]: Socket disconnected: wikBbBdsZLeVIKSvAAAd (customer:6a046e383863ae91b27233f0) — transport close
+2026-06-28 01:27:48 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
+2026-06-28 01:27:48 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"

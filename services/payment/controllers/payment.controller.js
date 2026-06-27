@@ -252,8 +252,7 @@ const confirmCod = async (req, res) => {
     if (order.paymentMethod !== 'cod') {
       return sendError(res, 400, 'Order payment method is not COD', ERROR_CODES.VALIDATION_ERROR);
     }
-    // BUG-015: Only allow confirmation for orders in CONFIRMED state
-    if (order.status !== ORDER_STATUS.CONFIRMED) {
+    if (![ORDER_STATUS.CONFIRMED, ORDER_STATUS.AWAITING_PAYMENT].includes(order.status)) {
       return sendError(res, 400, 'Order is not in a confirmable state', ERROR_CODES.VALIDATION_ERROR);
     }
     // BUG-015: Prevent duplicate COD transaction records

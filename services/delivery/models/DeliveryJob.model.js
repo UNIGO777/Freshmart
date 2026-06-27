@@ -81,6 +81,9 @@ const deliveryJobSchema = new mongoose.Schema(
     surgeMultiplier: { type: Number, default: 1 }, // Locked at job creation time
     distanceKm:      { type: Number, default: 0 }, // Haversine distance: pickup → drop
 
+    // ── Delivery instructions from customer ─────────────────────────
+    deliveryInstructions: { type: String, default: '' },
+
     // ── Status timestamps ──────────────────────────────────────────
     assignedAt:  { type: Date },
     pickedAt:    { type: Date },

@@ -45,6 +45,9 @@ router.get('/api/users/check-serviceability', proxy(SERVICE_URLS.user, '/api/use
 router.get('/api/banners', proxy(SERVICE_URLS.admin));
 router.get('/api/deal-of-day', proxy(SERVICE_URLS.admin));
 
+// Public delivery config for customer app (fee + threshold, no auth)
+router.get('/api/delivery-config/customer', proxy(SERVICE_URLS.admin));
+
 // ── Protected routes ───────────────────────────────────────────────
 router.use('/api/users', authenticate, proxy(SERVICE_URLS.user, '/api/users'));
 

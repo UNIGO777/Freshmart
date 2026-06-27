@@ -43,6 +43,7 @@ const fetchSortedVendors = async (customerLocation, requiredCategories, productI
   const vendors = await Vendor.find({
     isApproved: true,
     isActive: true,
+    isOnline: true,
     categories: { $in: requiredCategories },
     location: {
       $nearSphere: {
@@ -144,8 +145,37 @@ const offerToBatch = async (order, sortedVendors, batchIndex) => {
   order.routingMeta.batchIndex = batchIndex;
   await order.save();
 
+  // Build per-vendor inventory context
+  const batchVendorIds = batch.map((v) => v._id);
+  const productIds = order.items.map((i) => i.productId.toString());
+  const inventoryRecords = await Inventory.find({
+    vendorId: { $in: batchVendorIds },
+    productId: { $in: productIds },
+    isAvailable: true,
+  }).lean();
+
+  const invMap = {};
+  for (const rec of inventoryRecords) {
+    const vid = rec.vendorId.toString();
+    if (!invMap[vid]) invMap[vid] = {};
+    invMap[vid][rec.productId.toString()] = rec.quantityAvailable;
+  }
+
   for (const vendor of batch) {
     const vid = vendor._id.toString();
+
+    const inventoryContext = order.items.map((item) => {
+      const available = invMap[vid]?.[item.productId.toString()] || 0;
+      const ordered = item.quantity;
+      return {
+        productId: item.productId,
+        name: item.name,
+        orderedQty: ordered,
+        availableQty: available,
+        extraNeeded: Math.max(0, ordered - available),
+        inStock: available >= ordered,
+      };
+    });
 
     // Set per-vendor offer TTL in Redis
     await redisClient.set(offerKey(orderId, vid), '1', { EX: VENDOR_OFFER_TTL });
@@ -154,8 +184,9 @@ const offerToBatch = async (order, sortedVendors, batchIndex) => {
     await emitToVendor(vid, 'order:incoming', {
       orderId,
       items: order.items,
-      buyingCost: order.items.reduce((sum, i) => sum + (i.buyingPrice || 0) * i.quantity, 0),
       deliveryAddress: order.deliveryAddress,
+      deliveryInstructions: order.deliveryInstructions || '',
+      inventoryContext,
       expiresIn: VENDOR_OFFER_TTL,
     });
 
@@ -287,10 +318,75 @@ const emitToCustomer = async (customerId, event, payload) => {
   }
 };
 
+/**
+ * Find closest online vendor with inventory for at least one ordered item.
+ * Returns vendor(s) with inventoryContext for each item.
+ *
+ * @param {{ lat, lng }} customerLocation
+ * @param {Array<{ productId, quantity, name }>} orderItems
+ * @returns {Promise<Array>} vendors with inventoryContext
+ */
+const findEligibleVendor = async (customerLocation, orderItems) => {
+  const { lat, lng } = customerLocation;
+  const productIds = orderItems.map((i) => i.productId);
+
+  const vendors = await Vendor.find({
+    isApproved: true,
+    isActive: true,
+    isOnline: true,
+    location: {
+      $nearSphere: {
+        $geometry: { type: 'Point', coordinates: [lng, lat] },
+        $maxDistance: 5000,
+      },
+    },
+  })
+    .select('_id businessName location categories fcmToken')
+    .lean();
+
+  if (vendors.length === 0) return [];
+
+  const vendorIds = vendors.map((v) => v._id);
+  const inventory = await Inventory.find({
+    vendorId: { $in: vendorIds },
+    productId: { $in: productIds },
+    isAvailable: true,
+  }).lean();
+
+  // inventoryMap: vendorId → productId → quantityAvailable
+  const invMap = {};
+  for (const rec of inventory) {
+    const vid = rec.vendorId.toString();
+    if (!invMap[vid]) invMap[vid] = {};
+    invMap[vid][rec.productId.toString()] = rec.quantityAvailable;
+  }
+
+  // Return vendors that have at least one ordered product in inventory
+  return vendors
+    .filter((v) => invMap[v._id.toString()] && Object.keys(invMap[v._id.toString()]).length > 0)
+    .map((v) => ({
+      ...v,
+      inventoryContext: orderItems.map((item) => {
+        const available = invMap[v._id.toString()]?.[item.productId.toString()] || 0;
+        const ordered = item.quantity;
+        return {
+          productId: item.productId,
+          name: item.name,
+          orderedQty: ordered,
+          availableQty: available,
+          extraNeeded: Math.max(0, ordered - available),
+          inStock: available >= ordered,
+        };
+      }),
+    }));
+};
+
 module.exports = {
   initiateRouting,
   handleVendorResponse,
   recordVendorAcceptance,
   clearRoutingState,
   emitToCustomer,
+  emitToVendor,
+  findEligibleVendor,
 };

@@ -73,7 +73,7 @@ app.post('/internal/location-update', async (req, res) => {
 // Body: { orderId, subOrderId, vendorId, customerId, pickupLocation, dropLocation, deliveryFee }
 app.post('/internal/assign-rider', async (req, res) => {
   try {
-    const { orderId, subOrderId, vendorId, customerId, pickupLocation, dropLocation, deliveryFee } = req.body;
+    const { orderId, subOrderId, vendorId, customerId, pickupLocation, dropLocation, deliveryFee, deliveryInstructions } = req.body;
 
     if (!orderId || !subOrderId || !pickupLocation || !dropLocation) {
       return res.status(400).json({ success: false, message: 'orderId, subOrderId, pickupLocation, dropLocation required' });
@@ -83,7 +83,8 @@ app.post('/internal/assign-rider', async (req, res) => {
     initiateRiderAssignment({
       orderId, subOrderId, vendorId, customerId,
       pickupLocation, dropLocation,
-      deliveryFee: deliveryFee || 30,
+      deliveryFee: deliveryFee || 0,
+      deliveryInstructions: deliveryInstructions || '',
     }).catch((err) => logger.error(`assign-rider failed for order ${orderId}:`, err));
 
     return res.json({ success: true });

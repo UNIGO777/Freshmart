@@ -58,6 +58,7 @@ const checkStock = async (customerLocation, items) => {
   const nearbyVendors = await Vendor.find({
     isApproved: true,
     isActive: true,
+    isOnline: true,
     categories: { $in: requiredCategories },
     location: {
       $nearSphere: {
