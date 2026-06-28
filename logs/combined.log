@@ -58955,3 +58955,5 @@
 2026-06-28 01:27:47 [[32minfo[39m]: Socket disconnected: wikBbBdsZLeVIKSvAAAd (customer:6a046e383863ae91b27233f0) — transport close
 2026-06-28 01:27:48 [[32minfo[39m]: Vendor 6a2559a376e12c06b58540f3 auto-set offline on disconnect
 2026-06-28 01:27:48 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
+2026-06-28 15:35:43 [[32minfo[39m]: MongoDB connected
+2026-06-28 15:35:43 [[32minfo[39m]: Admin Service running on port 4009
