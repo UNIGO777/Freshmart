@@ -35,19 +35,16 @@ const sendOtp = async (req, res) => {
 
     const isProd = process.env.NODE_ENV === 'production';
 
-    // Send via Fast2SMS DLT route when configured. With no token: log to
-    // console in dev, but FAIL CLOSED in production — never fall back to
-    // leaking the OTP.
+    // Send OTP via Fast2SMS WhatsApp route. With no token: log to console in
+    // dev, but FAIL CLOSED in production — never fall back to leaking the OTP.
     if (process.env.FAST2SMS_API_KEY) {
       try {
-        const { data } = await axios.get('https://www.fast2sms.com/dev/bulkV2', {
+        const { data } = await axios.post('https://www.fast2sms.com/dev/bulkV2', null, {
           headers: { authorization: process.env.FAST2SMS_API_KEY },
           params: {
-            route: 'dlt',
-            sender_id: process.env.FAST2SMS_SENDER_ID || 'FSMART',
-            message: process.env.FAST2SMS_TEMPLATE_ID,
+            route: 'whatsapp',
+            template_id: process.env.FAST2SMS_TEMPLATE_ID,
             variables_values: otp,
-            flash: 0,
             numbers: phone,
           },
           timeout: 8000,
