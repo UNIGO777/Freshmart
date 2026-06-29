@@ -99,11 +99,10 @@ customerSchema.statics.generateUniqueReferralCode = async function (name = '') {
 };
 
 // Assign a referral code to every new customer (create() runs save hooks).
-customerSchema.pre('save', async function (next) {
+customerSchema.pre('save', async function () {
   if (!this.referralCode) {
     this.referralCode = await this.constructor.generateUniqueReferralCode(this.name);
   }
-  next();
 });
 
 module.exports = mongoose.model('Customer', customerSchema);
