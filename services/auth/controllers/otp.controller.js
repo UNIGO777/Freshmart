@@ -39,18 +39,24 @@ const sendOtp = async (req, res) => {
     // dev, but FAIL CLOSED in production — never fall back to leaking the OTP.
     if (process.env.FAST2SMS_API_KEY) {
       try {
-        const { data } = await axios.post('https://www.fast2sms.com/dev/bulkV2', null, {
-          headers: { authorization: process.env.FAST2SMS_API_KEY },
-          params: {
-            route: 'whatsapp',
-            template_id: process.env.FAST2SMS_TEMPLATE_ID,
-            variables_values: otp,
-            numbers: phone,
+        const { data } = await axios.request({
+          method: 'POST',
+          url: 'https://www.fast2sms.com/dev/otp/send',
+          headers: {
+            accept: 'application/json',
+            authorization: process.env.FAST2SMS_API_KEY,
+            'content-type': 'application/json',
           },
-          timeout: 8000,
+          data: {
+            mobile: phone,
+            otp_id: process.env.FAST2SMS_TEMPLATE_ID,
+            otp_expiry: 5,
+            otp_length: 6,
+            otp,
+          },
         });
         if (!data || data.return === false) {
-          logger.error('Fast2SMS failed:', data?.message || 'Unknown error');
+          logger.error('Fast2SMS failed:', data?.message || JSON.stringify(data));
           return sendError(res, 500, 'Failed to send OTP', ERROR_CODES.INTERNAL_ERROR);
         }
       } catch (smsErr) {
