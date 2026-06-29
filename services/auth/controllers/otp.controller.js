@@ -39,20 +39,25 @@ const sendOtp = async (req, res) => {
     // console in dev, but FAIL CLOSED in production — never fall back to
     // leaking the OTP.
     if (process.env.FAST2SMS_API_KEY) {
-      const { data } = await axios.get('https://www.fast2sms.com/dev/bulkV2', {
-        params: {
-          authorization: process.env.FAST2SMS_API_KEY,
-          route: 'dlt',
-          sender_id: process.env.FAST2SMS_SENDER_ID || 'FSMART',
-          message: process.env.FAST2SMS_TEMPLATE_ID,
-          variables_values: otp,
-          flash: 0,
-          numbers: phone,
-        },
-        timeout: 8000,
-      });
-      if (!data || data.return === false) {
-        logger.error('Fast2SMS failed:', data?.message || 'Unknown error');
+      try {
+        const { data } = await axios.get('https://www.fast2sms.com/dev/bulkV2', {
+          headers: { authorization: process.env.FAST2SMS_API_KEY },
+          params: {
+            route: 'dlt',
+            sender_id: process.env.FAST2SMS_SENDER_ID || 'FSMART',
+            message: process.env.FAST2SMS_TEMPLATE_ID,
+            variables_values: otp,
+            flash: 0,
+            numbers: phone,
+          },
+          timeout: 8000,
+        });
+        if (!data || data.return === false) {
+          logger.error('Fast2SMS failed:', data?.message || 'Unknown error');
+          return sendError(res, 500, 'Failed to send OTP', ERROR_CODES.INTERNAL_ERROR);
+        }
+      } catch (smsErr) {
+        logger.error('Fast2SMS error:', smsErr.response?.data || smsErr.message);
         return sendError(res, 500, 'Failed to send OTP', ERROR_CODES.INTERNAL_ERROR);
       }
     } else if (isProd) {
