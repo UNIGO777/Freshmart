@@ -1,4 +1,5 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../../../.env') });
 const axios = require('axios');
 const OtpSession = require('../models/OtpSession.model');
 const Customer = require('../../user/models/Customer.model');
@@ -49,9 +50,9 @@ const sendOtp = async (req, res) => {
           },
           data: {
             mobile: phone,
-            otp_id: process.env.FAST2SMS_TEMPLATE_ID,
-            otp_expiry: 5,
-            otp_length: 6,
+            otp_id: process.env.FAST2SMS_OTP_ID,
+            otp_expiry: parseInt(process.env.FAST2SMS_OTP_EXPIRY) || 5,
+            otp_length: parseInt(process.env.FAST2SMS_OTP_LENGTH) || 6,
             otp,
           },
         });

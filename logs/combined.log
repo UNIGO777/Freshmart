@@ -58957,3 +58957,64 @@
 2026-06-28 01:27:48 [[34mdebug[39m]: [internal/emit] → room="serviceability:broadcast" event="vendor:availability"
 2026-06-28 15:35:43 [[32minfo[39m]: MongoDB connected
 2026-06-28 15:35:43 [[32minfo[39m]: Admin Service running on port 4009
+2026-06-30 03:05:22 [[32minfo[39m]: Redis connected
+2026-06-30 03:05:22 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-30 03:05:24 [[32minfo[39m]: API Gateway running on port 4000
+2026-06-30 03:05:26 [[32minfo[39m]: Socket Server running on port 4010
+2026-06-30 03:05:32 [[32minfo[39m]: Redis connected
+2026-06-30 03:05:33 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-30 03:05:33 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:05:34 [[32minfo[39m]: Payment Service running on port 4007
+2026-06-30 03:05:34 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:05:34 [[32minfo[39m]: Notification Service running on port 4008
+2026-06-30 03:05:35 [[32minfo[39m]: API Gateway running on port 4000
+2026-06-30 03:05:35 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:05:35 [[32minfo[39m]: Vendor Service running on port 4005
+2026-06-30 03:05:38 [[32minfo[39m]: Redis connected
+2026-06-30 03:05:38 [[32minfo[39m]: Redis connected
+2026-06-30 03:05:39 [[32minfo[39m]: Redis connected
+2026-06-30 03:05:39 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:05:39 [[32minfo[39m]: User Service running on port 4002
+2026-06-30 03:05:39 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:05:39 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:05:39 [[32minfo[39m]: Product Service running on port 4003
+2026-06-30 03:05:40 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:05:40 [[32minfo[39m]: Order Service running on port 4004
+2026-06-30 03:05:40 [[32minfo[39m]: Delivery Service running on port 4006
+2026-06-30 03:05:40 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:05:40 [[32minfo[39m]: Admin Service running on port 4009
+2026-06-30 03:05:41 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:05:41 [[32minfo[39m]: Auth Service running on port 4011
+2026-06-30 03:05:41 [[32minfo[39m]: Redis connected
+2026-06-30 03:05:41 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-30 03:06:08 [[32minfo[39m]: Socket Server running on port 4010
+2026-06-30 03:06:11 [[32minfo[39m]: Redis connected
+2026-06-30 03:06:11 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-30 03:06:12 [[32minfo[39m]: API Gateway running on port 4000
+2026-06-30 03:06:12 [[32minfo[39m]: Redis connected
+2026-06-30 03:06:12 [[32minfo[39m]: Redis connected — rate limiter will use Redis store
+2026-06-30 03:06:27 [[32minfo[39m]: API Gateway running on port 4000
+2026-06-30 03:06:29 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:06:29 [[32minfo[39m]: Notification Service running on port 4008
+2026-06-30 03:06:30 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:06:30 [[32minfo[39m]: Vendor Service running on port 4005
+2026-06-30 03:06:31 [[32minfo[39m]: Redis connected
+2026-06-30 03:06:31 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:06:31 [[32minfo[39m]: Payment Service running on port 4007
+2026-06-30 03:06:31 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:06:31 [[32minfo[39m]: Product Service running on port 4003
+2026-06-30 03:06:37 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:06:37 [[32minfo[39m]: User Service running on port 4002
+2026-06-30 03:06:37 [[32minfo[39m]: Redis connected
+2026-06-30 03:06:37 [[32minfo[39m]: Redis connected
+2026-06-30 03:06:38 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:06:38 [[32minfo[39m]: Order Service running on port 4004
+2026-06-30 03:06:38 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:06:38 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:06:39 [[32minfo[39m]: Admin Service running on port 4009
+2026-06-30 03:06:38 [[32minfo[39m]: Delivery Service running on port 4006
+2026-06-30 03:06:40 [[32minfo[39m]: MongoDB connected
+2026-06-30 03:06:41 [[32minfo[39m]: Auth Service running on port 4011
+2026-06-30 03:06:41 [[32minfo[39m]: Redis connected
+2026-06-30 03:06:41 [[32minfo[39m]: Auth Service: Redis connected (refresh-token blocklist active)
+2026-06-30 03:07:01 [[32minfo[39m]: OTP sent to 7987280376
