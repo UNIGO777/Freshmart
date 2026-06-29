@@ -35,20 +35,28 @@ const sendOtp = async (req, res) => {
 
     const isProd = process.env.NODE_ENV === 'production';
 
-    // Send via SMS when configured. With no token: log to console in dev, but
-    // FAIL CLOSED in production — never fall back to leaking the OTP.
-    if (process.env.FASTTOSMS_AUTH_TOKEN) {
-      await axios.get('https://www.fast2sms.com/dev/bulkV2', {
+    // Send via Fast2SMS DLT route when configured. With no token: log to
+    // console in dev, but FAIL CLOSED in production — never fall back to
+    // leaking the OTP.
+    if (process.env.FAST2SMS_API_KEY) {
+      const { data } = await axios.get('https://www.fast2sms.com/dev/bulkV2', {
         params: {
-          authorization: process.env.FASTTOSMS_AUTH_TOKEN,
+          authorization: process.env.FAST2SMS_API_KEY,
+          route: 'dlt',
+          sender_id: process.env.FAST2SMS_SENDER_ID || 'FSMART',
+          message: process.env.FAST2SMS_TEMPLATE_ID,
           variables_values: otp,
-          route: 'otp',
+          flash: 0,
           numbers: phone,
         },
         timeout: 8000,
       });
+      if (!data || data.return === false) {
+        logger.error('Fast2SMS failed:', data?.message || 'Unknown error');
+        return sendError(res, 500, 'Failed to send OTP', ERROR_CODES.INTERNAL_ERROR);
+      }
     } else if (isProd) {
-      logger.error('FASTTOSMS_AUTH_TOKEN not configured — cannot send OTP in production');
+      logger.error('FAST2SMS_API_KEY not configured — cannot send OTP in production');
       return sendError(res, 500, 'OTP service is not configured', ERROR_CODES.INTERNAL_ERROR);
     } else {
       console.log('\n' + '='.repeat(50));
@@ -66,7 +74,7 @@ const sendOtp = async (req, res) => {
     logger.info(`OTP sent to ${phone}`);
 
     // Return the OTP in the response only in non-production dev mode.
-    const devPayload = (!process.env.FASTTOSMS_AUTH_TOKEN && !isProd) ? { devOtp: otp } : {};
+    const devPayload = (!process.env.FAST2SMS_API_KEY && !isProd) ? { devOtp: otp } : {};
     return sendSuccess(res, 200, 'OTP sent successfully', devPayload);
   } catch (err) {
     logger.error('sendOtp error:', err);
