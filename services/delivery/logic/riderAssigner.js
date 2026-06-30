@@ -3,9 +3,11 @@ const axios = require('axios');
 const Rider = require('../../user/models/Rider.model');
 const DeliveryJob = require('../models/DeliveryJob.model');
 const { DELIVERY_JOB_STATUS } = require('../models/DeliveryJob.model');
+const DeliveryOtp = require('../models/DeliveryOtp.model');
 const DeliveryRateConfig = require('../../admin/models/DeliveryRateConfig.model');
 const { findNearbyRiders, BATCH_SIZE } = require('./nearbyFinder');
 const { redisClient } = require('../../../shared/db/redis');
+const { calculateRouteDistance } = require('./distanceCalculator');
 const { triggerNotification } = require('../../../shared/utils/notify');
 const logger = require('../../../shared/utils/logger');
 
@@ -53,6 +55,30 @@ const emitToCustomer = async (customerId, event, payload) => {
   }
 };
 
+const emitToVendor = async (vendorId, event, payload) => {
+  try {
+    await axios.post(
+      `http://localhost:${process.env.PORT_SOCKET || 3010}/internal/emit`,
+      { room: `vendor:${vendorId}`, event, payload },
+      { timeout: 3000 },
+    );
+  } catch (err) {
+    logger.warn(`Socket emit to vendor ${vendorId} failed: ${err.message}`);
+  }
+};
+
+const emitToRoom = async (orderId, event, payload) => {
+  try {
+    await axios.post(
+      `http://localhost:${process.env.PORT_SOCKET || 3010}/internal/emit`,
+      { room: `order:tracking:${orderId}`, event, payload },
+      { timeout: 3000 },
+    );
+  } catch (err) {
+    logger.warn(`Socket emit to tracking room ${orderId} failed: ${err.message}`);
+  }
+};
+
 /** Call Order Service to update sub-order status (riderId, timestamps, status). */
 const syncSubOrderStatus = async (orderId, subOrderId, update) => {
   try {
@@ -84,6 +110,11 @@ const autoCancelOrder = async (job) => {
     status: 'no_rider_available',
     message: 'No delivery rider available. Your order has been cancelled.',
   });
+
+  // Send FCM push notification
+  triggerNotification('order:cancelled', job.customerId.toString(), 'customer', {
+    orderId: job.orderId.toString(),
+  });
 };
 
 // ── Core logic ────────────────────────────────────────────────────
@@ -108,8 +139,11 @@ const initiateRiderAssignment = async ({
     haversineKm(pickupLocation.lat, pickupLocation.lng, dropLocation.lat, dropLocation.lng) * 100,
   ) / 100; // Round to 2 decimals
 
-  // Earnings = distance × rate × surge (locked at assignment time)
-  const riderEarnings = Math.round(distanceKm * ratePerKm * surgeMultiplier);
+  // Earnings = distance × rate × surge, with a guaranteed minimum (locked at assignment time)
+  // For distances under 1 km, charge at least 1 km worth (ratePerKm)
+  const effectiveDistance = Math.max(1, distanceKm);
+  const minEarnings = config.minEarnings ?? 15;
+  const riderEarnings = Math.max(minEarnings, Math.round(effectiveDistance * ratePerKm * surgeMultiplier));
 
   const job = await DeliveryJob.create({
     orderId, subOrderId, vendorId, customerId,
@@ -237,13 +271,55 @@ const handleRiderAccept = async (jobId, riderId) => {
     return { success: false, reason: 'This job was not offered to you' };
   }
 
-  // ── Assign ────────────────────────────────────────────────────
-  job.riderId = riderId;
-  job.status = DELIVERY_JOB_STATUS.ACCEPTED;
-  job.assignedAt = new Date();
-  await job.save();
+  // ── Atomic claim — prevents two riders accepting the same job ──
+  const pickupOtp = String(Math.floor(1000 + Math.random() * 9000));
+  const updateFields = {
+    riderId,
+    status: DELIVERY_JOB_STATUS.ACCEPTED,
+    assignedAt: new Date(),
+    pickupOtp,
+  };
+
+  // Recalculate distance with Google Maps (rider -> vendor -> customer)
+  const riderDoc2 = await Rider.findById(riderId).select('currentLocation').lean();
+  if (riderDoc2?.currentLocation?.coordinates) {
+    const [rLng, rLat] = riderDoc2.currentLocation.coordinates;
+    const result = await calculateRouteDistance(
+      { lat: rLat, lng: rLng },
+      { lat: job.pickupLocation.lat, lng: job.pickupLocation.lng },
+      { lat: job.dropLocation.lat, lng: job.dropLocation.lng },
+    );
+    updateFields.distanceRiderToVendor = result.riderToVendorKm;
+    updateFields.distanceVendorToCustomer = result.vendorToCustomerKm;
+    updateFields.distanceKm = result.totalKm;
+    updateFields.riderEarnings = Math.round(result.totalKm * job.ratePerKm * job.surgeMultiplier);
+  }
+
+  const claimed = await DeliveryJob.findOneAndUpdate(
+    { _id: jobId, status: DELIVERY_JOB_STATUS.OFFERED },
+    { $set: updateFields },
+    { new: true },
+  );
+  if (!claimed) return { success: false, reason: 'Job already taken by another rider' };
+  Object.assign(job, claimed.toObject());
 
   await redisClient.del(jobOfferKey(jobId));
+
+  // Persist pickup OTP in separate OTP model
+  try {
+    await DeliveryOtp.create({
+      orderId: job.orderId,
+      jobId: job._id,
+      vendorId: job.vendorId,
+      customerId: job.customerId,
+      riderId,
+      type: 'pickup',
+      code: pickupOtp,
+      recipientType: 'vendor',
+    });
+  } catch (err) {
+    logger.warn(`DeliveryOtp create (pickup) failed for job ${jobId}: ${err.message}`);
+  }
 
   // Mark rider as busy + update performance
   const riderUpdate = await Rider.findByIdAndUpdate(riderId, {
@@ -278,6 +354,11 @@ const handleRiderAccept = async (jobId, riderId) => {
       vehicleType: riderDoc?.vehicleType,
     },
   });
+  // Also emit to order tracking room
+  await emitToRoom(job.orderId.toString(), 'order:status', {
+    orderId: job.orderId, subOrderId: job.subOrderId, status: 'rider_assigned',
+    rider: { id: riderId, name: riderDoc?.name, phone: riderDoc?.phone, vehicleType: riderDoc?.vehicleType },
+  });
   triggerNotification('rider:assigned', job.customerId.toString(), 'customer', {
     orderId:   job.orderId.toString(),
     riderName: riderDoc?.name,
@@ -290,7 +371,31 @@ const handleRiderAccept = async (jobId, riderId) => {
     riderAssignedAt: job.assignedAt,
   });
 
-  logger.info(`Job ${jobId} assigned to rider ${riderId}`);
+  // Deduct inventory now that both vendor AND rider have accepted
+  try {
+    await axios.post(
+      `http://localhost:${PORT_ORDER}/internal/deduct-inventory`,
+      { orderId: job.orderId.toString(), vendorId: job.vendorId.toString() },
+      { timeout: 5000 },
+    );
+  } catch (err) {
+    logger.warn(`deduct-inventory failed for order ${job.orderId}: ${err.message}`);
+  }
+
+  // Send pickup OTP to vendor (in-app display, not SMS/WhatsApp)
+  await emitToVendor(job.vendorId.toString(), 'order:pickup-otp', {
+    orderId: job.orderId,
+    jobId:   job._id,
+    otp:     job.pickupOtp,
+    riderName: riderDoc?.name,
+  });
+  triggerNotification('order:pickup-otp', job.vendorId.toString(), 'vendor', {
+    orderId:   job.orderId.toString(),
+    otp:       job.pickupOtp,
+    riderName: riderDoc?.name,
+  });
+
+  logger.info(`Job ${jobId} assigned to rider ${riderId}, pickup OTP sent to vendor`);
   return { success: true, job };
 };
 
@@ -361,9 +466,11 @@ const sweepExpiredOffers = async () => {
     logger.info(`[sweep] Expiring offer for job ${jobDoc._id}`);
     const job = await DeliveryJob.findById(jobDoc._id);
     if (job && job.status === DELIVERY_JOB_STATUS.OFFERED) {
-      handleOfferExpiry(job).catch((err) =>
-        logger.error(`sweep expiry failed for job ${job._id}:`, err),
-      );
+      try {
+        await handleOfferExpiry(job);
+      } catch (err) {
+        logger.error(`sweep expiry failed for job ${job._id}:`, err);
+      }
     }
   }
 };

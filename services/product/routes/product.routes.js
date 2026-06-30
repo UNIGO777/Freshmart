@@ -3,6 +3,7 @@ const {
   getProducts,
   getCategories,
   getProductById,
+  getSimilarProducts,
   createProduct,
   updateProduct,
   toggleAvailability,
@@ -22,6 +23,7 @@ const adminOnly = [authenticate, requireRole(ROLES.ADMIN)];
 router.get('/', getProducts);             // ?category= ?lang= ?search=
 router.get('/categories', getCategories); // ?lang=
 router.get('/stale', ...adminOnly, getStaleProducts); // Must be before /:id
+router.get('/:id/similar', getSimilarProducts);       // Must be before /:id
 router.get('/:id', getProductById);
 
 // ── Admin-only write routes ───────────────────────────────────────

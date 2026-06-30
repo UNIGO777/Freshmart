@@ -60,6 +60,7 @@ const ratingSchema = new mongoose.Schema(
   {
     product: { type: Number, min: 1, max: 5 },
     rider: { type: Number, min: 1, max: 5 },
+    vendor: { type: Number, min: 1, max: 5 },
     comment: String,
     ratedAt: Date,
   },
@@ -120,6 +121,7 @@ const orderSchema = new mongoose.Schema(
     },
 
     ratings: ratingSchema,
+    cancelDeadline: { type: Date, default: null }, // 1-minute window after vendor accept
     cancelledAt: Date,
     cancelReason: String,
   },

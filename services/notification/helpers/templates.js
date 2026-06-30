@@ -52,11 +52,48 @@ const TEMPLATES = {
     data:  { orderId: data.orderId ?? '', screen: 'IncomingOrder' },
   }),
 
+  /** Vendor confirmation that rider picked up the order */
+  'order:picked-vendor': (data) => ({
+    title: 'Order Picked Up ✅',
+    body:  `${data.riderName ?? 'Rider'} has picked up the order and is on the way to the customer.`,
+    data:  { orderId: data.orderId ?? '', screen: 'VendorOrders' },
+  }),
+
   /** Order was reassigned away from this vendor (cascade) */
   'order:rerouted': (data) => ({
     title: 'Order Reassigned',
     body:  'An order offer has expired and been sent to another vendor.',
     data:  { orderId: data.orderId ?? '', screen: 'Dashboard' },
+  }),
+
+  // ── OTP notifications ───────────────────────────────────────────
+
+  /** Vendor receives pickup OTP when rider accepts */
+  'order:pickup-otp': (data) => ({
+    title: `Pickup Code: ${data.otp}`,
+    body:  `Rider ${data.riderName ?? 'your rider'} is coming. Share this code when they arrive.`,
+    data:  { orderId: data.orderId ?? '', screen: 'VendorOrders' },
+  }),
+
+  /** Customer receives delivery OTP when rider picks up */
+  'order:delivery-otp': (data) => ({
+    title: `Delivery Code: ${data.otp}`,
+    body:  'Your rider is arriving. Share this code to receive your order.',
+    data:  { orderId: data.orderId ?? '', screen: 'OrderTracking' },
+  }),
+
+  /** Vendor receives return OTP when rider requests cancel */
+  'order:return-otp': (data) => ({
+    title: `Return Code: ${data.otp}`,
+    body:  `Rider is returning the order. Share this code after receiving the package.`,
+    data:  { orderId: data.orderId ?? '', screen: 'VendorOrders' },
+  }),
+
+  /** Customer notified about order cancellation */
+  'order:cancelled': (data) => ({
+    title: 'Order Cancelled',
+    body:  'Your order has been cancelled. A refund will be processed.',
+    data:  { orderId: data.orderId ?? '', screen: 'OrderDetail' },
   }),
 
   // ── Rider notifications ─────────────────────────────────────────

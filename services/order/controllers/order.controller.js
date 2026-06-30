@@ -25,6 +25,7 @@ const ROLES = require('../../../shared/constants/roles');
 const { triggerNotification } = require('../../../shared/utils/notify');
 const { notifyAdmin } = require('../../../shared/utils/notifyAdmin');
 const logger = require('../../../shared/utils/logger');
+const Inventory = require('../../vendor/models/Inventory.model');
 
 // ── POST /api/orders/check-stock ──────────────────────────────────
 // Customer: pre-payment serviceability check. Returns payable if serviceable.
@@ -252,11 +253,11 @@ const getOrderById = async (req, res) => {
       return sendError(res, 403, 'Access denied', ERROR_CODES.FORBIDDEN);
     }
     if (req.user.role === ROLES.VENDOR) {
-      const isAssigned = order.subOrders.some((so) => so.vendorId?.toString() === req.user.id);
+      const isAssigned = order.subOrders.some((so) => (so.vendorId?._id ?? so.vendorId)?.toString() === req.user.id);
       if (!isAssigned) return sendError(res, 403, 'Access denied', ERROR_CODES.FORBIDDEN);
     }
     if (req.user.role === ROLES.RIDER) {
-      const isAssigned = order.subOrders.some((so) => so.riderId?.toString() === req.user.id);
+      const isAssigned = order.subOrders.some((so) => (so.riderId?._id ?? so.riderId)?.toString() === req.user.id);
       if (!isAssigned) return sendError(res, 403, 'Access denied', ERROR_CODES.FORBIDDEN);
     }
 
@@ -274,9 +275,6 @@ const cancelOrder = async (req, res) => {
     if (!order) return sendError(res, 404, 'Order not found', ERROR_CODES.NOT_FOUND);
 
     const cancellableStatuses = [ORDER_STATUS.STOCK_CHECK, ORDER_STATUS.AWAITING_PAYMENT, ORDER_STATUS.CONFIRMED];
-    if (!cancellableStatuses.includes(order.status)) {
-      return sendError(res, 400, 'Order cannot be cancelled at this stage', ERROR_CODES.ORDER_NOT_CANCELLABLE);
-    }
 
     // Check no sub-order has been picked yet
     const isPicked = order.subOrders.some((so) =>
@@ -286,12 +284,51 @@ const cancelOrder = async (req, res) => {
       return sendError(res, 400, 'Order is already picked up and cannot be cancelled', ERROR_CODES.ORDER_NOT_CANCELLABLE);
     }
 
+    // After vendor accept, only allow cancel within the 1-minute window
+    const postAcceptStatuses = [SUB_ORDER_STATUS.VENDOR_ACCEPTED, SUB_ORDER_STATUS.VENDOR_CONFIRMED, SUB_ORDER_STATUS.RIDER_ASSIGNED, SUB_ORDER_STATUS.ON_THE_WAY];
+    const hasVendorAccepted = order.subOrders.some((so) => postAcceptStatuses.includes(so.status) || so.riderId);
+    if (hasVendorAccepted) {
+      if (!order.cancelDeadline || new Date() > order.cancelDeadline) {
+        return sendError(res, 400, 'Cancellation window has expired', ERROR_CODES.ORDER_NOT_CANCELLABLE);
+      }
+    } else if (!cancellableStatuses.includes(order.status)) {
+      return sendError(res, 400, 'Order cannot be cancelled at this stage', ERROR_CODES.ORDER_NOT_CANCELLABLE);
+    }
+
     order.status = ORDER_STATUS.CANCELLED;
     order.cancelledAt = new Date();
     order.cancelReason = req.body.reason || 'customer_cancelled';
+    // Mark all non-terminal sub-orders as failed
+    for (const sub of order.subOrders) {
+      if (![SUB_ORDER_STATUS.DELIVERED, SUB_ORDER_STATUS.FAILED].includes(sub.status)) {
+        sub.status = SUB_ORDER_STATUS.FAILED;
+      }
+    }
     await order.save();
 
     await clearRoutingState(order._id);
+
+    // Restore stock for ALL sub-orders that had a vendor assigned
+    for (const sub of order.subOrders) {
+      const vendorId = (sub.vendorId?._id ?? sub.vendorId)?.toString();
+      if (vendorId) {
+        axios
+          .post(`http://localhost:${process.env.PORT_ORDER || 3004}/internal/restore-stock`, {
+            orderId: order._id.toString(),
+            vendorId,
+          })
+          .catch((err) => logger.warn(`restore-stock failed for order ${order._id} vendor ${vendorId}: ${err.message}`));
+      }
+    }
+
+    // Cancel any active delivery jobs and free riders
+    if (order.subOrders.length > 0) {
+      axios
+        .post(`http://localhost:${process.env.PORT_DELIVERY || 3006}/internal/cancel-jobs`, {
+          orderId: order._id.toString(),
+        })
+        .catch((err) => logger.warn(`cancel-jobs failed for order ${order._id}: ${err.message}`));
+    }
 
     // Release the coupon hold if it was actually counted: COD orders count it
     // at placement, and any paid order counted it on payment success.
@@ -307,6 +344,36 @@ const cancelOrder = async (req, res) => {
       axios
         .post(`${paymentServiceUrl}/internal/refund-by-order`, { orderId: order._id.toString() })
         .catch((err) => logger.error(`Refund trigger failed for order ${order._id}:`, err.message));
+    }
+
+    // Reverse vendor earning for each sub-order (if any was created at pickup)
+    for (const sub of order.subOrders) {
+      axios
+        .post(`http://localhost:${process.env.PORT_ORDER || 3004}/internal/reverse-vendor-earning`, {
+          orderId: order._id.toString(),
+          subOrderId: sub._id.toString(),
+          reason: 'customer_cancelled',
+        })
+        .catch((err) => logger.warn(`reverse-vendor-earning failed for subOrder ${sub._id}: ${err.message}`));
+    }
+
+    // Notify customer via socket (clears active order strip)
+    emitToCustomer(order.customerId.toString(), 'order:status', {
+      orderId: order._id.toString(),
+      status: 'cancelled',
+      message: 'Your order has been cancelled.',
+    });
+
+    // Notify vendor(s) via socket
+    for (const sub of order.subOrders) {
+      const vendorId = (sub.vendorId?._id ?? sub.vendorId)?.toString();
+      if (vendorId) {
+        emitToVendor(vendorId, 'order:status', {
+          orderId: order._id.toString(),
+          status: 'cancelled',
+          message: 'Customer cancelled the order.',
+        });
+      }
     }
 
     notifyAdmin(
@@ -329,6 +396,7 @@ const rateOrder = async (req, res) => {
     const schema = z.object({
       product: z.number().min(1).max(5).optional(),
       rider: z.number().min(1).max(5).optional(),
+      vendor: z.number().min(1).max(5).optional(),
       comment: z.string().max(500).optional(),
     });
 
@@ -383,6 +451,38 @@ const rateOrder = async (req, res) => {
       }
     }
 
+    // Update Vendor.rating aggregate
+    if (parsed.data.vendor != null) {
+      const vendorIds = order.subOrders
+        .filter((so) => so.vendorId)
+        .map((so) => so.vendorId);
+
+      if (vendorIds.length > 0) {
+        const score = parsed.data.vendor;
+        await Vendor.updateMany(
+          { _id: { $in: vendorIds } },
+          [
+            {
+              $set: {
+                'rating.count':   { $add: [{ $ifNull: ['$rating.count', 0] }, 1] },
+                'rating.average': {
+                  $round: [
+                    {
+                      $divide: [
+                        { $add: [{ $multiply: [{ $ifNull: ['$rating.average', 0] }, { $ifNull: ['$rating.count', 0] }] }, score] },
+                        { $add: [{ $ifNull: ['$rating.count', 0] }, 1] },
+                      ],
+                    },
+                    2,
+                  ],
+                },
+              },
+            },
+          ],
+        );
+      }
+    }
+
     return sendSuccess(res, 200, 'Rating submitted', order.ratings);
   } catch (err) {
     logger.error('rateOrder error:', err);
@@ -415,8 +515,9 @@ const vendorAcceptOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
     if (!order) return sendError(res, 404, 'Order not found', ERROR_CODES.NOT_FOUND);
-    if (order.status === ORDER_STATUS.CANCELLED) {
-      return sendError(res, 400, 'Order has been cancelled', ERROR_CODES.VALIDATION_ERROR);
+    const acceptableStatuses = [ORDER_STATUS.CONFIRMED, ORDER_STATUS.AWAITING_PAYMENT, ORDER_STATUS.STOCK_CHECK];
+    if (!acceptableStatuses.includes(order.status)) {
+      return sendError(res, 400, `Order cannot be accepted (status: ${order.status})`, ERROR_CODES.VALIDATION_ERROR);
     }
 
     const vendorId = req.user.id;
@@ -447,15 +548,22 @@ const vendorAcceptOrder = async (req, res) => {
       },
       dropLocation: order.deliveryAddress,
     }];
+    // Set 1-minute cancellation deadline from vendor accept
+    order.cancelDeadline = new Date(Date.now() + 60 * 1000);
     await order.save();
+
+    // NOTE: Inventory is NOT deducted here — it is deducted only after
+    // both vendor AND rider accept (via /internal/deduct-inventory called
+    // by the Delivery Service when a rider claims the job).
 
     // Clean up routing state since vendor is now assigned
     await clearRoutingState(order._id);
 
-    // Notify customer: vendor confirmed, now finding rider
+    // Notify customer: vendor confirmed, now finding rider (include cancel deadline for countdown)
     await emitToCustomer(order.customerId.toString(), 'order:status', {
       orderId: order._id.toString(),
       status: 'vendor_confirmed',
+      cancelDeadline: order.cancelDeadline.toISOString(),
     });
     triggerNotification('order:confirmed', order.customerId.toString(), 'customer', {
       orderId: order._id.toString(),
@@ -500,6 +608,13 @@ const vendorRejectOrder = async (req, res) => {
     }
 
     const vendorId = req.user.id;
+
+    // Verify vendor was offered this order
+    const wasOffered = order.routingMeta?.currentVendorId?.toString() === vendorId
+      || order.routingMeta?.offeredVendorIds?.map((id) => id.toString()).includes(vendorId);
+    if (!wasOffered) {
+      return sendError(res, 403, 'This order was not offered to you', ERROR_CODES.FORBIDDEN);
+    }
 
     order.status = ORDER_STATUS.CANCELLED;
     order.cancelledAt = new Date();
@@ -671,6 +786,44 @@ const validateCouponController = async (req, res) => {
 
 // ── POST /internal/cancel-order ───────────────────────────────────
 // Called by Delivery Service when no rider is available.
+// ── GET /api/orders/active ────────────────────────────────────────
+// Customer: get their currently active order (if any).
+const getActiveOrder = async (req, res) => {
+  try {
+    const activeStatuses = [ORDER_STATUS.STOCK_CHECK, ORDER_STATUS.AWAITING_PAYMENT, ORDER_STATUS.CONFIRMED, ORDER_STATUS.PARTIALLY_DELIVERED];
+    const order = await Order.findOne({
+      customerId: req.user.id,
+      status: { $in: activeStatuses },
+    }).sort({ createdAt: -1 });
+
+    return sendSuccess(res, 200, 'Active order', { order: order || null });
+  } catch (err) {
+    logger.error('getActiveOrder error:', err);
+    return sendError(res, 500, 'Failed to fetch active order', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── GET /api/orders/vendor/active ────────────────────────────────
+// Vendor: get their currently active orders.
+const getVendorActiveOrders = async (req, res) => {
+  try {
+    const mongoose = require('mongoose');
+    const vendorOid = new mongoose.Types.ObjectId(req.user.id);
+    const activeSubStatuses = [SUB_ORDER_STATUS.VENDOR_ACCEPTED, SUB_ORDER_STATUS.RIDER_ASSIGNED, SUB_ORDER_STATUS.PICKED];
+    const orders = await Order.find({
+      status: { $nin: [ORDER_STATUS.CANCELLED, ORDER_STATUS.DELIVERED] },
+      'subOrders.vendorId': vendorOid,
+      'subOrders.status': { $in: activeSubStatuses },
+    }).sort({ createdAt: -1 });
+
+    return sendSuccess(res, 200, 'Active vendor orders', { orders });
+  } catch (err) {
+    logger.error('getVendorActiveOrders error:', err);
+    return sendError(res, 500, 'Failed to fetch active orders', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── POST /internal/cancel-order ───────────────────────────────────
 const internalCancelOrder = async (req, res) => {
   try {
     const { orderId, reason } = req.body;
@@ -687,7 +840,29 @@ const internalCancelOrder = async (req, res) => {
     order.status = ORDER_STATUS.CANCELLED;
     order.cancelledAt = new Date();
     order.cancelReason = reason || 'no_rider_available';
+    // Mark all non-terminal sub-orders as failed
+    for (const sub of order.subOrders) {
+      if (![SUB_ORDER_STATUS.DELIVERED, SUB_ORDER_STATUS.FAILED].includes(sub.status)) {
+        sub.status = SUB_ORDER_STATUS.FAILED;
+      }
+    }
     await order.save();
+
+    // Restore inventory for each vendor sub-order via /internal/restore-stock
+    for (const sub of order.subOrders) {
+      const vendorId = (sub.vendorId?._id ?? sub.vendorId)?.toString();
+      if (vendorId) {
+        try {
+          await axios.post(
+            `http://localhost:${process.env.PORT_ORDER || 3004}/internal/restore-stock`,
+            { orderId: order._id.toString(), vendorId },
+            { timeout: 5000 },
+          );
+        } catch (err) {
+          logger.warn(`restore-stock failed for order ${orderId} vendor ${vendorId}: ${err.message}`);
+        }
+      }
+    }
 
     // Release coupon if used
     if (order.couponCode) {
@@ -696,20 +871,165 @@ const internalCancelOrder = async (req, res) => {
       );
     }
 
+    // Reverse vendor earning for each sub-order (if any was created)
+    for (const sub of order.subOrders) {
+      try {
+        await axios.post(
+          `http://localhost:${process.env.PORT_ORDER || 3004}/internal/reverse-vendor-earning`,
+          { orderId: order._id.toString(), subOrderId: sub._id.toString(), reason: reason || 'order_cancelled' },
+          { timeout: 5000 },
+        );
+      } catch (err) {
+        logger.warn(`reverse-vendor-earning failed for subOrder ${sub._id}: ${err.message}`);
+      }
+    }
+
+    // Trigger refund if the order was paid via UPI
+    if (order.paymentStatus === 'paid') {
+      try {
+        await axios.post(
+          `http://localhost:${process.env.PORT_PAYMENT || 3007}/internal/refund-by-order`,
+          { orderId: order._id.toString() },
+          { timeout: 5000 },
+        );
+      } catch (err) {
+        logger.error(`Refund trigger failed for order ${orderId}: ${err.message}`);
+      }
+    }
+
     // Notify customer
     await emitToCustomer(order.customerId.toString(), 'order:status', {
       orderId: order._id.toString(),
-      status: reason || 'no_rider_available',
+      status: 'cancelled',
       message: reason === 'no_rider_available'
         ? 'No delivery rider available. Your order has been cancelled.'
         : 'Your order has been cancelled.',
     });
+
+    // Notify vendor(s)
+    for (const sub of order.subOrders) {
+      const vendorId = (sub.vendorId?._id ?? sub.vendorId)?.toString();
+      if (vendorId) {
+        emitToVendor(vendorId, 'order:status', {
+          orderId: order._id.toString(),
+          status: 'cancelled',
+          message: reason === 'no_rider_available'
+            ? 'Order cancelled — no rider available.'
+            : `Order cancelled: ${reason || 'cancelled'}`,
+        });
+      }
+    }
 
     logger.info(`Order ${orderId} cancelled internally: ${reason}`);
     return res.json({ success: true });
   } catch (err) {
     logger.error('internalCancelOrder error:', err);
     return res.status(500).json({ success: false });
+  }
+};
+
+// ── POST /api/orders/vendor/reset-all (TEST MODE ONLY) ─────────────
+// Cancel all active orders for this vendor and reset state.
+const vendorResetAllOrders = async (req, res) => {
+  try {
+    const vendorId = req.user.id;
+    const mongoose = require('mongoose');
+    const vendorOid = new mongoose.Types.ObjectId(vendorId);
+
+    // Find all non-terminal orders that have a sub-order for this vendor
+    const activeSubStatuses = [
+      SUB_ORDER_STATUS.VENDOR_ACCEPTED,
+      SUB_ORDER_STATUS.RIDER_ASSIGNED,
+      SUB_ORDER_STATUS.PICKED,
+    ];
+    const orders = await Order.find({
+      status: { $nin: [ORDER_STATUS.CANCELLED, ORDER_STATUS.DELIVERED] },
+      'subOrders.vendorId': vendorOid,
+      'subOrders.status': { $in: activeSubStatuses },
+    });
+
+    let cancelledCount = 0;
+
+    for (const order of orders) {
+      order.status = ORDER_STATUS.CANCELLED;
+      order.cancelledAt = new Date();
+      order.cancelReason = 'vendor_test_reset';
+      // Also mark active sub-orders as failed
+      for (const sub of order.subOrders) {
+        if (activeSubStatuses.includes(sub.status)) {
+          sub.status = SUB_ORDER_STATUS.FAILED;
+        }
+      }
+      await order.save();
+
+      // Restore stock
+      for (const sub of order.subOrders) {
+        const vid = (sub.vendorId?._id ?? sub.vendorId)?.toString();
+        if (vid) {
+          try {
+            await axios.post(
+              `http://localhost:${process.env.PORT_ORDER || 3004}/internal/restore-stock`,
+              { orderId: order._id.toString(), vendorId: vid },
+              { timeout: 5000 },
+            );
+          } catch (err) {
+            logger.warn(`restore-stock failed during vendor reset for order ${order._id}: ${err.message}`);
+          }
+        }
+      }
+
+      // Reverse vendor earnings
+      for (const sub of order.subOrders) {
+        try {
+          await axios.post(
+            `http://localhost:${process.env.PORT_ORDER || 3004}/internal/reverse-vendor-earning`,
+            { orderId: order._id.toString(), subOrderId: sub._id.toString(), reason: 'vendor_test_reset' },
+            { timeout: 5000 },
+          );
+        } catch (err) {
+          logger.warn(`reverse-vendor-earning failed during vendor reset: ${err.message}`);
+        }
+      }
+
+      // Cancel delivery jobs and free riders
+      try {
+        await axios.post(
+          `http://localhost:${process.env.PORT_DELIVERY || 3006}/internal/cancel-jobs`,
+          { orderId: order._id.toString() },
+          { timeout: 5000 },
+        );
+      } catch (err) {
+        logger.warn(`cancel-jobs failed during vendor reset for order ${order._id}: ${err.message}`);
+      }
+
+      // Trigger refund if paid
+      if (order.paymentStatus === 'paid') {
+        try {
+          await axios.post(
+            `http://localhost:${process.env.PORT_PAYMENT || 3007}/internal/refund-by-order`,
+            { orderId: order._id.toString() },
+            { timeout: 5000 },
+          );
+        } catch (err) {
+          logger.warn(`refund failed during vendor reset for order ${order._id}: ${err.message}`);
+        }
+      }
+
+      // Notify customer
+      emitToCustomer(order.customerId.toString(), 'order:status', {
+        orderId: order._id.toString(),
+        status: 'cancelled',
+        message: 'Your order has been cancelled.',
+      });
+
+      cancelledCount++;
+    }
+
+    logger.info(`[TEST] Vendor ${vendorId} reset — ${cancelledCount} orders cancelled`);
+    return sendSuccess(res, 200, 'All active orders cancelled', { cancelledCount });
+  } catch (err) {
+    logger.error('vendorResetAllOrders error:', err);
+    return sendError(res, 500, 'Failed to reset orders', ERROR_CODES.INTERNAL_ERROR);
   }
 };
 
@@ -720,11 +1040,14 @@ module.exports = {
   getOrderById,
   cancelOrder,
   rateOrder,
+  getActiveOrder,
   getVendorIncoming,
   getVendorHistory,
   getVendorStats,
+  getVendorActiveOrders,
   vendorAcceptOrder,
   vendorRejectOrder,
   validateCouponController,
   internalCancelOrder,
+  vendorResetAllOrders,
 };

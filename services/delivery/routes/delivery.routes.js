@@ -16,6 +16,11 @@ const {
   getSurgeStatus,
   getOnlineHours,
   getTodayCompleted,
+  requestRiderCancel,
+  confirmReturn,
+  resetAllJobs,
+  getVendorActiveOtps,
+  getCustomerActiveOtps,
 } = require('../controllers/delivery.controller');
 
 const router = Router();
@@ -28,8 +33,10 @@ router.get('/rider/orders',            getRiderJobs);
 router.patch('/rider/accept/:jobId',   acceptJob);
 router.patch('/rider/reject/:jobId',   rejectJob);
 router.patch('/rider/pickup/:jobId',   markPickedUp);
-router.patch('/rider/deliver/:jobId',  markDelivered);
-router.post('/rider/location',         updateLocation);
+router.patch('/rider/deliver/:jobId',         markDelivered);
+router.patch('/rider/cancel-request/:jobId', requestRiderCancel);
+router.patch('/rider/confirm-return/:jobId', confirmReturn);
+router.post('/rider/location',               updateLocation);
 router.get('/rider/earnings',          getRiderEarnings);
 
 // Wallet
@@ -43,5 +50,12 @@ router.get('/rider/performance',           getRiderPerformance);
 router.get('/rider/surge-status',          getSurgeStatus);
 router.get('/rider/online-hours',          getOnlineHours);
 router.get('/rider/today-completed',       getTodayCompleted);
+
+// OTP fetch (survives app restart)
+router.get('/vendor/active-otps',          getVendorActiveOtps);
+router.get('/customer/active-otps',        getCustomerActiveOtps);
+
+// Test mode
+router.post('/rider/reset-all-jobs',       resetAllJobs);
 
 module.exports = router;

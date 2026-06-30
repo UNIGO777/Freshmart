@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const deliveryRateConfigSchema = new mongoose.Schema(
   {
     ratePerKm:              { type: Number, default: 11, min: 0 },
+    minEarnings:            { type: Number, default: 15, min: 0 },
     surgeMultiplier:        { type: Number, default: 1.0, min: 1.0 },
     surgeActive:            { type: Boolean, default: false },
     surgeReason:            { type: String, default: '' },

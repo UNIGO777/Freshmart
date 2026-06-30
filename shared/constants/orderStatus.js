@@ -2,6 +2,7 @@ const ORDER_STATUS = {
   STOCK_CHECK: 'stock_check',
   AWAITING_PAYMENT: 'awaiting_payment',
   CONFIRMED: 'confirmed',
+  ON_THE_WAY: 'on_the_way',
   PARTIALLY_DELIVERED: 'partially_delivered',
   DELIVERED: 'delivered',
   FAILED: 'failed',

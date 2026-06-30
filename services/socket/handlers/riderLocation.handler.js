@@ -10,7 +10,7 @@ const logger = require('../../../shared/utils/logger');
  *  2. Broadcast lat/lng to all customers watching this order's tracking room.
  */
 const registerRiderLocation = (io, socket, { riderId }) => {
-  socket.on('rider:location', async ({ lat, lng, orderId } = {}) => {
+  socket.on('rider:location', async ({ lat, lng, heading, orderId } = {}) => {
     if (lat == null || lng == null) return;
 
     // Persist to DB via Delivery Service — non-fatal if it fails
@@ -25,9 +25,9 @@ const registerRiderLocation = (io, socket, { riderId }) => {
       logger.warn(`Rider ${riderId} location persist failed: ${err.message}`);
     }
 
-    // Broadcast to customers tracking this order in real-time
+    // Broadcast to customers tracking this order in real-time (include heading for icon rotation)
     if (orderId) {
-      io.to(orderTrackingRoom(orderId)).emit('rider:location', { lat, lng, riderId, orderId });
+      io.to(orderTrackingRoom(orderId)).emit('rider:location', { lat, lng, heading, riderId, orderId });
     }
   });
 };

@@ -30,10 +30,12 @@ const vendorEarningSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ['pending', 'paid'],
+      enum: ['pending', 'paid', 'reversed'],
       default: 'pending',
     },
     paidAt: { type: Date },
+    reversedAt: { type: Date, default: null },
+    reverseReason: { type: String, default: null },
 
     // Date of the order — useful for daily/weekly aggregations
     earningDate: { type: Date, required: true, index: true },

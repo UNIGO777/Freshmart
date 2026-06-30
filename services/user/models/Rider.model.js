@@ -13,7 +13,7 @@ const riderSchema = new mongoose.Schema(
 
     isOnline: { type: Boolean, default: false },
     isOnDelivery: { type: Boolean, default: false },
-    isApproved: { type: Boolean, default: false },
+    isApproved: { type: Boolean, default: true },
     isActive: { type: Boolean, default: true },
 
     fcmToken: { type: String },

@@ -21,12 +21,23 @@ const Order         = require('./models/Order.model');
 const VendorEarning = require('../vendor/models/VendorEarning.model');
 const { initiateRouting } = require('./logic/vendorRouter');
 const { SUB_ORDER_STATUS, ORDER_STATUS } = require('../../shared/constants/orderStatus');
+const Inventory = require('../vendor/models/Inventory.model');
 const logger = require('../../shared/utils/logger');
+const axios  = require('axios');
+
+const SOCKET_URL = `http://localhost:${process.env.PORT_SOCKET || 3010}`;
+
+/** Emit a socket event to a room via the Socket Service */
+const emitToRoom = (room, event, payload) => {
+  axios
+    .post(`${SOCKET_URL}/internal/emit`, { room, event, payload }, { timeout: 3000 })
+    .catch((err) => logger.warn(`emitToRoom(${room}, ${event}) failed: ${err.message}`));
+};
 
 const app = express();
 const PORT = process.env.PORT_ORDER || 3004;
 
-// ── Helper: create VendorEarning when sub-order is delivered ──────
+// ── Helper: create VendorEarning for a sub-order ─────────────────
 const createVendorEarning = async (order, subOrder) => {
   // Payout to vendor = sum of buyingPrice * qty for fulfilled items.
   const netAmount = subOrder.items.reduce(
@@ -69,8 +80,6 @@ app.get('/health', (_req, res) => {
 // ── Internal: cancel order (called by Delivery Service when no rider) ─
 const { internalCancelOrder } = require('./controllers/order.controller');
 app.post('/internal/cancel-order', internalCancelOrder);
-
-app.use('/', authenticate, orderRoutes);
 
 // ── Internal endpoint — called by Payment Service after UPI success ─
 // Not exposed through gateway; only reachable service-to-service.
@@ -118,22 +127,43 @@ app.post('/internal/update-suborder', async (req, res) => {
     if (update.deliveredAt)      subOrder.deliveredAt      = new Date(update.deliveredAt);
 
     // Promote top-level order status based on sub-order states
+    const prevStatus = order.status;
+    const terminalStatuses = [SUB_ORDER_STATUS.DELIVERED, 'failed', 'cancelled'];
     const allDelivered  = order.subOrders.every((so) => so.status === SUB_ORDER_STATUS.DELIVERED);
     const someDelivered = order.subOrders.some((so)  => so.status === SUB_ORDER_STATUS.DELIVERED);
+    const allTerminal   = order.subOrders.every((so) => terminalStatuses.includes(so.status));
+    const allFailed     = order.subOrders.every((so) => so.status === 'failed' || so.status === 'cancelled');
+    const anyPicked     = order.subOrders.some((so)  => so.status === SUB_ORDER_STATUS.PICKED);
 
     if (allDelivered) {
       order.status = ORDER_STATUS.DELIVERED;
+    } else if (allFailed) {
+      order.status = ORDER_STATUS.CANCELLED;
+    } else if (someDelivered && allTerminal) {
+      order.status = ORDER_STATUS.PARTIALLY_DELIVERED;
     } else if (someDelivered) {
       order.status = ORDER_STATUS.PARTIALLY_DELIVERED;
+    } else if (anyPicked) {
+      order.status = ORDER_STATUS.ON_THE_WAY;
     }
 
     await order.save();
 
-    // When a sub-order transitions to DELIVERED, record vendor earnings
-    if (update.status === SUB_ORDER_STATUS.DELIVERED && subOrder.vendorId) {
-      createVendorEarning(order, subOrder).catch((err) =>
-        logger.error(`createVendorEarning failed for subOrder ${subOrderId}:`, err),
-      );
+    // If parent order status changed, notify customer + tracking room via socket
+    if (order.status !== prevStatus) {
+      const customerId = order.customerId?.toString();
+      const oid = order._id.toString();
+
+      if (customerId) {
+        emitToRoom(`customer:${customerId}`, 'order:status', {
+          orderId: oid, status: order.status,
+        });
+      }
+      emitToRoom(`order:tracking:${oid}`, 'order:status', {
+        orderId: oid, status: order.status,
+      });
+
+      logger.info(`Parent order ${oid} promoted to ${order.status} — socket events emitted`);
     }
 
     return res.json({ success: true });
@@ -142,6 +172,142 @@ app.post('/internal/update-suborder', async (req, res) => {
     return res.status(500).json({ success: false });
   }
 });
+
+// ── Internal: create vendor earning (called by Delivery Service at pickup) ─
+app.post('/internal/vendor-earning', async (req, res) => {
+  try {
+    const { orderId, subOrderId, vendorId } = req.body;
+    if (!orderId || !subOrderId || !vendorId) {
+      return res.status(400).json({ success: false, message: 'orderId, subOrderId, vendorId required' });
+    }
+
+    const order = await Order.findById(orderId);
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+
+    const subOrder = order.subOrders.id(subOrderId);
+    if (!subOrder) return res.status(404).json({ success: false, message: 'Sub-order not found' });
+
+    await createVendorEarning(order, subOrder);
+    return res.json({ success: true });
+  } catch (err) {
+    logger.error('internal/vendor-earning error:', err);
+    return res.status(500).json({ success: false });
+  }
+});
+
+// ── Internal: deduct inventory (called by Delivery Service when rider accepts) ─
+app.post('/internal/deduct-inventory', async (req, res) => {
+  try {
+    const { orderId, vendorId } = req.body;
+    if (!orderId || !vendorId) {
+      return res.status(400).json({ success: false, message: 'orderId, vendorId required' });
+    }
+
+    const order = await Order.findById(orderId);
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+
+    const outOfStockItems = [];
+    for (const item of order.items) {
+      try {
+        const inv = await Inventory.findOneAndUpdate(
+          { vendorId, productId: item.productId, quantityAvailable: { $gte: item.quantity } },
+          { $inc: { quantityAvailable: -item.quantity } },
+          { new: true },
+        );
+        if (!inv) {
+          outOfStockItems.push(item.productId);
+          logger.warn(`Insufficient stock for product ${item.productId} (vendor ${vendorId})`);
+        } else if (inv.quantityAvailable <= 0) {
+          inv.isAvailable = false;
+          await inv.save();
+        }
+      } catch (invErr) {
+        logger.warn(`Inventory deduction failed for product ${item.productId}: ${invErr.message}`);
+      }
+    }
+    if (outOfStockItems.length > 0) {
+      logger.warn(`Order ${orderId}: ${outOfStockItems.length} item(s) had insufficient stock`);
+    }
+
+    logger.info(`Inventory deducted for order ${orderId}, vendor ${vendorId}`);
+    return res.json({ success: true });
+  } catch (err) {
+    logger.error('internal/deduct-inventory error:', err);
+    return res.status(500).json({ success: false });
+  }
+});
+
+// ── Internal: restore stock (called on order cancel / rider cancel) ─
+app.post('/internal/restore-stock', async (req, res) => {
+  try {
+    const { orderId, vendorId } = req.body;
+    if (!orderId || !vendorId) {
+      return res.status(400).json({ success: false, message: 'orderId, vendorId required' });
+    }
+
+    const order = await Order.findById(orderId);
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+
+    for (const item of order.items) {
+      await Inventory.findOneAndUpdate(
+        { vendorId, productId: item.productId },
+        {
+          $inc: { quantityAvailable: item.quantity },
+          $set: { isAvailable: true },
+        },
+      );
+    }
+
+    logger.info(`Stock restored for order ${orderId}, vendor ${vendorId}`);
+    return res.json({ success: true });
+  } catch (err) {
+    logger.error('internal/restore-stock error:', err);
+    return res.status(500).json({ success: false });
+  }
+});
+
+// ── Internal: reverse vendor earning (called on rider cancel after pickup) ─
+app.post('/internal/reverse-vendor-earning', async (req, res) => {
+  try {
+    const { orderId, subOrderId, reason } = req.body;
+    if (!orderId || !subOrderId) {
+      return res.status(400).json({ success: false, message: 'orderId, subOrderId required' });
+    }
+
+    const earning = await VendorEarning.findOne({ orderId, subOrderId, status: 'pending' });
+    if (!earning) return res.json({ success: true, message: 'No pending earning to reverse' });
+
+    earning.status = 'reversed';
+    earning.reversedAt = new Date();
+    earning.reverseReason = reason || 'rider_cancelled';
+    await earning.save();
+
+    logger.info(`VendorEarning reversed for subOrder ${subOrderId}: ${reason}`);
+    return res.json({ success: true });
+  } catch (err) {
+    logger.error('internal/reverse-vendor-earning error:', err);
+    return res.status(500).json({ success: false });
+  }
+});
+
+// ── Internal: check if vendor has active orders ─
+app.get('/internal/vendor-has-active-orders/:vendorId', async (req, res) => {
+  try {
+    const { vendorId } = req.params;
+    const activeSubStatuses = [SUB_ORDER_STATUS.VENDOR_ACCEPTED, SUB_ORDER_STATUS.RIDER_ASSIGNED, SUB_ORDER_STATUS.PICKED];
+    const count = await Order.countDocuments({
+      'subOrders.vendorId': vendorId,
+      'subOrders.status': { $in: activeSubStatuses },
+    });
+    return res.json({ success: true, hasActive: count > 0, count });
+  } catch (err) {
+    logger.error('internal/vendor-has-active-orders error:', err);
+    return res.status(500).json({ success: false });
+  }
+});
+
+// Authenticated customer/vendor order routes (MUST be after /internal/* routes)
+app.use('/', authenticate, orderRoutes);
 
 app.use((_req, res) => res.status(404).json({ success: false, message: 'Route not found', errorCode: 'NOT_FOUND' }));
 

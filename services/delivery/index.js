@@ -98,6 +98,7 @@ app.post('/internal/assign-rider', async (req, res) => {
 // Called by Socket Server when a rider's socket disconnects.
 const RiderSession = require('./models/RiderSession.model');
 const DeliveryJob = require('./models/DeliveryJob.model');
+const DeliveryOtp = require('./models/DeliveryOtp.model');
 
 app.post('/internal/rider-disconnect', async (req, res) => {
   try {
@@ -127,6 +128,37 @@ app.post('/internal/rider-disconnect', async (req, res) => {
     return res.json({ success: true });
   } catch (err) {
     logger.error('internal/rider-disconnect error:', err);
+    return res.status(500).json({ success: false });
+  }
+});
+
+// ── Internal: cancel delivery jobs for an order (called by Order Service) ─
+app.post('/internal/cancel-jobs', async (req, res) => {
+  try {
+    const { orderId } = req.body;
+    if (!orderId) return res.status(400).json({ success: false, message: 'orderId required' });
+
+    const jobs = await DeliveryJob.find({
+      orderId,
+      status: { $in: ['pending', 'offered', 'accepted'] },
+    });
+
+    for (const job of jobs) {
+      // Free the rider if one was assigned
+      if (job.riderId) {
+        await Rider.findByIdAndUpdate(job.riderId, { isOnDelivery: false });
+      }
+      job.status = 'cancelled';
+      await job.save();
+
+      // Clean up any active OTPs for this job
+      await DeliveryOtp.deleteMany({ jobId: job._id }).catch(() => {});
+    }
+
+    logger.info(`Cancelled ${jobs.length} delivery job(s) for order ${orderId}`);
+    return res.json({ success: true, cancelledCount: jobs.length });
+  } catch (err) {
+    logger.error('internal/cancel-jobs error:', err);
     return res.status(500).json({ success: false });
   }
 });

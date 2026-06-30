@@ -273,6 +273,8 @@ const emitToCustomer = (customerId, event, payload) =>
     payload,
   }, { timeout: 3000 }).catch((err) => logger.warn(`Failed to emit ${event}:`, err.message));
 
+const ORDER_URL = `http://localhost:${process.env.PORT_ORDER || 3004}`;
+
 const toggleOnline = async (req, res) => {
   try {
     if (req.user.role !== ROLES.VENDOR) {
@@ -281,6 +283,18 @@ const toggleOnline = async (req, res) => {
 
     const vendor = await Vendor.findById(req.user.id);
     if (!vendor) return sendError(res, 404, 'Vendor not found', ERROR_CODES.USER_NOT_FOUND);
+
+    // Block going offline if vendor has active orders
+    if (vendor.isOnline) {
+      try {
+        const activeCheck = await axios.get(`${ORDER_URL}/internal/vendor-has-active-orders/${vendor._id}`, { timeout: 3000 });
+        if (activeCheck.data?.hasActive) {
+          return sendError(res, 400, 'Cannot go offline while you have active orders. Complete or cancel pending orders first.', ERROR_CODES.VALIDATION_ERROR);
+        }
+      } catch (checkErr) {
+        logger.warn('Active order check failed, allowing toggle:', checkErr.message);
+      }
+    }
 
     vendor.isOnline = !vendor.isOnline;
     await vendor.save();

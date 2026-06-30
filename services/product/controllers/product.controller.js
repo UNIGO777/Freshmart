@@ -319,6 +319,40 @@ const getProductById = async (req, res) => {
   }
 };
 
+// ── GET /api/products/:id/similar ─────────────────────────────────
+// Returns similar products (same category) filtered by vendor availability
+const getSimilarProducts = async (req, res) => {
+  try {
+    const product = await Product.findOne({ _id: req.params.id, active: true }).lean();
+    if (!product) return sendError(res, 404, 'Product not found', ERROR_CODES.NOT_FOUND);
+
+    const lang = req.lang || 'en';
+    const lat = parseFloat(req.query.lat);
+    const lng = parseFloat(req.query.lng);
+    const hasLocation = !isNaN(lat) && !isNaN(lng) &&
+      lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+
+    let similar = await Product.find({
+      _id: { $ne: product._id },
+      category: product.category,
+      active: true,
+      isAvailableToday: true,
+    }).lean();
+
+    // Filter by nearby vendor inventory when location is provided
+    if (hasLocation) {
+      const nearbyProductIds = await getNearbyAvailableProductIds(lat, lng);
+      similar = similar.filter(p => nearbyProductIds.has(p._id.toString()));
+    }
+
+    const results = localiseProducts(similar.slice(0, 10), lang);
+    return sendSuccess(res, 200, 'Similar products fetched', results);
+  } catch (err) {
+    logger.error('getSimilarProducts error:', err);
+    return sendError(res, 500, 'Failed to fetch similar products', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
 // ── POST /api/products  (Admin) ───────────────────────────────────
 const createProductSchema = z.object({
   name: z.string().min(1),
@@ -521,6 +555,7 @@ module.exports = {
   getProducts,
   getCategories,
   getProductById,
+  getSimilarProducts,
   createProduct,
   updateProduct,
   toggleAvailability,

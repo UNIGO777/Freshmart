@@ -81,6 +81,20 @@ const deliveryJobSchema = new mongoose.Schema(
     surgeMultiplier: { type: Number, default: 1 }, // Locked at job creation time
     distanceKm:      { type: Number, default: 0 }, // Haversine distance: pickup → drop
 
+    // ── Per-leg distances (Google Maps road distance) ────────────────
+    distanceRiderToVendor:    { type: Number, default: 0 },
+    distanceVendorToCustomer: { type: Number, default: 0 },
+
+    // ── OTP verification codes ────────────────────────────────────
+    pickupOtp:   { type: String, default: null },  // 4-digit, generated on rider accept, verified at pickup
+    deliveryOtp: { type: String, default: null },  // 4-digit, generated on pickup, verified at delivery
+    returnOtp:   { type: String, default: null },  // 4-digit, generated on rider cancel request
+
+    // ── Rider cancellation ────────────────────────────────────────
+    cancelledByRider:   { type: Boolean, default: false },
+    riderCancelReason:  { type: String, default: null },
+    returnedAt:         { type: Date, default: null },
+
     // ── Delivery instructions from customer ─────────────────────────
     deliveryInstructions: { type: String, default: '' },
 
