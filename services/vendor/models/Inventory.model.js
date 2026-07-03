@@ -16,11 +16,9 @@ const inventorySchema = new mongoose.Schema(
     },
     quantityAvailable: {
       type: Number,
-      required: true,
       min: 0,
       default: 0,
     },
-    // Vendor can mark their own product as unavailable even if admin has it active
     isAvailable: { type: Boolean, default: true },
   },
   { timestamps: true },

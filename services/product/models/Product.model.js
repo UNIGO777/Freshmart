@@ -12,8 +12,7 @@ const productSchema = new mongoose.Schema(
       index: true,
     },
 
-    // Price unit is always kg — enforced at application level
-    unit: { type: String, default: 'kg', enum: ['kg'] },
+    unit: { type: String, default: 'kg', enum: ['kg', 'piece', 'litre', 'dozen', 'packet'] },
 
     description: { type: String, trim: true, default: '' },
 

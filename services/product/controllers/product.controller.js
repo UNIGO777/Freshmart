@@ -91,7 +91,6 @@ async function getNearbyAvailableProductIds(lat, lng) {
   const records = await Inventory.find({
     vendorId: { $in: vendorIds },
     isAvailable: true,
-    quantityAvailable: { $gt: 0 },
   })
     .select('productId')
     .lean();

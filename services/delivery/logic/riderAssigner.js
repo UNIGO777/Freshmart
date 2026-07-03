@@ -9,6 +9,7 @@ const { findNearbyRiders, BATCH_SIZE } = require('./nearbyFinder');
 const { redisClient } = require('../../../shared/db/redis');
 const { calculateRouteDistance } = require('./distanceCalculator');
 const { triggerNotification } = require('../../../shared/utils/notify');
+const { notifyVendor } = require('../../../shared/utils/vendorNotify');
 const logger = require('../../../shared/utils/logger');
 
 // ── Haversine distance (km) ──────────────────────────────────────
@@ -371,16 +372,7 @@ const handleRiderAccept = async (jobId, riderId) => {
     riderAssignedAt: job.assignedAt,
   });
 
-  // Deduct inventory now that both vendor AND rider have accepted
-  try {
-    await axios.post(
-      `http://localhost:${PORT_ORDER}/internal/deduct-inventory`,
-      { orderId: job.orderId.toString(), vendorId: job.vendorId.toString() },
-      { timeout: 5000 },
-    );
-  } catch (err) {
-    logger.warn(`deduct-inventory failed for order ${job.orderId}: ${err.message}`);
-  }
+  // Inventory is already deducted on vendor accept — no need to deduct again here.
 
   // Send pickup OTP to vendor (in-app display, not SMS/WhatsApp)
   await emitToVendor(job.vendorId.toString(), 'order:pickup-otp', {
@@ -394,6 +386,9 @@ const handleRiderAccept = async (jobId, riderId) => {
     otp:       job.pickupOtp,
     riderName: riderDoc?.name,
   });
+  notifyVendor(job.vendorId.toString(), 'order:rider_assigned', 'Rider Assigned',
+    `Rider ${riderDoc?.name || ''} is heading to pick up order #${job.orderId.toString().slice(-4)}`,
+    job.orderId.toString());
 
   logger.info(`Job ${jobId} assigned to rider ${riderId}, pickup OTP sent to vendor`);
   return { success: true, job };

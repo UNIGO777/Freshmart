@@ -4,6 +4,7 @@ const axios = require('axios');
 const Order = require('../models/Order.model');
 const Product = require('../../product/models/Product.model');
 const Vendor = require('../../user/models/Vendor.model');
+const Customer = require('../../user/models/Customer.model');
 const { checkStock } = require('../logic/stockChecker');
 const { validateCoupon, markCouponUsed, releaseCouponByCode } = require('../logic/couponEngine');
 const {
@@ -24,6 +25,7 @@ const { ORDER_STATUS, SUB_ORDER_STATUS } = require('../../../shared/constants/or
 const ROLES = require('../../../shared/constants/roles');
 const { triggerNotification } = require('../../../shared/utils/notify');
 const { notifyAdmin } = require('../../../shared/utils/notifyAdmin');
+const { notifyVendor } = require('../../../shared/utils/vendorNotify');
 const logger = require('../../../shared/utils/logger');
 const Inventory = require('../../vendor/models/Inventory.model');
 
@@ -180,6 +182,9 @@ const placeOrder = async (req, res) => {
       orderId: order._id.toString(),
       expiresIn: Number(process.env.VENDOR_OFFER_TTL_SEC) || 90,
     });
+    notifyVendor(vendorId, 'order:incoming', 'New Order Received',
+      `New order #${order._id.toString().slice(-4)} with ${order.items.length} item(s) — ₹${order.totalAmount}`,
+      order._id.toString());
 
     // Notify customer: finding vendor
     await emitToCustomer(order.customerId.toString(), 'order:status', {
@@ -373,6 +378,9 @@ const cancelOrder = async (req, res) => {
           status: 'cancelled',
           message: 'Customer cancelled the order.',
         });
+        notifyVendor(vendorId, 'order:cancelled', 'Order Cancelled',
+          `Order #${order._id.toString().slice(-4)} was cancelled by the customer`,
+          order._id.toString());
       }
     }
 
@@ -494,15 +502,25 @@ const rateOrder = async (req, res) => {
 // Vendor: see orders currently offered to them
 const getVendorIncoming = async (req, res) => {
   try {
+    const mongoose = require('mongoose');
+    const vendorOid = new mongoose.Types.ObjectId(req.user.id);
     const orders = await Order.find({
-      'routingMeta.offeredVendorIds': req.user.id,
+      'routingMeta.offeredVendorIds': vendorOid,
       status: { $in: [ORDER_STATUS.CONFIRMED, ORDER_STATUS.AWAITING_PAYMENT] },
     })
-      .select('items deliveryAddress totalAmount createdAt subOrders customerId')
+      .select('items deliveryAddress totalAmount createdAt subOrders customerId deliveryInstructions')
       .populate('customerId', 'name phone')
       .lean();
 
-    return sendSuccess(res, 200, 'Incoming orders fetched', orders);
+    // Add vendorAmount (buying price total) for each order
+    const enriched = orders.map((o) => ({
+      ...o,
+      vendorAmount: (o.items || []).reduce(
+        (sum, item) => sum + (item.buyingPrice ?? 0) * (item.quantity ?? 1), 0,
+      ),
+    }));
+
+    return sendSuccess(res, 200, 'Incoming orders fetched', enriched);
   } catch (err) {
     logger.error('getVendorIncoming error:', err);
     return sendError(res, 500, 'Failed to fetch incoming orders', ERROR_CODES.INTERNAL_ERROR);
@@ -552,9 +570,16 @@ const vendorAcceptOrder = async (req, res) => {
     order.cancelDeadline = new Date(Date.now() + 60 * 1000);
     await order.save();
 
-    // NOTE: Inventory is NOT deducted here — it is deducted only after
-    // both vendor AND rider accept (via /internal/deduct-inventory called
-    // by the Delivery Service when a rider claims the job).
+    // Deduct inventory immediately on vendor accept
+    axios
+      .post(
+        `http://localhost:${process.env.PORT || 3004}/internal/deduct-inventory`,
+        { orderId: order._id.toString(), vendorId },
+        { timeout: 5000 },
+      )
+      .catch((err) =>
+        logger.warn(`deduct-inventory on vendor accept failed for order ${order._id}: ${err.message}`),
+      );
 
     // Clean up routing state since vendor is now assigned
     await clearRoutingState(order._id);
@@ -598,7 +623,7 @@ const vendorAcceptOrder = async (req, res) => {
 };
 
 // ── PATCH /api/orders/vendor/:id/reject ──────────────────────────
-// Vendor rejects → cancel order → notify customer.
+// Vendor rejects → try next vendor via routing cascade. Only cancel if no vendors left.
 const vendorRejectOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -616,25 +641,11 @@ const vendorRejectOrder = async (req, res) => {
       return sendError(res, 403, 'This order was not offered to you', ERROR_CODES.FORBIDDEN);
     }
 
-    order.status = ORDER_STATUS.CANCELLED;
-    order.cancelledAt = new Date();
-    order.cancelReason = 'vendor_rejected';
     order.routingMeta.rejectedVendorIds.push(vendorId);
     await order.save();
 
-    // Release coupon if used
-    if (order.couponCode) {
-      releaseCouponByCode(order.couponCode, order.customerId).catch((err) =>
-        logger.error('releaseCoupon error:', err),
-      );
-    }
-
-    // Notify customer
-    await emitToCustomer(order.customerId.toString(), 'order:status', {
-      orderId: order._id.toString(),
-      status: 'vendor_rejected',
-      message: 'Vendor could not fulfil your order.',
-    });
+    // Try to cascade to next vendor via routing logic
+    await handleVendorResponse(order, vendorId);
 
     return sendSuccess(res, 200, 'Order rejected');
   } catch (err) {
@@ -656,17 +667,21 @@ const getVendorHistory = async (req, res) => {
 
     const matchFilter = { 'subOrders.vendorId': vendorOid };
 
-    const terminalStatuses = [SUB_ORDER_STATUS.DELIVERED, SUB_ORDER_STATUS.FAILED];
+    const terminalStatuses = [SUB_ORDER_STATUS.DELIVERED, SUB_ORDER_STATUS.FAILED, SUB_ORDER_STATUS.RETURNED];
     if (status && terminalStatuses.includes(status)) {
       matchFilter['subOrders.status'] = status;
     } else {
-      matchFilter['subOrders.status'] = { $in: terminalStatuses };
+      // Include delivered, failed, AND cancelled (parent-level) orders
+      matchFilter.$or = [
+        { 'subOrders.status': { $in: terminalStatuses } },
+        { status: { $in: [ORDER_STATUS.DELIVERED, ORDER_STATUS.CANCELLED] } },
+      ];
     }
 
     // Fetch one extra to know if there are more pages (avoids separate count query)
     const orders = await Order.find(matchFilter)
-      .select('items totalAmount status createdAt subOrders customerId')
-      .populate('customerId', 'name')
+      .select('items totalAmount status createdAt subOrders customerId deliveryInstructions')
+      .populate('customerId', 'name phone')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(take + 1)
@@ -677,11 +692,16 @@ const getVendorHistory = async (req, res) => {
 
     const mapped = orders.map((o) => {
       const vendorSub = o.subOrders?.find((s) => s.vendorId?.toString() === vendorId);
+      // Calculate vendor amount from buying prices
+      const vendorAmount = (vendorSub?.items || o.items || []).reduce(
+        (sum, item) => sum + (item.buyingPrice ?? 0) * (item.quantity ?? 1), 0,
+      );
       return {
         _id: o._id,
         status: o.status,
         subOrderStatus: vendorSub?.status,
         totalAmount: o.totalAmount,
+        vendorAmount,
         itemCount: o.items?.length || 0,
         customerName: o.customerId?.name || 'Customer',
         createdAt: o.createdAt,
@@ -723,12 +743,26 @@ const getVendorStats = async (req, res) => {
         },
       },
       {
+        // Compute vendor amount (buying price) per order
+        $addFields: {
+          vendorAmount: {
+            $sum: {
+              $map: {
+                input: '$items',
+                as: 'item',
+                in: { $multiply: [{ $ifNull: ['$$item.buyingPrice', 0] }, '$$item.quantity'] },
+              },
+            },
+          },
+        },
+      },
+      {
         $group: {
           _id: {
             $cond: [{ $gte: ['$createdAt', todayStart] }, 'today', 'yesterday'],
           },
           count: { $sum: 1 },
-          avgTotal: { $avg: '$totalAmount' },
+          avgTotal: { $avg: '$vendorAmount' },
         },
       },
     ]);
@@ -814,9 +848,36 @@ const getVendorActiveOrders = async (req, res) => {
       status: { $nin: [ORDER_STATUS.CANCELLED, ORDER_STATUS.DELIVERED] },
       'subOrders.vendorId': vendorOid,
       'subOrders.status': { $in: activeSubStatuses },
-    }).sort({ createdAt: -1 });
+    }).populate('customerId', 'name phone').sort({ createdAt: -1 }).lean();
 
-    return sendSuccess(res, 200, 'Active vendor orders', { orders });
+    // Fetch OTPs from delivery service for these orders
+    let otpMap = {};
+    if (orders.length > 0) {
+      try {
+        const otpRes = await axios.post(
+          `http://localhost:${process.env.PORT_DELIVERY || 3006}/internal/order-otps`,
+          { orderIds: orders.map((o) => o._id.toString()) },
+          { timeout: 3000 },
+        );
+        if (otpRes.data?.success) otpMap = otpRes.data.data || {};
+      } catch { /* non-fatal — OTPs just won't show */ }
+    }
+
+    // Add vendorAmount and OTPs for each order
+    const enriched = orders.map((o) => {
+      const vendorSub = o.subOrders?.find((s) => s.vendorId?.toString() === req.user.id);
+      const otps = otpMap[o._id.toString()] || {};
+      return {
+        ...o,
+        vendorAmount: (vendorSub?.items || o.items || []).reduce(
+          (sum, item) => sum + (item.buyingPrice ?? 0) * (item.quantity ?? 1), 0,
+        ),
+        pickupOtp: otps.pickupOtp || null,
+        returnOtp: otps.returnOtp || null,
+      };
+    });
+
+    return sendSuccess(res, 200, 'Active vendor orders', { orders: enriched });
   } catch (err) {
     logger.error('getVendorActiveOrders error:', err);
     return sendError(res, 500, 'Failed to fetch active orders', ERROR_CODES.INTERNAL_ERROR);
@@ -898,13 +959,25 @@ const internalCancelOrder = async (req, res) => {
     }
 
     // Notify customer
-    await emitToCustomer(order.customerId.toString(), 'order:status', {
+    const cancelPayload = {
       orderId: order._id.toString(),
       status: 'cancelled',
       message: reason === 'no_rider_available'
         ? 'No delivery rider available. Your order has been cancelled.'
         : 'Your order has been cancelled.',
-    });
+    };
+    await emitToCustomer(order.customerId.toString(), 'order:status', cancelPayload);
+
+    // Also emit to order tracking room so the tracking screen updates in real-time
+    try {
+      await axios.post(
+        `http://localhost:${process.env.PORT_SOCKET || 3010}/internal/emit`,
+        { room: `order:tracking:${order._id.toString()}`, event: 'order:status', payload: cancelPayload },
+        { timeout: 3000 },
+      );
+    } catch (err) {
+      logger.warn(`Tracking room emit failed for order ${orderId}: ${err.message}`);
+    }
 
     // Notify vendor(s)
     for (const sub of order.subOrders) {
@@ -917,6 +990,10 @@ const internalCancelOrder = async (req, res) => {
             ? 'Order cancelled — no rider available.'
             : `Order cancelled: ${reason || 'cancelled'}`,
         });
+        const msg = reason === 'no_rider_available'
+          ? `Order #${order._id.toString().slice(-4)} cancelled — no rider available`
+          : `Order #${order._id.toString().slice(-4)} cancelled`;
+        notifyVendor(vendorId, 'order:cancelled', 'Order Cancelled', msg, order._id.toString());
       }
     }
 

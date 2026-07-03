@@ -4,6 +4,7 @@ const Inventory = require('../../vendor/models/Inventory.model');
 const { redisClient } = require('../../../shared/db/redis');
 const { initCoverageState, getUncoveredItems } = require('./orderSplitter');
 const { triggerNotification } = require('../../../shared/utils/notify');
+const { notifyVendor } = require('../../../shared/utils/vendorNotify');
 const logger = require('../../../shared/utils/logger');
 
 const BATCH_SIZE = Number(process.env.MAX_VENDOR_ATTEMPTS) || 3;
@@ -61,7 +62,6 @@ const fetchSortedVendors = async (customerLocation, requiredCategories, productI
     vendorId: { $in: vendorIds },
     productId: { $in: productIds },
     isAvailable: true,
-    quantityAvailable: { $gt: 0 },
   }).lean();
 
   const vendorsWithStock = new Set(inventoryRecords.map((r) => r.vendorId.toString()));
@@ -154,26 +154,25 @@ const offerToBatch = async (order, sortedVendors, batchIndex) => {
     isAvailable: true,
   }).lean();
 
-  const invMap = {};
+  const invSet = {};
   for (const rec of inventoryRecords) {
     const vid = rec.vendorId.toString();
-    if (!invMap[vid]) invMap[vid] = {};
-    invMap[vid][rec.productId.toString()] = rec.quantityAvailable;
+    if (!invSet[vid]) invSet[vid] = new Set();
+    invSet[vid].add(rec.productId.toString());
   }
 
   for (const vendor of batch) {
     const vid = vendor._id.toString();
 
     const inventoryContext = order.items.map((item) => {
-      const available = invMap[vid]?.[item.productId.toString()] || 0;
-      const ordered = item.quantity;
+      const hasProduct = invSet[vid]?.has(item.productId.toString()) ?? false;
       return {
         productId: item.productId,
         name: item.name,
-        orderedQty: ordered,
-        availableQty: available,
-        extraNeeded: Math.max(0, ordered - available),
-        inStock: available >= ordered,
+        orderedQty: item.quantity,
+        availableQty: item.quantity,
+        extraNeeded: 0,
+        inStock: hasProduct,
       };
     });
 
@@ -192,6 +191,9 @@ const offerToBatch = async (order, sortedVendors, batchIndex) => {
 
     // FCM push to vendor (non-blocking)
     triggerNotification('order:incoming', vid, 'vendor', { orderId, expiresIn: VENDOR_OFFER_TTL });
+    notifyVendor(vid, 'order:incoming', 'New Order Received',
+      `New order #${orderId.slice(-4)} with ${order.items.length} item(s)`,
+      orderId);
 
     logger.info(`Order ${orderId} offered to vendor ${vid} (batch ${batchIndex})`);
   }
@@ -353,29 +355,26 @@ const findEligibleVendor = async (customerLocation, orderItems) => {
     isAvailable: true,
   }).lean();
 
-  // inventoryMap: vendorId → productId → quantityAvailable
-  const invMap = {};
+  const invSet = {};
   for (const rec of inventory) {
     const vid = rec.vendorId.toString();
-    if (!invMap[vid]) invMap[vid] = {};
-    invMap[vid][rec.productId.toString()] = rec.quantityAvailable;
+    if (!invSet[vid]) invSet[vid] = new Set();
+    invSet[vid].add(rec.productId.toString());
   }
 
-  // Return vendors that have at least one ordered product in inventory
   return vendors
-    .filter((v) => invMap[v._id.toString()] && Object.keys(invMap[v._id.toString()]).length > 0)
+    .filter((v) => invSet[v._id.toString()] && invSet[v._id.toString()].size > 0)
     .map((v) => ({
       ...v,
       inventoryContext: orderItems.map((item) => {
-        const available = invMap[v._id.toString()]?.[item.productId.toString()] || 0;
-        const ordered = item.quantity;
+        const hasProduct = invSet[v._id.toString()]?.has(item.productId.toString()) ?? false;
         return {
           productId: item.productId,
           name: item.name,
-          orderedQty: ordered,
-          availableQty: available,
-          extraNeeded: Math.max(0, ordered - available),
-          inStock: available >= ordered,
+          orderedQty: item.quantity,
+          availableQty: item.quantity,
+          extraNeeded: 0,
+          inStock: hasProduct,
         };
       }),
     }));

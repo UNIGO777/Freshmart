@@ -21,7 +21,8 @@ const Order         = require('./models/Order.model');
 const VendorEarning = require('../vendor/models/VendorEarning.model');
 const { initiateRouting } = require('./logic/vendorRouter');
 const { SUB_ORDER_STATUS, ORDER_STATUS } = require('../../shared/constants/orderStatus');
-const Inventory = require('../vendor/models/Inventory.model');
+const VendorWallet = require('../vendor/models/VendorWallet.model');
+const { notifyVendor } = require('../../shared/utils/vendorNotify');
 const logger = require('../../shared/utils/logger');
 const axios  = require('axios');
 
@@ -65,7 +66,30 @@ const createVendorEarning = async (order, subOrder) => {
     earningDate:      new Date(),
   });
 
-  logger.info(`VendorEarning created: vendor ${subOrder.vendorId} payout ₹${netAmount}, margin ₹${marginAmount} for subOrder ${subOrder._id}`);
+  // Credit vendor wallet with the buying-price amount
+  const updatedWallet = await VendorWallet.findOneAndUpdate(
+    { vendorId: subOrder.vendorId },
+    {
+      $inc: { balance: netAmount, totalEarned: netAmount },
+      $setOnInsert: { vendorId: subOrder.vendorId },
+    },
+    { upsert: true, new: true },
+  );
+
+  // Notify vendor in real-time
+  emitToRoom(`vendor:${subOrder.vendorId}`, 'vendor:wallet-update', {
+    balance: updatedWallet.balance,
+    totalEarned: updatedWallet.totalEarned,
+    totalDeductions: updatedWallet.totalDeductions,
+    credited: netAmount,
+    orderId: order._id.toString(),
+  });
+
+  notifyVendor(subOrder.vendorId.toString(), 'wallet:credited', 'Earning Added',
+    `₹${netAmount} credited for order #${order._id.toString().slice(-4)}`,
+    order._id.toString());
+
+  logger.info(`VendorEarning created & wallet credited: vendor ${subOrder.vendorId} payout ₹${netAmount}, margin ₹${marginAmount} for subOrder ${subOrder._id}`);
 };
 
 app.use(helmet());
@@ -80,6 +104,59 @@ app.get('/health', (_req, res) => {
 // ── Internal: cancel order (called by Delivery Service when no rider) ─
 const { internalCancelOrder } = require('./controllers/order.controller');
 app.post('/internal/cancel-order', internalCancelOrder);
+
+// ── Internal: cancel order status only (rider cancel after pickup) ─
+// Only updates status + notifies customer. Inventory/earnings handled when rider returns.
+app.post('/internal/cancel-order-status', async (req, res) => {
+  try {
+    const { orderId, reason } = req.body;
+    if (!orderId) return res.status(400).json({ success: false, message: 'orderId required' });
+
+    const order = await Order.findById(orderId);
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+
+    if ([ORDER_STATUS.CANCELLED, ORDER_STATUS.DELIVERED].includes(order.status)) {
+      return res.json({ success: true, message: 'Order already in terminal state' });
+    }
+
+    order.status = ORDER_STATUS.CANCELLED;
+    order.cancelledAt = new Date();
+    order.cancelReason = reason || 'rider_cancelled_after_pickup';
+    await order.save();
+
+    // Release coupon if used
+    if (order.couponCode) {
+      const { releaseCouponByCode } = require('./logic/couponEngine');
+      releaseCouponByCode(order.couponCode, order.customerId).catch((err) =>
+        logger.error('releaseCoupon error:', err),
+      );
+    }
+
+    // Trigger refund
+    if (order.paymentStatus === 'paid') {
+      axios.post(
+        `http://localhost:${process.env.PORT_PAYMENT || 3007}/internal/refund-by-order`,
+        { orderId: order._id.toString() },
+        { timeout: 5000 },
+      ).catch((err) => logger.error(`Refund trigger failed for order ${orderId}: ${err.message}`));
+    }
+
+    // Notify customer via socket
+    const cancelPayload = {
+      orderId: order._id.toString(),
+      status: 'cancelled',
+      message: 'Your order has been cancelled. Refund will be processed shortly.',
+    };
+    emitToRoom(`customer:${order.customerId}`, 'order:status', cancelPayload);
+    emitToRoom(`order:tracking:${order._id}`, 'order:status', cancelPayload);
+
+    logger.info(`Order ${orderId} status cancelled (rider cancel after pickup): ${reason}`);
+    return res.json({ success: true });
+  } catch (err) {
+    logger.error('internal/cancel-order-status error:', err);
+    return res.status(500).json({ success: false });
+  }
+});
 
 // ── Internal endpoint — called by Payment Service after UPI success ─
 // Not exposed through gateway; only reachable service-to-service.
@@ -128,11 +205,11 @@ app.post('/internal/update-suborder', async (req, res) => {
 
     // Promote top-level order status based on sub-order states
     const prevStatus = order.status;
-    const terminalStatuses = [SUB_ORDER_STATUS.DELIVERED, 'failed', 'cancelled'];
+    const terminalStatuses = [SUB_ORDER_STATUS.DELIVERED, 'failed', 'cancelled', 'returned'];
     const allDelivered  = order.subOrders.every((so) => so.status === SUB_ORDER_STATUS.DELIVERED);
     const someDelivered = order.subOrders.some((so)  => so.status === SUB_ORDER_STATUS.DELIVERED);
     const allTerminal   = order.subOrders.every((so) => terminalStatuses.includes(so.status));
-    const allFailed     = order.subOrders.every((so) => so.status === 'failed' || so.status === 'cancelled');
+    const allFailed     = order.subOrders.every((so) => ['failed', 'cancelled', 'returned'].includes(so.status));
     const anyPicked     = order.subOrders.some((so)  => so.status === SUB_ORDER_STATUS.PICKED);
 
     if (allDelivered) {
@@ -195,75 +272,14 @@ app.post('/internal/vendor-earning', async (req, res) => {
   }
 });
 
-// ── Internal: deduct inventory (called by Delivery Service when rider accepts) ─
-app.post('/internal/deduct-inventory', async (req, res) => {
-  try {
-    const { orderId, vendorId } = req.body;
-    if (!orderId || !vendorId) {
-      return res.status(400).json({ success: false, message: 'orderId, vendorId required' });
-    }
-
-    const order = await Order.findById(orderId);
-    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
-
-    const outOfStockItems = [];
-    for (const item of order.items) {
-      try {
-        const inv = await Inventory.findOneAndUpdate(
-          { vendorId, productId: item.productId, quantityAvailable: { $gte: item.quantity } },
-          { $inc: { quantityAvailable: -item.quantity } },
-          { new: true },
-        );
-        if (!inv) {
-          outOfStockItems.push(item.productId);
-          logger.warn(`Insufficient stock for product ${item.productId} (vendor ${vendorId})`);
-        } else if (inv.quantityAvailable <= 0) {
-          inv.isAvailable = false;
-          await inv.save();
-        }
-      } catch (invErr) {
-        logger.warn(`Inventory deduction failed for product ${item.productId}: ${invErr.message}`);
-      }
-    }
-    if (outOfStockItems.length > 0) {
-      logger.warn(`Order ${orderId}: ${outOfStockItems.length} item(s) had insufficient stock`);
-    }
-
-    logger.info(`Inventory deducted for order ${orderId}, vendor ${vendorId}`);
-    return res.json({ success: true });
-  } catch (err) {
-    logger.error('internal/deduct-inventory error:', err);
-    return res.status(500).json({ success: false });
-  }
+// ── Internal: deduct inventory (no-op — quantity tracking removed) ─
+app.post('/internal/deduct-inventory', async (_req, res) => {
+  return res.json({ success: true });
 });
 
-// ── Internal: restore stock (called on order cancel / rider cancel) ─
-app.post('/internal/restore-stock', async (req, res) => {
-  try {
-    const { orderId, vendorId } = req.body;
-    if (!orderId || !vendorId) {
-      return res.status(400).json({ success: false, message: 'orderId, vendorId required' });
-    }
-
-    const order = await Order.findById(orderId);
-    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
-
-    for (const item of order.items) {
-      await Inventory.findOneAndUpdate(
-        { vendorId, productId: item.productId },
-        {
-          $inc: { quantityAvailable: item.quantity },
-          $set: { isAvailable: true },
-        },
-      );
-    }
-
-    logger.info(`Stock restored for order ${orderId}, vendor ${vendorId}`);
-    return res.json({ success: true });
-  } catch (err) {
-    logger.error('internal/restore-stock error:', err);
-    return res.status(500).json({ success: false });
-  }
+// ── Internal: restore stock (no-op — quantity tracking removed) ─
+app.post('/internal/restore-stock', async (_req, res) => {
+  return res.json({ success: true });
 });
 
 // ── Internal: reverse vendor earning (called on rider cancel after pickup) ─
@@ -282,7 +298,39 @@ app.post('/internal/reverse-vendor-earning', async (req, res) => {
     earning.reverseReason = reason || 'rider_cancelled';
     await earning.save();
 
-    logger.info(`VendorEarning reversed for subOrder ${subOrderId}: ${reason}`);
+    // Deduct the credited amount from vendor wallet (guard against going negative)
+    const updatedWallet = await VendorWallet.findOneAndUpdate(
+      { vendorId: earning.vendorId, balance: { $gte: earning.netAmount } },
+      { $inc: { balance: -earning.netAmount, totalDeductions: earning.netAmount } },
+      { new: true },
+    );
+    if (!updatedWallet) {
+      // Balance too low — clamp to zero instead
+      const wallet = await VendorWallet.findOne({ vendorId: earning.vendorId });
+      if (wallet && wallet.balance > 0) {
+        wallet.balance = 0;
+        wallet.totalDeductions += earning.netAmount;
+        await wallet.save();
+      }
+    }
+
+    // Notify vendor in real-time
+    if (updatedWallet) {
+      emitToRoom(`vendor:${earning.vendorId}`, 'vendor:wallet-update', {
+        balance: updatedWallet.balance,
+        totalEarned: updatedWallet.totalEarned,
+        totalDeductions: updatedWallet.totalDeductions,
+        debited: earning.netAmount,
+        orderId,
+        reason,
+      });
+    }
+
+    notifyVendor(earning.vendorId.toString(), 'wallet:debited', 'Earning Reversed',
+      `₹${earning.netAmount} deducted for order #${(orderId || '').slice(-4)} (${reason || 'returned'})`,
+      orderId);
+
+    logger.info(`VendorEarning reversed & wallet debited ₹${earning.netAmount} for vendor ${earning.vendorId}, subOrder ${subOrderId}: ${reason}`);
     return res.json({ success: true });
   } catch (err) {
     logger.error('internal/reverse-vendor-earning error:', err);

@@ -17,6 +17,7 @@ const { sendSuccess, sendError } = require('../../../shared/utils/response.util'
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const { triggerNotification } = require('../../../shared/utils/notify');
 const { notifyAdmin } = require('../../../shared/utils/notifyAdmin');
+const { notifyVendor } = require('../../../shared/utils/vendorNotify');
 const logger = require('../../../shared/utils/logger');
 
 // ── PATCH /rider/status ───────────────────────────────────────────
@@ -243,6 +244,18 @@ const markPickedUp = async (req, res) => {
       riderName: riderDoc?.name,
     });
 
+    // Create vendor earning BEFORE notifying vendor, so wallet-update socket
+    // arrives before or with the order:status event (prevents stale re-fetch race)
+    try {
+      await axios.post(
+        `http://localhost:${process.env.PORT_ORDER || 3004}/internal/vendor-earning`,
+        { orderId: job.orderId.toString(), subOrderId: job.subOrderId.toString(), vendorId: job.vendorId.toString() },
+        { timeout: 5000 },
+      );
+    } catch (err) {
+      logger.warn(`vendor-earning trigger failed: ${err.message}`);
+    }
+
     // Notify vendor that pickup is complete
     emitToRoom(`vendor:${job.vendorId}`, 'order:status', {
       orderId: job.orderId,
@@ -252,15 +265,9 @@ const markPickedUp = async (req, res) => {
       orderId: job.orderId.toString(),
       riderName: riderDoc?.name,
     });
-
-    // Trigger vendor earning creation on pickup (vendor gets paid when rider picks up)
-    axios
-      .post(
-        `http://localhost:${process.env.PORT_ORDER || 3004}/internal/vendor-earning`,
-        { orderId: job.orderId.toString(), subOrderId: job.subOrderId.toString(), vendorId: job.vendorId.toString() },
-        { timeout: 5000 },
-      )
-      .catch((err) => logger.warn(`vendor-earning trigger failed: ${err.message}`));
+    notifyVendor(job.vendorId.toString(), 'order:picked', 'Order Picked Up',
+      `Rider ${riderDoc?.name || ''} picked up order #${job.orderId.toString().slice(-4)}`,
+      job.orderId.toString());
 
     return sendSuccess(res, 200, 'Marked as picked up', { jobId: job._id });
   } catch (err) {
@@ -379,6 +386,10 @@ const markDelivered = async (req, res) => {
     triggerNotification('order:delivered', job.customerId.toString(), 'customer', {
       orderId: job.orderId.toString(),
     });
+
+    notifyVendor(job.vendorId.toString(), 'order:delivered', 'Order Delivered',
+      `Order #${job.orderId.toString().slice(-4)} has been delivered to the customer`,
+      job.orderId.toString());
 
     notifyAdmin(
       'order_delivered',
@@ -876,12 +887,21 @@ const requestRiderCancel = async (req, res) => {
     triggerNotification('order:return-otp', job.vendorId.toString(), 'vendor', {
       orderId: job.orderId.toString(), otp: returnOtp, riderName: riderDoc?.name,
     });
+    notifyVendor(job.vendorId.toString(), 'order:returning', 'Order Being Returned',
+      `Rider ${riderDoc?.name || ''} is returning order #${job.orderId.toString().slice(-4)} to your store`,
+      job.orderId.toString());
 
-    // Notify customer that order is being returned
-    emitToRoom(`customer:${job.customerId}`, 'order:status', {
-      orderId: job.orderId, status: 'returning',
-      message: 'Rider could not complete delivery. Your order is being returned to the store.',
-    });
+    // Cancel the order for the customer immediately (inventory/earnings reversed when rider returns)
+    try {
+      await axios.post(
+        `http://localhost:${process.env.PORT_ORDER || 3004}/internal/cancel-order-status`,
+        { orderId: job.orderId.toString(), reason: 'rider_cancelled_after_pickup' },
+        { timeout: 5000 },
+      );
+    } catch (err) {
+      logger.warn(`cancel-order-status failed for order ${job.orderId}: ${err.message}`);
+    }
+
     triggerNotification('order:cancelled', job.customerId.toString(), 'customer', {
       orderId: job.orderId.toString(),
     });
@@ -905,7 +925,7 @@ const confirmReturn = async (req, res) => {
     if (!job.returnOtp) return sendError(res, 400, 'No return request pending', ERROR_CODES.VALIDATION_ERROR);
     if (!otp || String(otp) !== String(job.returnOtp)) return sendError(res, 400, 'Invalid return OTP', ERROR_CODES.VALIDATION_ERROR);
 
-    // 1. Mark job as cancelled — rider earns NOTHING (no wallet credit, no deduction)
+    // 1. Mark job as cancelled — rider earns NOTHING
     job.status = DELIVERY_JOB_STATUS.CANCELLED;
     job.cancelledByRider = true;
     job.returnOtp = null;
@@ -934,7 +954,7 @@ const confirmReturn = async (req, res) => {
       logger.error(`CRITICAL: reverse-vendor-earning failed for order ${job.orderId}: ${err.message}`);
     }
 
-    // 4. Restore inventory (vendor has the package back)
+    // 4. Restore inventory (vendor has the package back now)
     try {
       await axios.post(`http://localhost:${process.env.PORT_ORDER || 3004}/internal/restore-stock`, {
         orderId: job.orderId.toString(),
@@ -944,37 +964,25 @@ const confirmReturn = async (req, res) => {
       logger.error(`CRITICAL: restore-stock failed for order ${job.orderId}: ${err.message}`);
     }
 
-    // 5. Sync order service -> mark sub-order as failed
+    // 5. Update sub-order to returned
     try {
       await axios.post(`http://localhost:${process.env.PORT_ORDER || 3004}/internal/update-suborder`, {
         orderId: job.orderId.toString(),
         subOrderId: job.subOrderId.toString(),
-        update: { status: 'failed' },
+        update: { status: 'returned' },
       });
     } catch (err) {
       logger.error(`CRITICAL: update-suborder failed for order ${job.orderId}: ${err.message}`);
     }
 
-    // 6. Trigger refund for customer
-    try {
-      await axios.post(`http://localhost:${process.env.PORT_PAYMENT || 3007}/internal/refund-by-order`, {
-        orderId: job.orderId.toString(),
-      });
-    } catch (err) {
-      logger.error(`CRITICAL: refund-by-order failed for order ${job.orderId}: ${err.message}`);
-    }
-
-    // 7. Notify customer — refund will be processed
-    emitToRoom(`customer:${job.customerId}`, 'order:status', {
-      orderId: job.orderId, status: 'cancelled',
-      message: 'Your order has been cancelled. Refund will be processed.',
-    });
-
-    // 8. Notify vendor — return confirmed
+    // 6. Notify vendor — return confirmed
     emitToRoom(`vendor:${job.vendorId}`, 'order:status', {
-      orderId: job.orderId, status: 'return_confirmed',
-      message: 'Rider has returned the package. Order cancelled.',
+      orderId: job.orderId, status: 'returned',
+      message: 'Rider has returned the package.',
     });
+    notifyVendor(job.vendorId.toString(), 'order:returned', 'Order Returned',
+      `Order #${job.orderId.toString().slice(-4)} has been returned to your store. Wallet has been adjusted.`,
+      job.orderId.toString());
 
     return sendSuccess(res, 200, 'Return confirmed', { jobId: job._id });
   } catch (err) {

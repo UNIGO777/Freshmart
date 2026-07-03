@@ -6,7 +6,11 @@ const {
   toggleInventoryAvailability,
   bulkUpdateInventory,
   getEarnings,
+  getWallet,
   getAvailableInventory,
+  getNotifications,
+  markAllNotificationsRead,
+  createNotification,
 } = require('../controllers/vendor.controller');
 const { authenticate } = require('../../../gateway/middleware/auth.middleware');
 const { requireRole } = require('../../../gateway/middleware/roleGuard');
@@ -28,7 +32,15 @@ router.put('/inventory/bulk', ...vendorAuth, bulkUpdateInventory);
 router.put('/inventory/:productId', ...vendorAuth, upsertInventory);
 router.patch('/inventory/:productId/toggle', ...vendorAuth, toggleInventoryAvailability);
 
-// Vendor earnings
+// Vendor earnings & wallet
 router.get('/earnings', ...vendorAuth, getEarnings); // ?period=today|week|all
+router.get('/wallet', ...vendorAuth, getWallet);
+
+// Vendor notifications
+router.get('/notifications', ...vendorAuth, getNotifications);
+router.patch('/notifications/read-all', ...vendorAuth, markAllNotificationsRead);
+
+// Internal — called by other services (no auth)
+router.post('/internal/notification', createNotification);
 
 module.exports = router;

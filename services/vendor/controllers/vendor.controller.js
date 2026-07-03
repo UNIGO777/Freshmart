@@ -1,6 +1,8 @@
 const { z } = require('zod');
 const Inventory = require('../models/Inventory.model');
 const VendorEarning = require('../models/VendorEarning.model');
+const VendorWallet = require('../models/VendorWallet.model');
+const VendorNotification = require('../models/VendorNotification.model');
 const Vendor = require('../../user/models/Vendor.model');
 const Product = require('../../product/models/Product.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
@@ -27,7 +29,7 @@ const getCatalog = async (req, res) => {
         .sort({ category: 1, name: 1 })
         .lean(),
       Inventory.find({ vendorId: req.user.id })
-        .select('productId quantityAvailable isAvailable')
+        .select('productId isAvailable')
         .lean(),
     ]);
 
@@ -41,8 +43,7 @@ const getCatalog = async (req, res) => {
       const inv = invMap.get(p._id.toString());
       return {
         ...p,
-        quantityAvailable: inv?.quantityAvailable ?? 0,
-        isAvailable: inv?.isAvailable ?? true,
+        isAvailable: inv ? inv.isAvailable : false,
         hasRecord: !!inv,
       };
     });
@@ -73,8 +74,7 @@ const getInventory = async (req, res) => {
 // Vendor: set or update stock quantity for a product.
 // Creates the record if it doesn't exist (upsert).
 const upsertInventorySchema = z.object({
-  quantityAvailable: z.number().min(0),
-  isAvailable: z.boolean().optional(),
+  isAvailable: z.boolean(),
 });
 
 const upsertInventory = async (req, res) => {
@@ -84,14 +84,11 @@ const upsertInventory = async (req, res) => {
       return sendError(res, 400, 'Validation failed', ERROR_CODES.VALIDATION_ERROR, parsed.error.flatten());
     }
 
-    const { quantityAvailable, isAvailable } = parsed.data;
+    const { isAvailable } = parsed.data;
 
     const record = await Inventory.findOneAndUpdate(
       { vendorId: req.user.id, productId: req.params.productId },
-      {
-        quantityAvailable,
-        ...(isAvailable !== undefined && { isAvailable }),
-      },
+      { isAvailable },
       { upsert: true, new: true, runValidators: true },
     ).populate('productId', 'name category unit');
 
@@ -130,15 +127,14 @@ const bulkInventorySchema = z.object({
   items: z.array(
     z.object({
       productId: z.string().min(1),
-      quantityAvailable: z.number().min(0).max(99999),
-      isAvailable: z.boolean().optional(),
+      isAvailable: z.boolean(),
     }),
   ).min(1).max(500),
 });
 
 // ── PUT /api/vendors/inventory/bulk ──────────────────────────────
-// Vendor: bulk update stock for multiple products at once
-// Body: { items: [{ productId, quantityAvailable, isAvailable? }] }
+// Vendor: bulk update availability for multiple products at once
+// Body: { items: [{ productId, isAvailable }] }
 const bulkUpdateInventory = async (req, res) => {
   try {
     const parsed = bulkInventorySchema.safeParse(req.body);
@@ -147,15 +143,10 @@ const bulkUpdateInventory = async (req, res) => {
     }
     const { items } = parsed.data;
 
-    const ops = items.map(({ productId, quantityAvailable, isAvailable }) => ({
+    const ops = items.map(({ productId, isAvailable }) => ({
       updateOne: {
         filter: { vendorId: req.user.id, productId },
-        update: {
-          $set: {
-            quantityAvailable,
-            ...(isAvailable !== undefined && { isAvailable }),
-          },
-        },
+        update: { $set: { isAvailable } },
         upsert: true,
       },
     }));
@@ -175,9 +166,10 @@ const bulkUpdateInventory = async (req, res) => {
 // Vendor: view their earnings summary + recent records
 const getEarnings = async (req, res) => {
   try {
+    const mongoose = require('mongoose');
     const { period = 'all' } = req.query; // today | yesterday | week | all
 
-    const filter = { vendorId: req.user.id };
+    const filter = { vendorId: new mongoose.Types.ObjectId(req.user.id), status: { $ne: 'reversed' } };
 
     if (period === 'today') {
       const start = new Date();
@@ -222,6 +214,22 @@ const getEarnings = async (req, res) => {
   }
 };
 
+// ── GET /api/vendors/wallet ───────────────────────────────────────
+const getWallet = async (req, res) => {
+  try {
+    const vendorId = req.user.id;
+    let wallet = await VendorWallet.findOne({ vendorId }).lean();
+    if (!wallet) {
+      wallet = await VendorWallet.create({ vendorId });
+      wallet = wallet.toObject();
+    }
+    return sendSuccess(res, 200, 'Wallet fetched', { wallet });
+  } catch (err) {
+    logger.error('getWallet error:', err);
+    return sendError(res, 500, 'Failed to fetch wallet', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
 // ── GET /api/vendors/inventory/available ──────────────────────────
 // Internal helper used by Order Service (Phase 3) to check vendor stock.
 // Returns vendors with available inventory for a given set of productIds.
@@ -239,7 +247,6 @@ const getAvailableInventory = async (req, res) => {
 
     const filter = {
       isAvailable: true,
-      quantityAvailable: { $gt: 0 },
     };
     if (productIds) filter.productId = { $in: productIds.split(',') };
     if (vendorId) filter.vendorId = vendorId;
@@ -258,6 +265,50 @@ const getAvailableInventory = async (req, res) => {
   }
 };
 
+// ── GET /api/vendors/notifications ──────────────────────────────
+const getNotifications = async (req, res) => {
+  try {
+    const notifications = await VendorNotification.find({ vendorId: req.user.id })
+      .sort({ createdAt: -1 })
+      .limit(50)
+      .lean();
+
+    return sendSuccess(res, 200, 'Notifications fetched', notifications);
+  } catch (err) {
+    logger.error('getNotifications error:', err);
+    return sendError(res, 500, 'Failed to fetch notifications', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── PATCH /api/vendors/notifications/read-all ──────────────────
+const markAllNotificationsRead = async (req, res) => {
+  try {
+    await VendorNotification.updateMany(
+      { vendorId: req.user.id, isRead: false },
+      { $set: { isRead: true } },
+    );
+    return sendSuccess(res, 200, 'All notifications marked as read');
+  } catch (err) {
+    logger.error('markAllNotificationsRead error:', err);
+    return sendError(res, 500, 'Failed', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+// ── POST /internal/vendor-notification (called by other services) ──
+const createNotification = async (req, res) => {
+  try {
+    const { vendorId, type, title, body, orderId, data } = req.body;
+    if (!vendorId || !type || !title || !body) {
+      return res.status(400).json({ success: false, message: 'vendorId, type, title, body required' });
+    }
+    await VendorNotification.create({ vendorId, type, title, body, orderId, data });
+    return res.json({ success: true });
+  } catch (err) {
+    logger.error('createNotification error:', err);
+    return res.status(500).json({ success: false });
+  }
+};
+
 module.exports = {
   getCatalog,
   getInventory,
@@ -265,5 +316,9 @@ module.exports = {
   toggleInventoryAvailability,
   bulkUpdateInventory,
   getEarnings,
+  getWallet,
   getAvailableInventory,
+  getNotifications,
+  markAllNotificationsRead,
+  createNotification,
 };

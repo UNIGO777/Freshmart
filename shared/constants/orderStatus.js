@@ -16,6 +16,7 @@ const SUB_ORDER_STATUS = {
   PICKED: 'picked',
   DELIVERED: 'delivered',
   FAILED: 'failed',
+  RETURNED: 'returned',
 };
 
 const PAYMENT_STATUS = {

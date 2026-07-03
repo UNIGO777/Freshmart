@@ -81,44 +81,37 @@ const checkStock = async (customerLocation, items) => {
     vendorId: { $in: vendorIds },
     productId: { $in: productIds },
     isAvailable: true,
-    quantityAvailable: { $gt: 0 },
   }).lean();
 
-  // inventoryMap: vendorId → productId → quantityAvailable
-  const inventoryMap = {};
+  // inventorySet: vendorId → Set of productIds the vendor has available
+  const inventorySet = {};
   for (const rec of inventoryRecords) {
     const vid = rec.vendorId.toString();
     const pid = rec.productId.toString();
-    if (!inventoryMap[vid]) inventoryMap[vid] = {};
-    inventoryMap[vid][pid] = rec.quantityAvailable;
+    if (!inventorySet[vid]) inventorySet[vid] = new Set();
+    inventorySet[vid].add(pid);
   }
 
   // ── 4. Compute aggregate coverage across all vendors ─────────
-  // For each product, track maximum available quantity across all vendors combined.
-  // (In practice, one vendor per item is chosen, but for serviceability we check
-  //  if any vendor can supply each item.)
-  const coverageByProduct = {}; // productId → max qty any single vendor has
+  const coverageByProduct = {};
   const eligibleVendors = [];
 
   for (const vendor of nearbyVendors) {
     const vid = vendor._id.toString();
-    const vendorInventory = inventoryMap[vid] || {};
+    const vendorProducts = inventorySet[vid] || new Set();
     const vendorCanSupply = {};
 
     for (const pid of productIds) {
       const pidStr = pid.toString();
-      const available = vendorInventory[pidStr] || 0;
       const product = productMap[pidStr];
 
-      // Vendor can supply this product if it's in their categories & they have stock
-      if (vendor.categories.includes(product.category) && available >= requiredQty[pidStr]) {
-        vendorCanSupply[pidStr] = available;
-        coverageByProduct[pidStr] = (coverageByProduct[pidStr] || 0) + available;
+      if (vendor.categories.includes(product.category) && vendorProducts.has(pidStr)) {
+        vendorCanSupply[pidStr] = true;
+        coverageByProduct[pidStr] = true;
       }
     }
 
     if (Object.keys(vendorCanSupply).length > 0) {
-      // Calculate approximate distance
       const [vLng, vLat] = vendor.location.coordinates;
       const distance = haversineKm(lat, lng, vLat, vLng);
 
@@ -143,7 +136,7 @@ const checkStock = async (customerLocation, items) => {
       .map((p) => p._id.toString());
 
     const categoryCovered = categoryProductIds.every(
-      (pid) => (coverageByProduct[pid] || 0) >= requiredQty[pid],
+      (pid) => !!coverageByProduct[pid],
     );
 
     if (categoryCovered) {

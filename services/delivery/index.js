@@ -132,6 +132,34 @@ app.post('/internal/rider-disconnect', async (req, res) => {
   }
 });
 
+// ── Internal: get OTPs for active orders (called by Order Service) ─
+app.post('/internal/order-otps', async (req, res) => {
+  try {
+    const { orderIds } = req.body;
+    if (!orderIds || !Array.isArray(orderIds) || orderIds.length === 0) {
+      return res.json({ success: true, data: {} });
+    }
+
+    const jobs = await DeliveryJob.find({
+      orderId: { $in: orderIds },
+      status: { $in: ['accepted', 'picked_up'] },
+    }).select('orderId pickupOtp returnOtp').lean();
+
+    const otpMap = {};
+    for (const job of jobs) {
+      otpMap[job.orderId.toString()] = {
+        pickupOtp: job.pickupOtp || null,
+        returnOtp: job.returnOtp || null,
+      };
+    }
+
+    return res.json({ success: true, data: otpMap });
+  } catch (err) {
+    logger.error('internal/order-otps error:', err);
+    return res.status(500).json({ success: false });
+  }
+});
+
 // ── Internal: cancel delivery jobs for an order (called by Order Service) ─
 app.post('/internal/cancel-jobs', async (req, res) => {
   try {
