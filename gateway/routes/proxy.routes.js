@@ -69,7 +69,13 @@ router.use('/api/orders', authenticate, proxy(SERVICE_URLS.order, '/api/orders')
 // PhonePe server-to-server webhook carries no JWT — must be before the authenticated block
 router.post('/api/payments/callback', proxy(SERVICE_URLS.payment, '/api/payments'));
 router.use('/api/payments', authenticate, proxy(SERVICE_URLS.payment, '/api/payments'));
-router.use('/api/delivery', authenticate, proxy(SERVICE_URLS.delivery, '/api/delivery'));
+// OTP-fetch routes are legitimately called by the vendor / customer apps.
+router.get('/api/delivery/vendor/active-otps',
+  authenticate, requireRole(ROLES.VENDOR, ROLES.ADMIN), proxy(SERVICE_URLS.delivery, '/api/delivery'));
+router.get('/api/delivery/customer/active-otps',
+  authenticate, requireRole(ROLES.CUSTOMER, ROLES.ADMIN), proxy(SERVICE_URLS.delivery, '/api/delivery'));
+// Everything else under /api/delivery is rider-only.
+router.use('/api/delivery', authenticate, requireRole(ROLES.RIDER, ROLES.ADMIN), proxy(SERVICE_URLS.delivery, '/api/delivery'));
 // Promo push requires ADMIN; FCM token update is open to any authenticated role
 router.use('/api/notifications/promo', authenticate, requireRole(ROLES.ADMIN), proxy(SERVICE_URLS.notification, '/api/notifications'));
 router.use('/api/notifications', authenticate, proxy(SERVICE_URLS.notification, '/api/notifications'));

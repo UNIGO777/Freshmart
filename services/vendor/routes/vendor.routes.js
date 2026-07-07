@@ -7,6 +7,7 @@ const {
   bulkUpdateInventory,
   getEarnings,
   getWallet,
+  getWalletTransactions,
   getAvailableInventory,
   getNotifications,
   markAllNotificationsRead,
@@ -35,6 +36,7 @@ router.patch('/inventory/:productId/toggle', ...vendorAuth, toggleInventoryAvail
 // Vendor earnings & wallet
 router.get('/earnings', ...vendorAuth, getEarnings); // ?period=today|week|all
 router.get('/wallet', ...vendorAuth, getWallet);
+router.get('/wallet/transactions', ...vendorAuth, getWalletTransactions);
 
 // Vendor notifications
 router.get('/notifications', ...vendorAuth, getNotifications);

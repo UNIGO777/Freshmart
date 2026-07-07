@@ -32,7 +32,9 @@ const { getDeliveryConfig, updateRate,
         getCustomerDeliveryConfig }                 = require('../controllers/delivery-config.controller');
 const { listRiderWallets, getWalletStats,
         getRiderWalletDetail, processWithdrawal,
-        processDeduction }                          = require('../controllers/riderWallet.controller');
+        processDeduction, settleCredit }            = require('../controllers/riderWallet.controller');
+const { listVendorWallets, getVendorWalletStats,
+        getVendorWalletDetail, processVendorPayout } = require('../controllers/vendorWallet.controller');
 
 // Auth (double-checked inside the service — gateway already enforces ADMIN)
 const { authenticate } = require('../../../gateway/middleware/auth.middleware');
@@ -110,6 +112,13 @@ router.get('/rider-wallets',                   listRiderWallets);
 router.get('/rider-wallets/:riderId',          getRiderWalletDetail);
 router.post('/rider-wallets/:riderId/withdraw', processWithdrawal);
 router.post('/rider-wallets/:riderId/deduct',   processDeduction);
+router.post('/rider-wallets/:riderId/settle-credit', settleCredit);
+
+// ── Vendor Wallets (manual payouts) ──────────────────────────────
+router.get('/vendor-wallets/stats',              getVendorWalletStats); // before :vendorId
+router.get('/vendor-wallets',                    listVendorWallets);
+router.get('/vendor-wallets/:vendorId',          getVendorWalletDetail);
+router.post('/vendor-wallets/:vendorId/payout',  processVendorPayout);
 
 // ── Delivery Config (rate + surge + fees) ────────────────────────
 router.get('/delivery-config',           getDeliveryConfig);

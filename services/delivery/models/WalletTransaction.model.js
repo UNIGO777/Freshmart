@@ -4,6 +4,8 @@ const TRANSACTION_TYPES = {
   EARNING:    'earning',
   WITHDRAWAL: 'withdrawal',
   DEDUCTION:  'deduction',
+  COLLECTION: 'collection',
+  SETTLEMENT: 'settlement',
 };
 
 const walletTransactionSchema = new mongoose.Schema(
@@ -30,6 +32,11 @@ const walletTransactionSchema = new mongoose.Schema(
       default: null,
     },
 
+    walletType: {
+      type: String,
+      enum: ['earnings', 'credit'],
+      default: 'earnings',
+    },
     description: { type: String, default: '' },
     reason:      { type: String, default: '' }, // Admin reason for deductions
 

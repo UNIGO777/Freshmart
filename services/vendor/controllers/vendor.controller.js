@@ -2,6 +2,7 @@ const { z } = require('zod');
 const Inventory = require('../models/Inventory.model');
 const VendorEarning = require('../models/VendorEarning.model');
 const VendorWallet = require('../models/VendorWallet.model');
+const VendorWalletTransaction = require('../models/VendorWalletTransaction.model');
 const VendorNotification = require('../models/VendorNotification.model');
 const Vendor = require('../../user/models/Vendor.model');
 const Product = require('../../product/models/Product.model');
@@ -230,6 +231,35 @@ const getWallet = async (req, res) => {
   }
 };
 
+// ── GET /api/vendors/wallet/transactions ──────────────────────────
+// Vendor's payout / deduction history (paginated). ?type=payout|deduction
+const getWalletTransactions = async (req, res) => {
+  try {
+    const vendorId = req.user.id;
+    const page  = Math.max(1, parseInt(req.query.page)  || 1);
+    const limit = Math.min(50, parseInt(req.query.limit) || 20);
+    const skip  = (page - 1) * limit;
+
+    const filter = { vendorId };
+    if (req.query.type) filter.type = req.query.type;
+
+    const [transactions, total] = await Promise.all([
+      VendorWalletTransaction.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+      VendorWalletTransaction.countDocuments(filter),
+    ]);
+
+    return sendSuccess(res, 200, 'Wallet transactions fetched', {
+      transactions,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    });
+  } catch (err) {
+    logger.error('getWalletTransactions error:', err);
+    return sendError(res, 500, 'Failed to fetch wallet transactions', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
 // ── GET /api/vendors/inventory/available ──────────────────────────
 // Internal helper used by Order Service (Phase 3) to check vendor stock.
 // Returns vendors with available inventory for a given set of productIds.
@@ -317,6 +347,7 @@ module.exports = {
   bulkUpdateInventory,
   getEarnings,
   getWallet,
+  getWalletTransactions,
   getAvailableInventory,
   getNotifications,
   markAllNotificationsRead,

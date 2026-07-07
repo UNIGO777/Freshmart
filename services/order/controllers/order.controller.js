@@ -222,7 +222,13 @@ const getOrders = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const filter = { customerId: req.user.id };
-    if (req.query.status) filter.status = req.query.status;
+    if (req.query.status === 'cancelled') {
+      // The "Cancelled" tab should also surface orders that ended as `failed`
+      // (e.g. no rider available) — they're terminal and cancellation-like.
+      filter.status = { $in: ['cancelled', 'failed'] };
+    } else if (req.query.status) {
+      filter.status = req.query.status;
+    }
 
     const [orders, total] = await Promise.all([
       Order.find(filter)
@@ -508,7 +514,7 @@ const getVendorIncoming = async (req, res) => {
       'routingMeta.offeredVendorIds': vendorOid,
       status: { $in: [ORDER_STATUS.CONFIRMED, ORDER_STATUS.AWAITING_PAYMENT] },
     })
-      .select('items deliveryAddress totalAmount createdAt subOrders customerId deliveryInstructions')
+      .select('items deliveryAddress totalAmount createdAt subOrders customerId deliveryInstructions paymentMethod paymentStatus')
       .populate('customerId', 'name phone')
       .lean();
 
@@ -608,6 +614,8 @@ const vendorAcceptOrder = async (req, res) => {
           dropLocation:         subOrder.dropLocation,
           deliveryFee:          order.deliveryFee,
           deliveryInstructions: order.deliveryInstructions || '',
+          paymentMethod:        order.paymentMethod || 'cod',
+          totalAmount:          order.totalAmount || 0,
         },
         { timeout: 5000 },
       )
@@ -680,7 +688,7 @@ const getVendorHistory = async (req, res) => {
 
     // Fetch one extra to know if there are more pages (avoids separate count query)
     const orders = await Order.find(matchFilter)
-      .select('items totalAmount status createdAt subOrders customerId deliveryInstructions')
+      .select('items totalAmount status createdAt subOrders customerId deliveryInstructions paymentMethod paymentStatus')
       .populate('customerId', 'name phone')
       .sort({ createdAt: -1 })
       .skip(skip)
@@ -706,6 +714,8 @@ const getVendorHistory = async (req, res) => {
         customerName: o.customerId?.name || 'Customer',
         createdAt: o.createdAt,
         deliveredAt: vendorSub?.deliveredAt,
+        paymentMethod: o.paymentMethod || 'cod',
+        paymentStatus: o.paymentStatus || 'pending',
       };
     });
 

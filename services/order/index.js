@@ -158,6 +158,37 @@ app.post('/internal/cancel-order-status', async (req, res) => {
   }
 });
 
+// ── Internal: mark order as paid (COD collected by rider at delivery) ─
+app.post('/internal/mark-paid', async (req, res) => {
+  try {
+    const { orderId } = req.body;
+    if (!orderId) return res.status(400).json({ success: false, message: 'orderId required' });
+
+    const order = await Order.findById(orderId);
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+
+    if (order.paymentStatus === 'paid') {
+      return res.json({ success: true, message: 'Already paid' });
+    }
+
+    order.paymentStatus = 'paid';
+    await order.save();
+
+    emitToRoom(`customer:${order.customerId}`, 'order:payment-status', {
+      orderId: order._id.toString(), paymentStatus: 'paid',
+    });
+    emitToRoom(`order:tracking:${order._id}`, 'order:payment-status', {
+      orderId: order._id.toString(), paymentStatus: 'paid',
+    });
+
+    logger.info(`Order ${orderId} marked as paid (COD collected)`);
+    return res.json({ success: true });
+  } catch (err) {
+    logger.error('internal/mark-paid error:', err);
+    return res.status(500).json({ success: false });
+  }
+});
+
 // ── Internal endpoint — called by Payment Service after UPI success ─
 // Not exposed through gateway; only reachable service-to-service.
 app.post('/internal/start-routing', async (req, res) => {
@@ -202,6 +233,8 @@ app.post('/internal/update-suborder', async (req, res) => {
     if (update.riderAssignedAt)  subOrder.riderAssignedAt  = new Date(update.riderAssignedAt);
     if (update.pickedAt)         subOrder.pickedAt         = new Date(update.pickedAt);
     if (update.deliveredAt)      subOrder.deliveredAt      = new Date(update.deliveredAt);
+    // Payment status (e.g. COD collected on delivery) — set on the parent order
+    if (update.paymentStatus)    order.paymentStatus       = update.paymentStatus;
 
     // Promote top-level order status based on sub-order states
     const prevStatus = order.status;
@@ -226,11 +259,18 @@ app.post('/internal/update-suborder', async (req, res) => {
 
     await order.save();
 
+    const customerId = order.customerId?.toString();
+    const oid = order._id.toString();
+
+    // Payment status flipped (e.g. COD collected on delivery) — flip the badge live.
+    if (update.paymentStatus) {
+      const payPayload = { orderId: oid, paymentStatus: order.paymentStatus };
+      if (customerId) emitToRoom(`customer:${customerId}`, 'order:payment-status', payPayload);
+      emitToRoom(`order:tracking:${oid}`, 'order:payment-status', payPayload);
+    }
+
     // If parent order status changed, notify customer + tracking room via socket
     if (order.status !== prevStatus) {
-      const customerId = order.customerId?.toString();
-      const oid = order._id.toString();
-
       if (customerId) {
         emitToRoom(`customer:${customerId}`, 'order:status', {
           orderId: oid, status: order.status,
@@ -299,27 +339,30 @@ app.post('/internal/reverse-vendor-earning', async (req, res) => {
     await earning.save();
 
     // Deduct the credited amount from vendor wallet (guard against going negative)
-    const updatedWallet = await VendorWallet.findOneAndUpdate(
+    let walletAfter = await VendorWallet.findOneAndUpdate(
       { vendorId: earning.vendorId, balance: { $gte: earning.netAmount } },
       { $inc: { balance: -earning.netAmount, totalDeductions: earning.netAmount } },
       { new: true },
     );
-    if (!updatedWallet) {
+    if (!walletAfter) {
       // Balance too low — clamp to zero instead
       const wallet = await VendorWallet.findOne({ vendorId: earning.vendorId });
       if (wallet && wallet.balance > 0) {
         wallet.balance = 0;
         wallet.totalDeductions += earning.netAmount;
         await wallet.save();
+        walletAfter = wallet;
+      } else if (wallet) {
+        walletAfter = wallet; // already zero — still emit for a consistent live view
       }
     }
 
-    // Notify vendor in real-time
-    if (updatedWallet) {
+    // Notify vendor in real-time (fires whether the atomic deduct or the clamp path ran)
+    if (walletAfter) {
       emitToRoom(`vendor:${earning.vendorId}`, 'vendor:wallet-update', {
-        balance: updatedWallet.balance,
-        totalEarned: updatedWallet.totalEarned,
-        totalDeductions: updatedWallet.totalDeductions,
+        balance: walletAfter.balance,
+        totalEarned: walletAfter.totalEarned,
+        totalDeductions: walletAfter.totalDeductions,
         debited: earning.netAmount,
         orderId,
         reason,

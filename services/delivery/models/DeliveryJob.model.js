@@ -74,6 +74,10 @@ const deliveryJobSchema = new mongoose.Schema(
     // When the current batch's 30s window expires (used by background sweep)
     offerExpiresAt: { type: Date },
 
+    // ── Payment ───────────────────────────────────────────────────
+    paymentMethod:   { type: String, enum: ['upi', 'cod'], default: 'cod' },
+    totalAmount:     { type: Number, default: 0 }, // Full order amount rider collects for COD
+
     // ── Financials ─────────────────────────────────────────────────
     deliveryFee:     { type: Number, default: 0 }, // Total delivery fee charged to customer
     riderEarnings:   { type: Number, default: 0 }, // Rider's cut = distanceKm × ratePerKm × surgeMultiplier

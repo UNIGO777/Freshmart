@@ -4,6 +4,7 @@ const axios = require('axios');
 const Rider = require('../../user/models/Rider.model');
 const RiderLocation = require('../models/RiderLocation.model');
 const RiderWallet = require('../models/RiderWallet.model');
+const RiderCreditWallet = require('../models/RiderCreditWallet.model');
 const WalletTransaction = require('../models/WalletTransaction.model');
 const RiderSession = require('../models/RiderSession.model');
 const DeliveryJob = require('../models/DeliveryJob.model');
@@ -68,11 +69,15 @@ const toggleStatus = async (req, res) => {
 // Rider: active jobs (accepted / picked) and pending offers.
 const getRiderJobs = async (req, res) => {
   try {
+    // SECURITY: never send pickup/delivery OTPs to the rider — they must obtain
+    // them from the vendor/customer in person. returnOtp is kept only because the
+    // rider app uses its *presence* to restore the returning state on restart.
     const [active, offered] = await Promise.all([
       DeliveryJob.find({
         riderId: req.user.id,
         status: { $in: [DELIVERY_JOB_STATUS.ACCEPTED, DELIVERY_JOB_STATUS.PICKED] },
       })
+        .select('-deliveryOtp -pickupOtp')
         .sort({ createdAt: -1 })
         .lean(),
 
@@ -81,6 +86,7 @@ const getRiderJobs = async (req, res) => {
         status: DELIVERY_JOB_STATUS.OFFERED,
         offerExpiresAt: { $gt: new Date() }, // Only show offers still within window
       })
+        .select('-deliveryOtp -pickupOtp')
         .sort({ createdAt: -1 })
         .lean(),
     ]);
@@ -141,6 +147,8 @@ const acceptJob = async (req, res) => {
       customerPhone:   customer?.phone || '',
       status:          result.job.status,
       deliveryInstructions: result.job.deliveryInstructions || '',
+      paymentMethod:   result.job.paymentMethod || 'cod',
+      totalAmount:     result.job.totalAmount ?? 0,
     });
   } catch (err) {
     logger.error('acceptJob error:', err);
@@ -375,8 +383,36 @@ const markDelivered = async (req, res) => {
       jobId: job._id,
     });
 
-    // Sync Order Service (non-fatal)
-    syncOrderService(job, 'delivered', { deliveredAt: job.deliveredAt });
+    // COD collection: credit the rider's credit wallet with the total order amount
+    const isCodCollected = job.paymentMethod === 'cod' && job.totalAmount > 0;
+    if (isCodCollected) {
+      const creditWallet = await RiderCreditWallet.findOneAndUpdate(
+        { riderId },
+        {
+          $inc: { balance: job.totalAmount, totalCollected: job.totalAmount },
+          $setOnInsert: { riderId },
+        },
+        { upsert: true, new: true },
+      );
+
+      await WalletTransaction.create({
+        riderId,
+        type: 'collection',
+        walletType: 'credit',
+        amount: job.totalAmount,
+        balanceAfter: creditWallet.balance,
+        jobId: job._id,
+        description: `COD collected — Order #${job.orderId.toString().slice(-6).toUpperCase()} — ₹${job.totalAmount}`,
+        status: 'completed',
+      });
+    }
+
+    // Sync Order Service (non-fatal). Fold paymentStatus into this single write so
+    // there is only ONE writer to the order document — a separate concurrent
+    // mark-paid save would race with this one and could revert the delivered status.
+    const deliveredExtra = { deliveredAt: job.deliveredAt };
+    if (isCodCollected) deliveredExtra.paymentStatus = 'paid';
+    syncOrderService(job, 'delivered', deliveredExtra);
 
     // Notify customer via socket + FCM push
     emitOrderStatus(job, 'delivered');
@@ -560,7 +596,7 @@ const getRiderWallet = async (req, res) => {
       wallet = wallet.toObject();
     }
 
-    const recentTransactions = await WalletTransaction.find({ riderId })
+    const recentTransactions = await WalletTransaction.find({ riderId, walletType: { $ne: 'credit' } })
       .sort({ createdAt: -1 })
       .limit(10)
       .lean();
@@ -578,7 +614,8 @@ const getWalletTransactions = async (req, res) => {
     const riderId = req.user.id;
     const { type, page = 1, limit = 20 } = req.query;
 
-    const filter = { riderId };
+    // Earnings wallet only — COD collections live in the separate credit wallet
+    const filter = { riderId, walletType: { $ne: 'credit' } };
     if (type && ['earning', 'withdrawal', 'deduction'].includes(type)) {
       filter.type = type;
     }
@@ -776,6 +813,7 @@ const getTodayCompleted = async (req, res) => {
       status: DELIVERY_JOB_STATUS.DELIVERED,
       deliveredAt: { $gte: todayStart },
     })
+      .select('-deliveryOtp -pickupOtp -returnOtp')
       .sort({ deliveredAt: -1 })
       .lean();
 
@@ -1116,6 +1154,29 @@ const getCustomerActiveOtps = async (req, res) => {
   }
 };
 
+// ── GET /rider/credit-wallet ─────────────────────────────────────
+const getRiderCreditWallet = async (req, res) => {
+  try {
+    const riderId = req.user.id;
+    let creditWallet = await RiderCreditWallet.findOne({ riderId }).lean();
+    if (!creditWallet) {
+      creditWallet = { riderId, balance: 0, totalCollected: 0, totalSettled: 0 };
+    }
+
+    const recentCollections = await WalletTransaction.find({
+      riderId, walletType: 'credit',
+    })
+      .sort({ createdAt: -1 })
+      .limit(20)
+      .lean();
+
+    return sendSuccess(res, 200, 'Credit wallet fetched', { creditWallet, recentCollections });
+  } catch (err) {
+    logger.error('getRiderCreditWallet error:', err);
+    return sendError(res, 500, 'Failed to fetch credit wallet', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
 module.exports = {
   toggleStatus,
   getRiderJobs,
@@ -1138,4 +1199,5 @@ module.exports = {
   resetAllJobs,
   getVendorActiveOtps,
   getCustomerActiveOtps,
+  getRiderCreditWallet,
 };

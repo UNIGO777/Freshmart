@@ -128,7 +128,7 @@ const autoCancelOrder = async (job) => {
 const initiateRiderAssignment = async ({
   orderId, subOrderId, vendorId, customerId,
   pickupLocation, dropLocation, deliveryFee,
-  deliveryInstructions,
+  deliveryInstructions, paymentMethod, totalAmount,
 }) => {
   // Fetch current rate config and lock it on this job
   const config = await DeliveryRateConfig.getConfig();
@@ -151,6 +151,8 @@ const initiateRiderAssignment = async ({
     pickupLocation, dropLocation,
     deliveryFee: deliveryFee || 0,
     deliveryInstructions: deliveryInstructions || '',
+    paymentMethod: paymentMethod || 'cod',
+    totalAmount: totalAmount || 0,
     riderEarnings,
     ratePerKm,
     surgeMultiplier,
@@ -215,6 +217,8 @@ const offerToRiderBatch = async (job, riders) => {
       ratePerKm:            job.ratePerKm,
       surgeMultiplier:      job.surgeMultiplier,
       deliveryInstructions: job.deliveryInstructions,
+      paymentMethod:        job.paymentMethod || 'cod',
+      totalAmount:          job.totalAmount || 0,
       expiresIn:            ASSIGNMENT_TIMEOUT_SEC,
     });
     // FCM push so rider is alerted even if the app is in the background
@@ -273,6 +277,8 @@ const handleRiderAccept = async (jobId, riderId) => {
   }
 
   // ── Atomic claim — prevents two riders accepting the same job ──
+  // Earnings & distance were locked when the job was created (assignment time).
+  // Do NOT recalculate here — just persist the claim and reuse the stored values.
   const pickupOtp = String(Math.floor(1000 + Math.random() * 9000));
   const updateFields = {
     riderId,
@@ -280,21 +286,6 @@ const handleRiderAccept = async (jobId, riderId) => {
     assignedAt: new Date(),
     pickupOtp,
   };
-
-  // Recalculate distance with Google Maps (rider -> vendor -> customer)
-  const riderDoc2 = await Rider.findById(riderId).select('currentLocation').lean();
-  if (riderDoc2?.currentLocation?.coordinates) {
-    const [rLng, rLat] = riderDoc2.currentLocation.coordinates;
-    const result = await calculateRouteDistance(
-      { lat: rLat, lng: rLng },
-      { lat: job.pickupLocation.lat, lng: job.pickupLocation.lng },
-      { lat: job.dropLocation.lat, lng: job.dropLocation.lng },
-    );
-    updateFields.distanceRiderToVendor = result.riderToVendorKm;
-    updateFields.distanceVendorToCustomer = result.vendorToCustomerKm;
-    updateFields.distanceKm = result.totalKm;
-    updateFields.riderEarnings = Math.round(result.totalKm * job.ratePerKm * job.surgeMultiplier);
-  }
 
   const claimed = await DeliveryJob.findOneAndUpdate(
     { _id: jobId, status: DELIVERY_JOB_STATUS.OFFERED },

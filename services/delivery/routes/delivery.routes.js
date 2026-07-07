@@ -9,6 +9,7 @@ const {
   updateLocation,
   getRiderEarnings,
   getRiderWallet,
+  getRiderCreditWallet,
   getWalletTransactions,
   getWalletWithdrawals,
   getDailyEarnings,
@@ -41,6 +42,7 @@ router.get('/rider/earnings',          getRiderEarnings);
 
 // Wallet
 router.get('/rider/wallet',                getRiderWallet);
+router.get('/rider/credit-wallet',         getRiderCreditWallet);
 router.get('/rider/wallet/transactions',   getWalletTransactions);
 router.get('/rider/wallet/withdrawals',    getWalletWithdrawals);
 
@@ -55,7 +57,9 @@ router.get('/rider/today-completed',       getTodayCompleted);
 router.get('/vendor/active-otps',          getVendorActiveOtps);
 router.get('/customer/active-otps',        getCustomerActiveOtps);
 
-// Test mode
-router.post('/rider/reset-all-jobs',       resetAllJobs);
+// Test mode — never exposed in production
+if (process.env.NODE_ENV !== 'production') {
+  router.post('/rider/reset-all-jobs',       resetAllJobs);
+}
 
 module.exports = router;
