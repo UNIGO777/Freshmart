@@ -1,8 +1,8 @@
 {
   "info": {
-    "_postman_id": "freshmart-backend-v1",
-    "name": "FreshMart Backend API",
-    "description": "Complete API collection for FreshMart — a multi-vendor grocery delivery platform.\n\n**Services:** API Gateway (3000) → Auth (3001) · User (3002) · Product (3003) · Order (3004) · Vendor (3005) · Delivery (3006) · Payment (3007) · Notification (3008) · Admin (3009) · Socket (3010)\n\n**Usage:**\n1. Set `baseUrl` collection variable to `http://localhost:3000`\n2. Run any Auth request and copy the `accessToken` from the response\n3. Set `authToken` collection variable to that token\n4. All protected routes use `Authorization: Bearer {{authToken}}`",
+    "_postman_id": "zipbasket-backend-v1",
+    "name": "ZipBasket Backend API",
+    "description": "Complete API collection for ZipBasket — a multi-vendor grocery delivery platform.\n\n**Services:** API Gateway (3000) → Auth (3001) · User (3002) · Product (3003) · Order (3004) · Vendor (3005) · Delivery (3006) · Payment (3007) · Notification (3008) · Admin (3009) · Socket (3010)\n\n**Usage:**\n1. Set `baseUrl` collection variable to `http://localhost:3000`\n2. Run any Auth request and copy the `accessToken` from the response\n3. Set `authToken` collection variable to that token\n4. All protected routes use `Authorization: Bearer {{authToken}}`",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -142,7 +142,7 @@
               "raw": "{\n  \"idToken\": \"<google-id-token-from-client>\",\n  \"role\": \"customer\"\n}",
               "options": { "raw": { "language": "json" } }
             },
-            "description": "Exchange a Google ID token (from Google Sign-In on the mobile app) for a FreshMart JWT pair."
+            "description": "Exchange a Google ID token (from Google Sign-In on the mobile app) for a ZipBasket JWT pair."
           }
         },
         {

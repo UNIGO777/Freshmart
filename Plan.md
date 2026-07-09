@@ -1,4 +1,4 @@
-# FreshMart — Backend Architecture & Development Plan
+# ZipBasket — Backend Architecture & Development Plan
 
 > **Stack:** Node.js + Express · MongoDB · Socket.io · Redis · Firebase FCM · PhonePe PG · Google Maps API  
 > **Architecture:** Microservices (service-based, single codebase, one deployment per service)  
@@ -70,7 +70,7 @@ All services share one MongoDB cluster and one Redis instance. They communicate 
 ## Folder Structure
 
 ```
-freshmart-backend/
+zipbasket-backend/
 ├── gateway/                  # API Gateway
 │   ├── index.js
 │   ├── middleware/
@@ -662,4 +662,4 @@ MAX_VENDOR_ATTEMPTS=3
 
 ---
 
-*Document version 1.0 · FreshMart Backend Plan · May 2026*
+*Document version 1.0 · ZipBasket Backend Plan · May 2026*

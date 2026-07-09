@@ -1,4 +1,4 @@
-# FreshMart — Bug Fixes Log
+# ZipBasket — Bug Fixes Log
 
 > **Fixed On:** 2026-05-09  
 > **Total Bugs:** 25 documented | 23 fixed | 2 confirmed non-issues  

@@ -1,7 +1,7 @@
 services:
   mongo:
     image: mongo:7
-    container_name: freshmart-mongo
+    container_name: zipbasket-mongo
     restart: unless-stopped
     ports:
       - "27017:27017"
@@ -10,7 +10,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: freshmart-redis
+    container_name: zipbasket-redis
     restart: unless-stopped
     ports:
       - "6379:6379"

@@ -1,4 +1,4 @@
-# FreshMart — Non-Working / Broken APIs
+# ZipBasket — Non-Working / Broken APIs
 
 > **Test Date:** 2026-05-09  
 > **Method:** Live gateway test (port 3000) + static code analysis  

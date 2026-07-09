@@ -1,6 +1,6 @@
-# FreshMart Backend
+# ZipBasket Backend
 
-Node.js backend scaffold for the FreshMart service-based architecture in `Plan.md`.
+Node.js backend scaffold for the ZipBasket service-based architecture in `Plan.md`.
 
 ## Setup
 
@@ -16,4 +16,4 @@ docker compose up -d
 - `services/` domain services
 - `shared/` reusable database, utility, and constant modules
 - `docs/` backend documentation
-# Freshmart
+# ZipBasket

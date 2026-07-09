@@ -1,7 +1,7 @@
 {
-  "name": "freshmart-backend",
+  "name": "zipbasket-backend",
   "version": "1.0.0",
-  "description": "FreshMart backend microservices scaffold",
+  "description": "ZipBasket backend microservices scaffold",
   "main": "gateway/index.js",
   "scripts": {
     "dev:gateway": "nodemon gateway/index.js",
@@ -22,7 +22,7 @@
     "test": "echo \"No tests configured yet\""
   },
   "keywords": [
-    "freshmart",
+    "zipbasket",
     "backend",
     "express",
     "microservices"

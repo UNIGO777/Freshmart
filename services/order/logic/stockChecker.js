@@ -9,7 +9,7 @@ const SEARCH_RADIUS_KM = Number(process.env.VENDOR_SEARCH_RADIUS_KM) || 5;
 /**
  * Pre-payment stock check.
  *
- * Answers: "Can FreshMart fulfil this order from vendors near the customer?"
+ * Answers: "Can ZipBasket fulfil this order from vendors near the customer?"
  *
  * Steps:
  *  1. Resolve product categories for all ordered items.

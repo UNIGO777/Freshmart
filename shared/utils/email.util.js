@@ -38,7 +38,7 @@ function getTransporterPromise() {
   return _transporterPromise;
 }
 
-const FROM_ADDRESS = process.env.SMTP_FROM || 'FreshMart Support <support@freshmart.in>';
+const FROM_ADDRESS = process.env.SMTP_FROM || 'ZipBasket Support <support@zipbasket.in>';
 
 /**
  * Send an email. Non-fatal — catches and logs errors.

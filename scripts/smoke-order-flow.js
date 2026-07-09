@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * FreshMart — Order-flow smoke test
+ * ZipBasket — Order-flow smoke test
  * ---------------------------------
  * Exercises the customer happy path end-to-end against a RUNNING API gateway:
  *
@@ -26,7 +26,7 @@
  * Env (all optional):
  *   GATEWAY_URL   default http://localhost:3000
  *   TEST_PHONE    default 9100000007   (a throwaway 10-digit number)
- *   TEST_EMAIL    default smoke+<phone>@freshmart.test
+ *   TEST_EMAIL    default smoke+<phone>@zipbasket.test
  *   TEST_LAT      default 28.6139      (New Delhi)
  *   TEST_LNG      default 77.2090
  *
@@ -35,7 +35,7 @@
 
 const GATEWAY_URL = (process.env.GATEWAY_URL || 'http://localhost:3000').replace(/\/$/, '');
 const PHONE = process.env.TEST_PHONE || '9100000007';
-const EMAIL = process.env.TEST_EMAIL || `smoke+${PHONE}@freshmart.test`;
+const EMAIL = process.env.TEST_EMAIL || `smoke+${PHONE}@zipbasket.test`;
 const LAT = Number(process.env.TEST_LAT || 28.6139);
 const LNG = Number(process.env.TEST_LNG || 77.2090);
 
@@ -72,7 +72,7 @@ async function call(method, path, { token, body } = {}) {
 const data = (r) => (r.body && typeof r.body === 'object' && 'data' in r.body ? r.body.data : r.body);
 
 async function main() {
-  console.log(`${C.cyan}FreshMart order-flow smoke test${C.reset}`);
+  console.log(`${C.cyan}ZipBasket order-flow smoke test${C.reset}`);
   console.log(`${C.dim}gateway=${GATEWAY_URL}  phone=${PHONE}  coords=${LAT},${LNG}${C.reset}`);
 
   // ── 1. Gateway health ───────────────────────────────────────────
