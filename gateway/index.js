@@ -20,6 +20,15 @@ const { connectRedis } = require('../shared/db/redis');
 const app = express();
 const PORT = process.env.PORT_GATEWAY || 3000;
 
+// Behind a reverse proxy / load balancer, req.ip must come from X-Forwarded-For,
+// otherwise every client looks like the proxy's IP and shares one rate-limit
+// bucket. TRUST_PROXY = number of proxy hops (default 1 in prod). Set to 0 to
+// disable (direct exposure) or a higher number for chained proxies.
+const trustProxy = process.env.TRUST_PROXY !== undefined
+  ? Number(process.env.TRUST_PROXY)
+  : (process.env.NODE_ENV === 'production' ? 1 : 0);
+app.set('trust proxy', trustProxy);
+
 (async () => {
   // ── 1. Connect Redis before requiring rate limiter ────────────────
   // rateLimiter.js reads redisClient.isReady at require-time to decide

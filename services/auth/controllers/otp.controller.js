@@ -97,36 +97,46 @@ const sendOtp = async (req, res) => {
  */
 const verifyOtp = async (req, res) => {
   try {
-    const { phone: rawPhone, otp } = req.body;
+    const { phone: rawPhone, otp: rawOtp } = req.body;
 
-    if (!rawPhone || !otp) {
+    if (!rawPhone || rawOtp === undefined || rawOtp === null || rawOtp === '') {
       return sendError(res, 400, 'Phone and OTP are required', ERROR_CODES.MISSING_FIELDS);
     }
 
+    // Normalise the submitted OTP: clients may send it as a number, or SMS
+    // autofill can inject spaces/newlines (e.g. "123 456"). Strip everything
+    // that isn't a digit so a correct code never fails a strict comparison.
+    const otp = String(rawOtp).replace(/\D/g, '');
+
     const phone = normalizePhone(rawPhone);
-    const session = await OtpSession.findOne({ phone });
+    // Always validate against the NEWEST session. A rare race between two
+    // send-otp calls can leave more than one session doc for a phone; picking an
+    // arbitrary one would reject the code the user actually received.
+    const session = await OtpSession.findOne({ phone }).sort({ createdAt: -1 });
 
     if (!session) {
       return sendError(res, 400, 'OTP not found or expired', ERROR_CODES.OTP_NOT_FOUND);
     }
 
     if (new Date() > session.expiresAt) {
-      await OtpSession.deleteOne({ phone });
+      await OtpSession.deleteMany({ phone });
       return sendError(res, 400, 'OTP has expired', ERROR_CODES.OTP_EXPIRED);
     }
 
     if (session.attempts >= MAX_ATTEMPTS) {
-      await OtpSession.deleteOne({ phone });
+      await OtpSession.deleteMany({ phone });
       return sendError(res, 429, 'Too many attempts. Request a new OTP.', ERROR_CODES.RATE_LIMITED);
     }
 
-    if (session.otp !== otp) {
-      await OtpSession.updateOne({ phone }, { $inc: { attempts: 1 } });
+    // Compare as trimmed strings so a stored/submitted type mismatch can never
+    // reject a correct code.
+    if (String(session.otp).trim() !== otp) {
+      await OtpSession.updateOne({ _id: session._id }, { $inc: { attempts: 1 } });
       return sendError(res, 400, 'Incorrect OTP', ERROR_CODES.INVALID_OTP);
     }
 
-    // OTP verified — clean up session
-    await OtpSession.deleteOne({ phone });
+    // OTP verified — clear every session for this phone (handles rare duplicates)
+    await OtpSession.deleteMany({ phone });
 
     // Login only — user must have registered via POST /api/auth/register first
     const user = await Customer.findOne({ phone });

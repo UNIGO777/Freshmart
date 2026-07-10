@@ -231,6 +231,9 @@ app.post('/internal/update-suborder', async (req, res) => {
     if (update.riderId)          subOrder.riderId          = update.riderId;
     if (update.status)           subOrder.status           = update.status;
     if (update.riderAssignedAt)  subOrder.riderAssignedAt  = new Date(update.riderAssignedAt);
+    // Advance the fulfillment stage as the sub-order progresses.
+    if (update.status === SUB_ORDER_STATUS.RIDER_ASSIGNED) { order.stage = 'assigned'; order.stageDeadline = null; }
+    if ([SUB_ORDER_STATUS.PICKED, SUB_ORDER_STATUS.DELIVERED].includes(update.status)) { order.stage = null; order.stageDeadline = null; }
     if (update.pickedAt)         subOrder.pickedAt         = new Date(update.pickedAt);
     if (update.deliveredAt)      subOrder.deliveredAt      = new Date(update.deliveredAt);
     // Payment status (e.g. COD collected on delivery) — set on the parent order
@@ -433,10 +436,52 @@ const resumeStuckOrders = async () => {
   }
 };
 
+// ── Auto-cancel orders that no vendor accepted in time ────────────
+// The parent order stays in 'confirmed' with NO sub-orders until a vendor
+// accepts. If none accepts within the offer window, the order would otherwise
+// hang forever. Sweep every 15s and cancel any that have aged past the window,
+// telling the customer to try again.
+const VENDOR_OFFER_TTL_SEC = Number(process.env.VENDOR_OFFER_TTL_SEC) || 90;
+
+const sweepUnacceptedOrders = async () => {
+  try {
+    const cutoff = new Date(Date.now() - VENDOR_OFFER_TTL_SEC * 1000);
+    const stale = await Order.find({
+      status: ORDER_STATUS.CONFIRMED,
+      'subOrders.0': { $exists: false }, // no vendor has accepted yet
+      createdAt: { $lt: cutoff },
+    }).select('_id customerId').lean();
+
+    for (const o of stale) {
+      const orderId = o._id.toString();
+      logger.info(`[sweep] No vendor accepted order ${orderId} within ${VENDOR_OFFER_TTL_SEC}s — cancelling`);
+
+      // Tell the customer explicitly first — this drives the "please try again"
+      // popup on the app before the generic cancel event lands.
+      const msg = 'No store accepted your order in time. Please try again in a few minutes.';
+      emitToRoom(`customer:${o.customerId.toString()}`, 'order:status', { orderId, status: 'no_vendor_response', message: msg });
+      emitToRoom(`order:tracking:${orderId}`, 'order:status', { orderId, status: 'no_vendor_response', message: msg });
+
+      try {
+        await axios.post(
+          `http://localhost:${PORT}/internal/cancel-order`,
+          { orderId, reason: 'no_vendor_response' },
+          { timeout: 5000 },
+        );
+      } catch (err) {
+        logger.error(`[sweep] cancel-order failed for ${orderId}: ${err.message}`);
+      }
+    }
+  } catch (err) {
+    logger.error('[sweep] sweepUnacceptedOrders error:', err);
+  }
+};
+
 Promise.all([connectDB(), connectRedis()]).then(() => {
   app.listen(PORT, () => {
     logger.info(`Order Service running on port ${PORT}`);
     resumeStuckOrders();
+    setInterval(sweepUnacceptedOrders, 15000);
   });
 });
 

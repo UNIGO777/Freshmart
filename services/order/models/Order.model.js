@@ -112,6 +112,20 @@ const orderSchema = new mongoose.Schema(
       index: true,
     },
 
+    // Fulfillment sub-phase while the parent order is still being routed. Gives
+    // the customer app an authoritative, persisted live status ("sending to a
+    // store" → "finding a rider" → "assigned") that survives app restarts,
+    // instead of inferring it. null once the order is picked up / terminal.
+    stage: {
+      type: String,
+      enum: ['finding_vendor', 'finding_rider', 'assigned', null],
+      default: null,
+    },
+
+    // When the current finding stage will time out — powers the countdown on
+    // the customer "finding a store / rider" screen. null once past routing.
+    stageDeadline: { type: Date, default: null },
+
     // Routing metadata — tracks cascade progress
     routingMeta: {
       batchIndex: { type: Number, default: 0 },          // Which batch of vendors we're on

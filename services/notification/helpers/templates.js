@@ -89,10 +89,11 @@ const TEMPLATES = {
     data:  { orderId: data.orderId ?? '', screen: 'VendorOrders' },
   }),
 
-  /** Customer notified about order cancellation */
+  /** Customer notified about order cancellation. Callers may pass a specific
+   *  title/body (e.g. "no store accepted — please try again"). */
   'order:cancelled': (data) => ({
-    title: 'Order Cancelled',
-    body:  'Your order has been cancelled. A refund will be processed.',
+    title: data.title ?? 'Order Cancelled',
+    body:  data.body  ?? 'Your order has been cancelled.',
     data:  { orderId: data.orderId ?? '', screen: 'OrderDetail' },
   }),
 
@@ -128,7 +129,7 @@ const TEMPLATES = {
   /** Admin sends a promotional notification — title/body provided directly */
   'promo': (data) => ({
     title: data.title ?? 'Special Offer 🎉',
-    body:  data.body  ?? 'Check out the latest deals on FreshMart!',
+    body:  data.body  ?? 'Check out the latest deals on ZipBasket!',
     data:  { screen: data.screen ?? 'Offers' },
   }),
 };

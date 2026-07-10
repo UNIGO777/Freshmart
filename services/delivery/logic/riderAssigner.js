@@ -109,13 +109,9 @@ const autoCancelOrder = async (job) => {
   await emitToCustomer(job.customerId.toString(), 'order:status', {
     orderId: job.orderId,
     status: 'no_rider_available',
-    message: 'No delivery rider available. Your order has been cancelled.',
+    message: 'No delivery partner was available in time. Please try again in a few minutes.',
   });
-
-  // Send FCM push notification
-  triggerNotification('order:cancelled', job.customerId.toString(), 'customer', {
-    orderId: job.orderId.toString(),
-  });
+  // FCM push is sent by /internal/cancel-order (called above) — no duplicate here.
 };
 
 // ── Core logic ────────────────────────────────────────────────────

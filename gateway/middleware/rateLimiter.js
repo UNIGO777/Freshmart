@@ -42,14 +42,19 @@ const generalLimiter = rateLimit({
   message: { success: false, message: 'Too many requests, please try again later.', errorCode: 'RATE_LIMITED' },
 });
 
-// Stricter limiter for auth routes (OTP, login)
+// Auth routes: this gateway limiter is only a coarse per-IP ABUSE net. The real
+// per-account throttling (per phone/email) lives in the auth service, which can
+// read the request body — the gateway cannot. Because many legitimate users can
+// share a single egress IP (mobile CGNAT, a load balancer, office Wi-Fi), this
+// bucket must be generous, otherwise 5 different users logging in within a minute
+// would falsely trip "too many attempts".
 const authLimiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 10,
+  windowMs: 60 * 1000, // 1 minute
+  max: 100, // up to 100 auth requests/min per source IP (abuse protection only)
   standardHeaders: true,
   legacyHeaders: false,
   store: makeStore('rl:auth:'),
-  message: { success: false, message: 'Too many auth attempts, please try again later.', errorCode: 'RATE_LIMITED' },
+  message: { success: false, message: 'Too many requests from this network, please try again shortly.', errorCode: 'RATE_LIMITED' },
 });
 
 module.exports = { generalLimiter, authLimiter };
