@@ -5,6 +5,7 @@ const { redisClient } = require('../../../shared/db/redis');
 const { initCoverageState, getUncoveredItems } = require('./orderSplitter');
 const { triggerNotification } = require('../../../shared/utils/notify');
 const { notifyVendor } = require('../../../shared/utils/vendorNotify');
+const { sendDataOnly } = require('../../../shared/utils/dataPush');
 const logger = require('../../../shared/utils/logger');
 
 const BATCH_SIZE = Number(process.env.MAX_VENDOR_ATTEMPTS) || 3;
@@ -189,8 +190,13 @@ const offerToBatch = async (order, sortedVendors, batchIndex) => {
       expiresIn: VENDOR_OFFER_TTL,
     });
 
-    // FCM push to vendor (non-blocking)
-    triggerNotification('order:incoming', vid, 'vendor', { orderId, expiresIn: VENDOR_OFFER_TTL });
+    // DATA-ONLY high-priority FCM push — wakes a killed app so the phone-off siren
+    // can fire. NO notification block (that would consume the message in the OS tray
+    // and skip setBackgroundMessageHandler). Ring window = the offer TTL.
+    const expiresAt = Date.now() + VENDOR_OFFER_TTL * 1000;
+    sendDataOnly(vendor.fcmToken, { type: 'NEW_ORDER', orderId, expiresAt }, { ttlSec: VENDOR_OFFER_TTL });
+
+    // In-app notification record (vendor notifications list) — not an FCM push.
     notifyVendor(vid, 'order:incoming', 'New Order Received',
       `New order #${orderId.slice(-4)} with ${order.items.length} item(s)`,
       orderId);
