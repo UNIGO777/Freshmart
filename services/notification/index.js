@@ -14,6 +14,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
 const connectDB = require('../../shared/db/mongoose');
+const { authenticate } = require('../../gateway/middleware/auth.middleware');
 const { notifyUser, sendPromo, updateFcmToken } = require('./controllers/notification.controller');
 const logger = require('../../shared/utils/logger');
 
@@ -36,11 +37,15 @@ app.post('/internal/notify', notifyUser);
 
 // ── Routes exposed through API Gateway (JWT required — enforced by gateway) ─
 
+// The gateway forwards the Authorization header but does NOT populate req.user in
+// the upstream service — each service must decode it. `authenticate` attaches
+// req.user = { id, role } from the JWT (matches every other service).
+
 // PATCH /api/notifications/fcm-token  — any authenticated user updates their device token
-app.patch('/fcm-token', updateFcmToken);
+app.patch('/fcm-token', authenticate, updateFcmToken);
 
 // POST /api/notifications/promo  — ADMIN only (role guard enforced by gateway)
-app.post('/promo', sendPromo);
+app.post('/promo', authenticate, sendPromo);
 
 // ── Global error handler ───────────────────────────────────────────
 app.use((_req, res) => res.status(404).json({ success: false, message: 'Route not found', errorCode: 'NOT_FOUND' }));

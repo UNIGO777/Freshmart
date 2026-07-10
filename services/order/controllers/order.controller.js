@@ -24,6 +24,7 @@ const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const { ORDER_STATUS, SUB_ORDER_STATUS } = require('../../../shared/constants/orderStatus');
 const ROLES = require('../../../shared/constants/roles');
 const { triggerNotification } = require('../../../shared/utils/notify');
+const { sendDataOnly } = require('../../../shared/utils/dataPush');
 const { notifyAdmin } = require('../../../shared/utils/notifyAdmin');
 const { notifyVendor } = require('../../../shared/utils/vendorNotify');
 const logger = require('../../../shared/utils/logger');
@@ -153,6 +154,8 @@ const placeOrder = async (req, res) => {
       deliveryFee,
       totalAmount,
       status: ORDER_STATUS.CONFIRMED,
+      stage: 'finding_vendor', // waiting for a store to accept
+      stageDeadline: new Date(Date.now() + (Number(process.env.VENDOR_OFFER_TTL_SEC) || 90) * 1000),
       routingMeta: {
         batchIndex: 0,
         allVendorIds: [chosenVendor._id],
@@ -185,6 +188,19 @@ const placeOrder = async (req, res) => {
     notifyVendor(vendorId, 'order:incoming', 'New Order Received',
       `New order #${order._id.toString().slice(-4)} with ${order.items.length} item(s) — ₹${order.totalAmount}`,
       order._id.toString());
+
+    // Phase-2 phone-off siren: a DATA-ONLY high-priority push wakes a killed/locked
+    // app so the native siren + lock-screen popup fire. The socket + notification
+    // above only reach a live app; this is what makes an offline vendor's phone ring.
+    // Best-effort, non-blocking. Data shape must match fcm-background.ts's router.
+    if (chosenVendor.fcmToken) {
+      const ttlSec = Number(process.env.VENDOR_OFFER_TTL_SEC) || 90;
+      sendDataOnly(
+        chosenVendor.fcmToken,
+        { type: 'NEW_ORDER', orderId: order._id.toString(), expiresAt: Date.now() + ttlSec * 1000 },
+        { ttlSec },
+      );
+    }
 
     // Notify customer: finding vendor
     await emitToCustomer(order.customerId.toString(), 'order:status', {
@@ -574,6 +590,8 @@ const vendorAcceptOrder = async (req, res) => {
     }];
     // Set 1-minute cancellation deadline from vendor accept
     order.cancelDeadline = new Date(Date.now() + 60 * 1000);
+    order.stage = 'finding_rider'; // store accepted — now finding a delivery partner
+    order.stageDeadline = new Date(Date.now() + (Number(process.env.RIDER_ASSIGNMENT_TIMEOUT_SEC) || 30) * 1000);
     await order.save();
 
     // Deduct inventory immediately on vendor accept
@@ -969,14 +987,27 @@ const internalCancelOrder = async (req, res) => {
     }
 
     // Notify customer
+    const friendlyMessage =
+      reason === 'no_rider_available'
+        ? 'No delivery partner was available in time. Your order was cancelled — please try again in a few minutes.'
+        : reason === 'no_vendor_response'
+        ? 'No store accepted your order in time. Your order was cancelled — please try again in a few minutes.'
+        : 'Your order has been cancelled.';
     const cancelPayload = {
       orderId: order._id.toString(),
       status: 'cancelled',
-      message: reason === 'no_rider_available'
-        ? 'No delivery rider available. Your order has been cancelled.'
-        : 'Your order has been cancelled.',
+      reason: reason || 'cancelled',
+      message: friendlyMessage,
     };
     await emitToCustomer(order.customerId.toString(), 'order:status', cancelPayload);
+
+    // Push notification so the customer is told even if the app is closed or the
+    // phone is off (delivered when it next comes online).
+    triggerNotification('order:cancelled', order.customerId.toString(), 'customer', {
+      orderId: order._id.toString(),
+      title: 'Order cancelled',
+      body: friendlyMessage,
+    });
 
     // Also emit to order tracking room so the tracking screen updates in real-time
     try {
