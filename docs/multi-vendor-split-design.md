@@ -269,13 +269,17 @@ served by **ONE rider** who visits every vendor then the customer:
 - **When to assign:** only once **ALL** category-groups are claimed (all pickup
   points known). Until then the order sits in "finding_vendor / partially accepted."
   If a group never gets accepted → M3 all-or-nothing fail → no rider assigned.
-- **Rider pay = per-km on the multi-stop ROUTE** (not flat, not a bonus). Same model
-  as today (`riderAssigner.js`: `max(minEarnings ₹15, round(distanceKm × ratePerKm ₹11
-  × surge))`), but `distanceKm` becomes the **sum of the route legs** — nearest-vendor
-  → next-vendor → … → customer — instead of a single pickup→drop. Visiting two vendors
-  is simply more km, so the rider is paid more automatically. This also **fixes** the
-  old economics flag (was: N flat fees per order → one rider, one per-km trip). The
-  customer's flat `deliveryFee` (₹69 / free ≥ ₹99) is unchanged.
+- **Rider pay = per-km on the FULL route from the rider** (not flat, not a bonus).
+  Same rate model as today (`max(minEarnings ₹15, round(distanceKm × ratePerKm ₹11 ×
+  surge))`), but `distanceKm` = the summed legs of the whole trip:
+  **`rider → nearest vendor → next-nearest vendor → … → last vendor → customer`**
+  (greedy nearest-neighbor). This **includes the rider→first-vendor leg** — unlike
+  today's single-pickup calc which is `haversine(pickup→drop)` only. Because that
+  distance depends on the rider's position, earnings are **computed PER RIDER at OFFER
+  time** and shown in the `job:request` offer, so the rider sees their exact total
+  before accepting; the route order + distance + earning **lock on accept**. Fixes the
+  old economics flag (one rider, one per-km trip). Customer flat `deliveryFee` (₹69 /
+  free ≥ ₹99) unchanged.
 - **Per-vendor pickup OTP stays** — the rider collects from each vendor with that
   vendor's OTP (N pickup OTPs, one drop confirmation).
 
@@ -287,8 +291,11 @@ assign-rider with all pickup stops. That work lives in the new **MR** milestone 
 **New surface this touches:** `DeliveryJob` schema (single pickup → ordered pickup
 array), `riderAssigner.js` (per-order job + nearest-first route on accept), the rider
 app active-delivery UI (multi-stop: "Pickup 1 of 2 → Pickup 2 of 2 → Deliver", one
-OTP per stop), and the pickup/`markPicked` flow (per-stop). Rider pay = per-km on the
-summed route legs (decided). Open: max pickups per rider? re-route if rider skips a stop?
+OTP per stop), and the pickup/`markPicked` flow (per-stop). **Per-rider earning at
+offer time** changes `offerToRiderBatch` — each offered rider gets their own route +
+earning, not a single job-wide number. **Decided:** rider pay = per-km on the full
+route from the rider; max pickups = the order's number of category-groups (no artificial
+cap); assign only after all groups accepted. Open: re-route if a rider skips a stop?
 
 ---
 
