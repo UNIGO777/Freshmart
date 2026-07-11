@@ -132,6 +132,18 @@ const orderSchema = new mongoose.Schema(
       allVendorIds: [mongoose.Schema.Types.ObjectId],    // All vendors considered (sorted by distance)
       offeredVendorIds: [mongoose.Schema.Types.ObjectId],// Vendors currently offered the order
       rejectedVendorIds: [mongoose.Schema.Types.ObjectId],
+      // Multi-vendor category split (M0). One entry per category-group; each is
+      // offered to its category's vendors and claimed all-or-nothing by exactly
+      // one of them (see logic/orderGrouping.js). Empty for legacy single-vendor.
+      groups: [{
+        groupKey: String,                                          // the category, e.g. 'veg'
+        category: String,
+        productIds: [mongoose.Schema.Types.ObjectId],              // items in this group
+        offeredVendorIds: [mongoose.Schema.Types.ObjectId],        // eligible vendors for this group (≤3)
+        claimedByVendorId: { type: mongoose.Schema.Types.ObjectId, default: null }, // null = open
+        status: { type: String, enum: ['open', 'claimed', 'failed'], default: 'open' },
+        deadline: Date,                                            // per-group TTL (M3)
+      }],
     },
 
     ratings: ratingSchema,
