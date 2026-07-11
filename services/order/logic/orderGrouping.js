@@ -101,4 +101,35 @@ const claimGroup = async (Model, orderId, group, vendorId, locations = {}) => {
   );
 };
 
-module.exports = { splitByCategory, buildGroupSubOrder, claimGroup };
+/**
+ * Atomically mark ONE group claimed by ONE vendor — WITHOUT pushing a sub-order.
+ *
+ * Same atomic `$elemMatch` guard as `claimGroup` (matches only while the group
+ * is still open + this vendor was offered it), but it leaves the sub-order to
+ * the caller. This lets `vendorAcceptOrder` claim ALL of a vendor's groups
+ * first, then build ONE merged sub-order for that vendor (one vendor = one
+ * pickup = one rider), instead of one sub-order per group.
+ *
+ * @returns {Promise<Object|null>}  the updated order if this vendor won the
+ *   group; `null` if it was already claimed / not offered / closed.
+ */
+const markGroupClaimed = async (Model, orderId, groupKey, vendorId) => {
+  const vObj = new mongoose.Types.ObjectId(vendorId);
+  return Model.findOneAndUpdate(
+    {
+      _id: orderId,
+      'routingMeta.groups': {
+        $elemMatch: { groupKey, status: 'open', claimedByVendorId: null, offeredVendorIds: vObj },
+      },
+    },
+    {
+      $set: {
+        'routingMeta.groups.$.claimedByVendorId': vObj,
+        'routingMeta.groups.$.status': 'claimed',
+      },
+    },
+    { new: true },
+  );
+};
+
+module.exports = { splitByCategory, buildGroupSubOrder, claimGroup, markGroupClaimed };

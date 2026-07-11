@@ -386,6 +386,66 @@ const findEligibleVendor = async (customerLocation, orderItems) => {
     }));
 };
 
+/**
+ * Eligible vendors for ONE category-group (M0 multi-vendor split).
+ *
+ * A vendor qualifies only if ALL of these hold:
+ *   - approved, active, ONLINE, within 5km ($nearSphere, nearest first),
+ *   - declares the group's category,
+ *   - stocks EVERY item in the group with a REAL quantity — quantityAvailable
+ *     >= the ordered quantity (not the manual isAvailable flag, which a vendor
+ *     can leave on with zero stock).
+ * This "has the whole group" guarantee is what lets a vendor claim the group
+ * all-or-nothing (see logic/orderGrouping.js claimGroup/markGroupClaimed).
+ *
+ * @param {{lat,lng}} customerLocation
+ * @param {{ category, items:[{productId, quantity}] }} group
+ * @param {number} cap  max vendors to offer per group (default 3)
+ * @returns {Promise<Array>}  up to `cap` vendor docs (with fcmToken), nearest first
+ */
+const findEligibleVendorsForGroup = async (customerLocation, group, cap = 3) => {
+  const { lat, lng } = customerLocation;
+  const productIds = group.items.map((i) => i.productId);
+
+  const vendors = await Vendor.find({
+    isApproved: true,
+    isActive: true,
+    isOnline: true,
+    categories: group.category,
+    location: {
+      $nearSphere: { $geometry: { type: 'Point', coordinates: [lng, lat] }, $maxDistance: 5000 },
+    },
+  })
+    .select('_id businessName location categories fcmToken')
+    .lean();
+
+  if (vendors.length === 0) return [];
+
+  const vendorIds = vendors.map((v) => v._id);
+  const inventory = await Inventory.find({
+    vendorId: { $in: vendorIds },
+    productId: { $in: productIds },
+    isAvailable: true,
+    quantityAvailable: { $gt: 0 },
+  }).lean();
+
+  // vendorId -> { productId -> quantityAvailable }
+  const invMap = {};
+  for (const rec of inventory) {
+    const vid = rec.vendorId.toString();
+    (invMap[vid] = invMap[vid] || {})[rec.productId.toString()] = rec.quantityAvailable;
+  }
+
+  const eligible = vendors.filter((v) => {
+    const vm = invMap[v._id.toString()];
+    if (!vm) return false;
+    // must have EVERY group item in enough quantity
+    return group.items.every((it) => (vm[it.productId.toString()] || 0) >= it.quantity);
+  });
+
+  return eligible.slice(0, cap); // already sorted nearest-first by $nearSphere
+};
+
 module.exports = {
   initiateRouting,
   handleVendorResponse,
@@ -394,4 +454,5 @@ module.exports = {
   emitToCustomer,
   emitToVendor,
   findEligibleVendor,
+  findEligibleVendorsForGroup,
 };

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { z } = require('zod');
 const axios = require('axios');
+const mongoose = require('mongoose');
 const Order = require('../models/Order.model');
 const Product = require('../../product/models/Product.model');
 const Vendor = require('../../user/models/Vendor.model');
@@ -15,8 +16,10 @@ const {
   emitToCustomer,
   emitToVendor,
   findEligibleVendor,
+  findEligibleVendorsForGroup,
 } = require('../logic/vendorRouter');
 const { buildSubOrders } = require('../logic/orderSplitter');
+const { splitByCategory, markGroupClaimed } = require('../logic/orderGrouping');
 const Rider = require('../../user/models/Rider.model');
 const DeliveryRateConfig = require('../../admin/models/DeliveryRateConfig.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
@@ -133,14 +136,42 @@ const placeOrder = async (req, res) => {
 
     const totalAmount = subtotal + deliveryFee - discountAmount;
 
-    // ── Find eligible vendor with inventory context ───────────────
-    const eligibleVendors = await findEligibleVendor(deliveryAddress, orderItems);
-    if (eligibleVendors.length === 0) {
+    // ── Multi-vendor split (M0): divide by category, find eligible vendors PER group ──
+    // Each category-group (veg-group, fruit-group, …) routes to its own vendors and is
+    // claimed all-or-nothing by one of them. A single-category order = one group, so it
+    // behaves exactly like the old single-vendor flow.
+    const groups = splitByCategory(orderItems);
+    const routingGroups = [];
+    const offerMap = new Map(); // vendorId(str) -> { vendor, items:[] }  union across the groups a vendor is offered
+
+    for (const g of groups) {
+      const vendors = await findEligibleVendorsForGroup(deliveryAddress, g, 3); // cap 3 per category
+      const offeredVendorIds = vendors.map((v) => v._id);
+      routingGroups.push({
+        groupKey: g.groupKey,
+        category: g.category,
+        productIds: g.productIds,
+        offeredVendorIds,
+        claimedByVendorId: null,
+        status: offeredVendorIds.length ? 'open' : 'failed', // no vendor → flagged (M3 will fail the order)
+      });
+      if (offeredVendorIds.length === 0) {
+        logger.warn(`placeOrder: category-group '${g.groupKey}' has NO eligible vendors — order will be un-fulfillable (all-or-nothing fail lands in M3)`);
+        continue;
+      }
+      for (const v of vendors) {
+        const vid = v._id.toString();
+        if (!offerMap.has(vid)) offerMap.set(vid, { vendor: v, items: [] });
+        offerMap.get(vid).items.push(...g.items);
+      }
+    }
+
+    // If not a single group could be offered, this is the old "no vendors in your area".
+    if (!routingGroups.some((rg) => rg.status === 'open')) {
       return sendError(res, 400, 'No vendors available in your area', ERROR_CODES.NO_VENDOR_FOUND);
     }
 
-    // Pick closest vendor (already sorted by $nearSphere)
-    const chosenVendor = eligibleVendors[0];
+    const unionVendorIds = [...offerMap.keys()].map((id) => new mongoose.Types.ObjectId(id));
 
     // ── Create order ──────────────────────────────────────────────
     const order = await Order.create({
@@ -151,16 +182,17 @@ const placeOrder = async (req, res) => {
       paymentMethod: 'cod',
       couponCode,
       discountAmount,
-      deliveryFee,
+      deliveryFee,   // order-level: charged ONCE regardless of how many sub-orders the split produces
       totalAmount,
       status: ORDER_STATUS.CONFIRMED,
       stage: 'finding_vendor', // waiting for a store to accept
       stageDeadline: new Date(Date.now() + (Number(process.env.VENDOR_OFFER_TTL_SEC) || 90) * 1000),
       routingMeta: {
         batchIndex: 0,
-        allVendorIds: [chosenVendor._id],
-        offeredVendorIds: [chosenVendor._id],
+        allVendorIds: unionVendorIds,     // union across groups — keeps getVendorIncoming working
+        offeredVendorIds: unionVendorIds,
         rejectedVendorIds: [],
+        groups: routingGroups,
       },
     });
 
@@ -171,43 +203,43 @@ const placeOrder = async (req, res) => {
       );
     }
 
-    // ── Send order to vendor with inventory context ───────────────
-    const vendorId = chosenVendor._id.toString();
-    await emitToVendor(vendorId, 'order:incoming', {
-      orderId: order._id.toString(),
-      items: order.items,
-      deliveryAddress: order.deliveryAddress,
-      deliveryInstructions: order.deliveryInstructions,
-      inventoryContext: chosenVendor.inventoryContext,
-      expiresIn: Number(process.env.VENDOR_OFFER_TTL_SEC) || 90,
-    });
-    triggerNotification('order:incoming', vendorId, 'vendor', {
-      orderId: order._id.toString(),
-      expiresIn: Number(process.env.VENDOR_OFFER_TTL_SEC) || 90,
-    });
-    notifyVendor(vendorId, 'order:incoming', 'New Order Received',
-      `New order #${order._id.toString().slice(-4)} with ${order.items.length} item(s) — ₹${order.totalAmount}`,
-      order._id.toString());
+    // ── Offer to each eligible vendor (scoped to the items they can fulfil) ─────────
+    // Customer FIRST name only — shows on the LOCK screen ("Order from Rahul"). Looked
+    // up once, carried IN the siren push so the popup can label the order offline.
+    let customerName = '';
+    try {
+      const cust = await Customer.findById(req.user.id).select('name').lean();
+      customerName = (cust?.name || '').trim().split(/\s+/)[0] || '';
+    } catch { /* name is optional — popup falls back to "New order" */ }
+    const expiresIn = Number(process.env.VENDOR_OFFER_TTL_SEC) || 90;
+    const orderIdStr = order._id.toString();
 
-    // Phase-2 phone-off siren: a DATA-ONLY high-priority push wakes a killed/locked
-    // app so the native siren + lock-screen popup fire. The socket + notification
-    // above only reach a live app; this is what makes an offline vendor's phone ring.
-    // Best-effort, non-blocking. Data shape must match fcm-background.ts's router.
-    if (chosenVendor.fcmToken) {
-      const ttlSec = Number(process.env.VENDOR_OFFER_TTL_SEC) || 90;
-      // Customer FIRST name only — it shows on the LOCK screen ("Order from Rahul"),
-      // visible to anyone holding the phone. Carried IN the push so the popup can
-      // label the order even if the cold-start has no network. Best-effort lookup.
-      let customerName = '';
-      try {
-        const cust = await Customer.findById(req.user.id).select('name').lean();
-        customerName = (cust?.name || '').trim().split(/\s+/)[0] || '';
-      } catch { /* name is optional — popup falls back to "New order" */ }
-      sendDataOnly(
-        chosenVendor.fcmToken,
-        { type: 'NEW_ORDER', orderId: order._id.toString(), expiresAt: Date.now() + ttlSec * 1000, customerName },
-        { ttlSec },
-      );
+    for (const [vid, { vendor, items }] of offerMap) {
+      const inventoryContext = items.map((it) => ({
+        productId: it.productId, name: it.name, orderedQty: it.quantity,
+        availableQty: it.quantity, extraNeeded: 0, inStock: true, // eligibility guaranteed full stock
+      }));
+      await emitToVendor(vid, 'order:incoming', {
+        orderId: orderIdStr,
+        items,                          // only THIS vendor's offered items
+        deliveryAddress: order.deliveryAddress,
+        deliveryInstructions: order.deliveryInstructions,
+        inventoryContext,
+        expiresIn,
+      });
+      triggerNotification('order:incoming', vid, 'vendor', { orderId: orderIdStr, expiresIn });
+      notifyVendor(vid, 'order:incoming', 'New Order Received',
+        `New order #${orderIdStr.slice(-4)} with ${items.length} item(s)`, orderIdStr);
+
+      // Phase-2 phone-off siren — DATA-ONLY high-priority push wakes a killed/locked app
+      // so the native siren + lock-screen popup fire. UNCHANGED shape (do not modify).
+      if (vendor.fcmToken) {
+        sendDataOnly(
+          vendor.fcmToken,
+          { type: 'NEW_ORDER', orderId: orderIdStr, expiresAt: Date.now() + expiresIn * 1000, customerName },
+          { ttlSec: expiresIn },
+        );
+      }
     }
 
     // Notify customer: finding vendor
@@ -561,7 +593,6 @@ const getVendorIncoming = async (req, res) => {
 // Vendor: accept entire order → build sub-order → trigger rider assignment.
 const vendorAcceptOrder = async (req, res) => {
   try {
-    const mongoose = require('mongoose');
     const order = await Order.findById(req.params.id);
     if (!order) return sendError(res, 404, 'Order not found', ERROR_CODES.NOT_FOUND);
     const acceptableStatuses = [ORDER_STATUS.CONFIRMED, ORDER_STATUS.AWAITING_PAYMENT, ORDER_STATUS.STOCK_CHECK];
@@ -570,82 +601,100 @@ const vendorAcceptOrder = async (req, res) => {
     }
 
     const vendorId = req.user.id;
-
-    // Verify vendor was offered this order (friendly pre-check; the atomic claim below
-    // is the real guard against the cascade double-accept race).
-    const wasOffered = order.routingMeta.offeredVendorIds.some((v) => v.toString() === vendorId);
-    if (!wasOffered) return sendError(res, 403, 'This order was not offered to you', ERROR_CODES.FORBIDDEN);
-
-    // Fetch vendor location for pickup
-    const vendor = await Vendor.findById(vendorId).select('location businessName').lean();
-    const [vendorLng = 0, vendorLat = 0] = vendor?.location?.coordinates || [];
-
-    // Build single sub-order with all items
-    const subOrder = {
-      vendorId,
-      items: order.items.map((i) => ({
-        productId: i.productId,
-        quantity: i.quantity,
-        sellingPrice: i.sellingPrice,
-        buyingPrice: i.buyingPrice,
-      })),
-      status: SUB_ORDER_STATUS.VENDOR_ACCEPTED,
-      vendorAcceptedAt: new Date(),
-      pickupLocation: {
-        lat: vendorLat,
-        lng: vendorLng,
-        fullAddress: vendor?.businessName || '',
-      },
-      dropLocation: order.deliveryAddress,
-    };
+    const vObjId = new mongoose.Types.ObjectId(vendorId);
     const cancelDeadline = new Date(Date.now() + 60 * 1000);
     const stageDeadline = new Date(Date.now() + (Number(process.env.RIDER_ASSIGNMENT_TIMEOUT_SEC) || 30) * 1000);
 
-    // ── ATOMIC CLAIM — first vendor to match wins. Matches ONLY if the order is still
-    //    un-accepted (no subOrder), still in an acceptable status, AND still offered to
-    //    THIS vendor. A vendor cascaded away (removed from offeredVendorIds) or an order
-    //    already claimed by another vendor gets no match → "already taken". This is what
-    //    makes the reject/timeout cascade safe against two vendors accepting at once.
-    const claimed = await Order.findOneAndUpdate(
-      {
-        _id: order._id,
-        status: { $in: acceptableStatuses },
-        'subOrders.0': { $exists: false },
-        'routingMeta.offeredVendorIds': new mongoose.Types.ObjectId(vendorId),
-      },
-      { $set: { subOrders: [subOrder], cancelDeadline, stage: 'finding_rider', stageDeadline } },
-      { new: true },
-    );
-    if (!claimed) {
-      return sendError(res, 409, 'Order already taken by another store', ERROR_CODES.VALIDATION_ERROR);
+    // Vendor pickup location (both paths)
+    const vendor = await Vendor.findById(vendorId).select('location businessName').lean();
+    const [vendorLng = 0, vendorLat = 0] = vendor?.location?.coordinates || [];
+    const pickupLocation = { lat: vendorLat, lng: vendorLng, fullAddress: vendor?.businessName || '' };
+    const buildSub = (items) => ({
+      vendorId,
+      items: items.map((i) => ({ productId: i.productId, quantity: i.quantity, sellingPrice: i.sellingPrice, buyingPrice: i.buyingPrice })),
+      status: SUB_ORDER_STATUS.VENDOR_ACCEPTED,
+      vendorAcceptedAt: new Date(),
+      pickupLocation,
+      dropLocation: order.deliveryAddress,
+    });
+
+    const groups = order.routingMeta?.groups || [];
+    let claimed;
+    let acceptedSubOrder;
+
+    if (groups.length === 0) {
+      // ── LEGACY whole-order accept (orders placed before the split existed) ──
+      // ATOMIC CLAIM — first vendor to match wins; matches only if still un-accepted,
+      // acceptable status, and still offered to THIS vendor.
+      claimed = await Order.findOneAndUpdate(
+        {
+          _id: order._id,
+          status: { $in: acceptableStatuses },
+          'subOrders.0': { $exists: false },
+          'routingMeta.offeredVendorIds': vObjId,
+        },
+        { $set: { subOrders: [buildSub(order.items)], cancelDeadline, stage: 'finding_rider', stageDeadline } },
+        { new: true },
+      );
+      if (!claimed) return sendError(res, 409, 'Order already taken by another store', ERROR_CODES.VALIDATION_ERROR);
+      acceptedSubOrder = claimed.subOrders[claimed.subOrders.length - 1];
+    } else {
+      // ── GROUP model — claim this vendor's OPEN offered category-groups ──
+      // A single-category order has ONE group, so this reduces to today's behaviour:
+      // claim it → one sub-order → finding_rider; a losing double-accept → 409.
+      const myOpenGroups = groups.filter(
+        (g) => g.status === 'open' && g.offeredVendorIds.some((v) => v.toString() === vendorId),
+      );
+      if (myOpenGroups.length === 0) {
+        return sendError(res, 409, 'Order already taken by another store', ERROR_CODES.VALIDATION_ERROR);
+      }
+      // Atomically win each group (per-group $elemMatch; the loser of a race gets null).
+      const wonGroups = [];
+      for (const g of myOpenGroups) {
+        const won = await markGroupClaimed(Order, order._id, g.groupKey, vendorId);
+        if (won) wonGroups.push(g);
+      }
+      if (wonGroups.length === 0) {
+        return sendError(res, 409, 'Order already taken by another store', ERROR_CODES.VALIDATION_ERROR);
+      }
+      // One vendor = one pickup = one rider: merge all groups this vendor won into ONE sub-order.
+      const wonPids = new Set(wonGroups.flatMap((g) => g.productIds.map((p) => p.toString())));
+      const wonItems = order.items.filter((it) => wonPids.has(it.productId.toString()));
+      // NOTE (M0): cancelDeadline is reset on each vendor's accept — for a 2-vendor split
+      // the customer's cancel window restarts on the 2nd accept. Acceptable for M0; the
+      // per-sub-order stage model is refined in M4 (multi-pickup tracking).
+      claimed = await Order.findByIdAndUpdate(
+        order._id,
+        { $push: { subOrders: buildSub(wonItems) }, $set: { stage: 'finding_rider', stageDeadline, cancelDeadline } },
+        { new: true },
+      );
+      acceptedSubOrder = claimed.subOrders[claimed.subOrders.length - 1];
     }
 
-    // Deduct inventory immediately on vendor accept
+    // ── Shared side-effects (both paths), scoped to the accepted sub-order ──
+    // Deduct inventory (stub today — no-op)
     axios
       .post(
         `http://localhost:${process.env.PORT || 3004}/internal/deduct-inventory`,
         { orderId: claimed._id.toString(), vendorId },
         { timeout: 5000 },
       )
-      .catch((err) =>
-        logger.warn(`deduct-inventory on vendor accept failed for order ${claimed._id}: ${err.message}`),
-      );
+      .catch((err) => logger.warn(`deduct-inventory on vendor accept failed for order ${claimed._id}: ${err.message}`));
 
-    // Clean up routing state since vendor is now assigned
+    // Clean up Redis routing state (no-op for the inline group model, harmless)
     await clearRoutingState(claimed._id);
 
     // Notify customer: vendor confirmed, now finding rider (include cancel deadline for countdown)
     await emitToCustomer(claimed.customerId.toString(), 'order:status', {
       orderId: claimed._id.toString(),
       status: 'vendor_confirmed',
-      cancelDeadline: claimed.cancelDeadline.toISOString(),
+      cancelDeadline: (claimed.cancelDeadline || cancelDeadline).toISOString(),
     });
     triggerNotification('order:confirmed', claimed.customerId.toString(), 'customer', {
       orderId: claimed._id.toString(),
     });
 
-    // Trigger rider assignment for the single sub-order
-    const acceptedSubOrder = claimed.subOrders[0];
+    // Trigger rider assignment for THIS sub-order (each accepted sub-order → its own rider).
     axios
       .post(
         `http://localhost:${process.env.PORT_DELIVERY || 3006}/internal/assign-rider`,
@@ -656,16 +705,14 @@ const vendorAcceptOrder = async (req, res) => {
           customerId:           claimed.customerId.toString(),
           pickupLocation:       acceptedSubOrder.pickupLocation,
           dropLocation:         acceptedSubOrder.dropLocation,
-          deliveryFee:          claimed.deliveryFee,
+          deliveryFee:          claimed.deliveryFee, // NOTE: order-level fee; splits pay it per rider (economics flag)
           deliveryInstructions: claimed.deliveryInstructions || '',
           paymentMethod:        claimed.paymentMethod || 'cod',
           totalAmount:          claimed.totalAmount || 0,
         },
         { timeout: 5000 },
       )
-      .catch((err) =>
-        logger.warn(`assign-rider call failed for subOrder ${acceptedSubOrder._id}: ${err.message}`),
-      );
+      .catch((err) => logger.warn(`assign-rider call failed for subOrder ${acceptedSubOrder._id}: ${err.message}`));
 
     return sendSuccess(res, 200, 'Order accepted', { orderId: claimed._id });
   } catch (err) {
