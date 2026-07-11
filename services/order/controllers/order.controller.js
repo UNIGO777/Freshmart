@@ -145,6 +145,7 @@ const placeOrder = async (req, res) => {
     const offerMap = new Map(); // vendorId(str) -> { vendor, items:[] }  union across the groups a vendor is offered
 
     for (const g of groups) {
+      // area + category + CARRIES all group items (no quantity gate — vendor decides on accept)
       const vendors = await findEligibleVendorsForGroup(deliveryAddress, g, 3); // cap 3 per category
       const offeredVendorIds = vendors.map((v) => v._id);
       routingGroups.push({

@@ -392,14 +392,15 @@ const findEligibleVendor = async (customerLocation, orderItems) => {
  * A vendor qualifies only if ALL of these hold:
  *   - approved, active, ONLINE, within 5km ($nearSphere, nearest first),
  *   - declares the group's category,
- *   - stocks EVERY item in the group with a REAL quantity — quantityAvailable
- *     >= the ordered quantity (not the manual isAvailable flag, which a vendor
- *     can leave on with zero stock).
- * This "has the whole group" guarantee is what lets a vendor claim the group
- * all-or-nothing (see logic/orderGrouping.js claimGroup/markGroupClaimed).
+ *   - CARRIES every item in the group — i.e. has an enabled inventory record
+ *     (isAvailable:true) for each product. Quantity is NOT gated here: the
+ *     vendor decides, after seeing the ordered quantities on the offer, whether
+ *     to accept. The backend only captures "does this vendor offer the product".
+ * "Carries the whole group" is what lets a vendor claim the group all-or-nothing
+ * (see logic/orderGrouping.js claimGroup/markGroupClaimed).
  *
  * @param {{lat,lng}} customerLocation
- * @param {{ category, items:[{productId, quantity}] }} group
+ * @param {{ category, items:[{productId}] }} group
  * @param {number} cap  max vendors to offer per group (default 3)
  * @returns {Promise<Array>}  up to `cap` vendor docs (with fcmToken), nearest first
  */
@@ -422,25 +423,25 @@ const findEligibleVendorsForGroup = async (customerLocation, group, cap = 3) => 
   if (vendors.length === 0) return [];
 
   const vendorIds = vendors.map((v) => v._id);
+  // "Carries the product" = an enabled inventory record. No quantity gate.
   const inventory = await Inventory.find({
     vendorId: { $in: vendorIds },
     productId: { $in: productIds },
     isAvailable: true,
-    quantityAvailable: { $gt: 0 },
   }).lean();
 
-  // vendorId -> { productId -> quantityAvailable }
-  const invMap = {};
+  // vendorId -> Set(productIds the vendor carries)
+  const invSet = {};
   for (const rec of inventory) {
     const vid = rec.vendorId.toString();
-    (invMap[vid] = invMap[vid] || {})[rec.productId.toString()] = rec.quantityAvailable;
+    (invSet[vid] = invSet[vid] || new Set()).add(rec.productId.toString());
   }
 
   const eligible = vendors.filter((v) => {
-    const vm = invMap[v._id.toString()];
-    if (!vm) return false;
-    // must have EVERY group item in enough quantity
-    return group.items.every((it) => (vm[it.productId.toString()] || 0) >= it.quantity);
+    const carried = invSet[v._id.toString()];
+    if (!carried) return false;
+    // must CARRY every item in the group (all-or-nothing claim); quantity is the vendor's call
+    return group.items.every((it) => carried.has(it.productId.toString()));
   });
 
   return eligible.slice(0, cap); // already sorted nearest-first by $nearSphere
