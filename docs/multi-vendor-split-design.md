@@ -254,7 +254,49 @@ The siren/popup/name layer is untouched, but the routing rewrite touches shared 
 
 ---
 
+## Rider model — ONE rider, multi-pickup (REVISED 2026-07-11)
+
+**SUPERSEDES the earlier "two independent riders" decision.** A split order is
+served by **ONE rider** who visits every vendor then the customer:
+
+- **One DeliveryJob per ORDER** (not per sub-order), holding an **ordered list of
+  pickup stops** (one per accepted vendor sub-order, each with its own vendorId +
+  `pickupLocation` + its own **pickup OTP**) and one drop (the customer).
+- **Route:** the rider goes to the vendor **closest to the rider first**, then the
+  next-nearest, … then the customer. Ordering is greedy nearest-first, computed
+  **when a rider accepts** (from that rider's location), since the rider isn't known
+  until then. For 2 vendors it's just "closer vendor first."
+- **When to assign:** only once **ALL** category-groups are claimed (all pickup
+  points known). Until then the order sits in "finding_vendor / partially accepted."
+  If a group never gets accepted → M3 all-or-nothing fail → no rider assigned.
+- **One delivery fee** for the whole multi-pickup trip — this **fixes** the earlier
+  economics flag (was: N rider fees for 1 collected fee). Optional small multi-pickup
+  bonus is a pricing decision.
+- **Per-vendor pickup OTP stays** — the rider collects from each vendor with that
+  vendor's OTP (N pickup OTPs, one drop confirmation).
+
+**This changes M0(c):** it currently fires `assign-rider` **per sub-order** (→ two
+riders). Under this model, accept does NOT assign a rider directly; instead, on the
+accept that completes coverage (all groups claimed), we fire **one** order-level
+assign-rider with all pickup stops. That work lives in the new **MR** milestone below.
+
+**New surface this touches:** `DeliveryJob` schema (single pickup → ordered pickup
+array), `riderAssigner.js` (per-order job + nearest-first route on accept), the rider
+app active-delivery UI (multi-stop: "Pickup 1 of 2 → Pickup 2 of 2 → Deliver", one
+OTP per stop), and the pickup/`markPicked` flow (per-stop). Open decisions: multi-pickup
+bonus? max pickups per rider? re-route if rider skips a stop?
+
+---
+
 ## Milestone breakdown (each independently testable, shippable in order)
+
+**MR — ONE rider, multi-pickup (delivery-layer; see "Rider model" above)**
+- Assign one order-level DeliveryJob once all groups accepted; ordered pickup stops
+  (nearest-vendor-to-rider first, finalized on rider accept); per-stop OTP; one fee.
+- Rewire M0(c) so accept-completing-coverage triggers the single assignment (not
+  per-sub-order). Rider app: multi-stop active-delivery.
+- Test: 2-vendor order fully accepted → ONE rider offered → accepts → route visits the
+  nearer vendor first, then the other, then the customer; two pickup OTPs, one drop.
 
 **M0 — Foundations (no behaviour change)**
 - Per-item atomic coverage claim in Redis (`recordVendorAcceptance` becomes atomic).
