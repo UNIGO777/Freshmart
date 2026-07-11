@@ -561,6 +561,7 @@ const getVendorIncoming = async (req, res) => {
 // Vendor: accept entire order → build sub-order → trigger rider assignment.
 const vendorAcceptOrder = async (req, res) => {
   try {
+    const mongoose = require('mongoose');
     const order = await Order.findById(req.params.id);
     if (!order) return sendError(res, 404, 'Order not found', ERROR_CODES.NOT_FOUND);
     const acceptableStatuses = [ORDER_STATUS.CONFIRMED, ORDER_STATUS.AWAITING_PAYMENT, ORDER_STATUS.STOCK_CHECK];
@@ -570,7 +571,8 @@ const vendorAcceptOrder = async (req, res) => {
 
     const vendorId = req.user.id;
 
-    // Verify vendor was offered this order
+    // Verify vendor was offered this order (friendly pre-check; the atomic claim below
+    // is the real guard against the cascade double-accept race).
     const wasOffered = order.routingMeta.offeredVendorIds.some((v) => v.toString() === vendorId);
     if (!wasOffered) return sendError(res, 403, 'This order was not offered to you', ERROR_CODES.FORBIDDEN);
 
@@ -579,7 +581,7 @@ const vendorAcceptOrder = async (req, res) => {
     const [vendorLng = 0, vendorLat = 0] = vendor?.location?.coordinates || [];
 
     // Build single sub-order with all items
-    order.subOrders = [{
+    const subOrder = {
       vendorId,
       items: order.items.map((i) => ({
         productId: i.productId,
@@ -595,61 +597,77 @@ const vendorAcceptOrder = async (req, res) => {
         fullAddress: vendor?.businessName || '',
       },
       dropLocation: order.deliveryAddress,
-    }];
-    // Set 1-minute cancellation deadline from vendor accept
-    order.cancelDeadline = new Date(Date.now() + 60 * 1000);
-    order.stage = 'finding_rider'; // store accepted — now finding a delivery partner
-    order.stageDeadline = new Date(Date.now() + (Number(process.env.RIDER_ASSIGNMENT_TIMEOUT_SEC) || 30) * 1000);
-    await order.save();
+    };
+    const cancelDeadline = new Date(Date.now() + 60 * 1000);
+    const stageDeadline = new Date(Date.now() + (Number(process.env.RIDER_ASSIGNMENT_TIMEOUT_SEC) || 30) * 1000);
+
+    // ── ATOMIC CLAIM — first vendor to match wins. Matches ONLY if the order is still
+    //    un-accepted (no subOrder), still in an acceptable status, AND still offered to
+    //    THIS vendor. A vendor cascaded away (removed from offeredVendorIds) or an order
+    //    already claimed by another vendor gets no match → "already taken". This is what
+    //    makes the reject/timeout cascade safe against two vendors accepting at once.
+    const claimed = await Order.findOneAndUpdate(
+      {
+        _id: order._id,
+        status: { $in: acceptableStatuses },
+        'subOrders.0': { $exists: false },
+        'routingMeta.offeredVendorIds': new mongoose.Types.ObjectId(vendorId),
+      },
+      { $set: { subOrders: [subOrder], cancelDeadline, stage: 'finding_rider', stageDeadline } },
+      { new: true },
+    );
+    if (!claimed) {
+      return sendError(res, 409, 'Order already taken by another store', ERROR_CODES.VALIDATION_ERROR);
+    }
 
     // Deduct inventory immediately on vendor accept
     axios
       .post(
         `http://localhost:${process.env.PORT || 3004}/internal/deduct-inventory`,
-        { orderId: order._id.toString(), vendorId },
+        { orderId: claimed._id.toString(), vendorId },
         { timeout: 5000 },
       )
       .catch((err) =>
-        logger.warn(`deduct-inventory on vendor accept failed for order ${order._id}: ${err.message}`),
+        logger.warn(`deduct-inventory on vendor accept failed for order ${claimed._id}: ${err.message}`),
       );
 
     // Clean up routing state since vendor is now assigned
-    await clearRoutingState(order._id);
+    await clearRoutingState(claimed._id);
 
     // Notify customer: vendor confirmed, now finding rider (include cancel deadline for countdown)
-    await emitToCustomer(order.customerId.toString(), 'order:status', {
-      orderId: order._id.toString(),
+    await emitToCustomer(claimed.customerId.toString(), 'order:status', {
+      orderId: claimed._id.toString(),
       status: 'vendor_confirmed',
-      cancelDeadline: order.cancelDeadline.toISOString(),
+      cancelDeadline: claimed.cancelDeadline.toISOString(),
     });
-    triggerNotification('order:confirmed', order.customerId.toString(), 'customer', {
-      orderId: order._id.toString(),
+    triggerNotification('order:confirmed', claimed.customerId.toString(), 'customer', {
+      orderId: claimed._id.toString(),
     });
 
     // Trigger rider assignment for the single sub-order
-    const subOrder = order.subOrders[0];
+    const acceptedSubOrder = claimed.subOrders[0];
     axios
       .post(
         `http://localhost:${process.env.PORT_DELIVERY || 3006}/internal/assign-rider`,
         {
-          orderId:              order._id.toString(),
-          subOrderId:           subOrder._id.toString(),
+          orderId:              claimed._id.toString(),
+          subOrderId:           acceptedSubOrder._id.toString(),
           vendorId:             vendorId,
-          customerId:           order.customerId.toString(),
-          pickupLocation:       subOrder.pickupLocation,
-          dropLocation:         subOrder.dropLocation,
-          deliveryFee:          order.deliveryFee,
-          deliveryInstructions: order.deliveryInstructions || '',
-          paymentMethod:        order.paymentMethod || 'cod',
-          totalAmount:          order.totalAmount || 0,
+          customerId:           claimed.customerId.toString(),
+          pickupLocation:       acceptedSubOrder.pickupLocation,
+          dropLocation:         acceptedSubOrder.dropLocation,
+          deliveryFee:          claimed.deliveryFee,
+          deliveryInstructions: claimed.deliveryInstructions || '',
+          paymentMethod:        claimed.paymentMethod || 'cod',
+          totalAmount:          claimed.totalAmount || 0,
         },
         { timeout: 5000 },
       )
       .catch((err) =>
-        logger.warn(`assign-rider call failed for subOrder ${subOrder._id}: ${err.message}`),
+        logger.warn(`assign-rider call failed for subOrder ${acceptedSubOrder._id}: ${err.message}`),
       );
 
-    return sendSuccess(res, 200, 'Order accepted', { orderId: order._id });
+    return sendSuccess(res, 200, 'Order accepted', { orderId: claimed._id });
   } catch (err) {
     logger.error('vendorAcceptOrder error:', err);
     return sendError(res, 500, 'Failed to accept order', ERROR_CODES.INTERNAL_ERROR);
