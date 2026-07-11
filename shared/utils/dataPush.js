@@ -26,18 +26,21 @@ if (!admin.apps.length) {
  * @param {{ ttlSec?: number }} [opts]
  * @returns {Promise<string|null>} message id, or null on failure
  */
+const fs = require('fs'); // TEMP instrumentation
 const sendDataOnly = async (token, data, { ttlSec = 60 } = {}) => {
-  if (!token) return null;
+  if (!token) { try { fs.appendFileSync('/tmp/fcm-send.log', `${Date.now()} NOTOKEN ${data.type} ${data.orderId||''}\n`); } catch {} return null; } // TEMP
   try {
     const id = await admin.messaging().send({
       token,
       data: Object.fromEntries(Object.entries(data).map(([k, v]) => [k, String(v)])),
       android: { priority: 'high', ttl: ttlSec * 1000 },
     });
+    try { fs.appendFileSync('/tmp/fcm-send.log', `${Date.now()} OK ${data.type} ${data.orderId||''} tok=${(token||'').slice(0,8)} id=${(id||'').slice(-10)}\n`); } catch {} // TEMP
     return id;
   } catch (err) {
     // e.g. messaging/registration-token-not-registered (stale token)
     logger.warn(`sendDataOnly failed: ${err.code ?? err.message}`);
+    try { fs.appendFileSync('/tmp/fcm-send.log', `${Date.now()} ERR ${data.type} ${data.orderId||''} tok=${(token||'').slice(0,8)} ${err.errorInfo?.code ?? err.code ?? err.message}\n`); } catch {} // TEMP
     return null;
   }
 };

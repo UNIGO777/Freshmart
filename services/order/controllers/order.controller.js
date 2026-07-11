@@ -195,9 +195,17 @@ const placeOrder = async (req, res) => {
     // Best-effort, non-blocking. Data shape must match fcm-background.ts's router.
     if (chosenVendor.fcmToken) {
       const ttlSec = Number(process.env.VENDOR_OFFER_TTL_SEC) || 90;
+      // Customer FIRST name only — it shows on the LOCK screen ("Order from Rahul"),
+      // visible to anyone holding the phone. Carried IN the push so the popup can
+      // label the order even if the cold-start has no network. Best-effort lookup.
+      let customerName = '';
+      try {
+        const cust = await Customer.findById(req.user.id).select('name').lean();
+        customerName = (cust?.name || '').trim().split(/\s+/)[0] || '';
+      } catch { /* name is optional — popup falls back to "New order" */ }
       sendDataOnly(
         chosenVendor.fcmToken,
-        { type: 'NEW_ORDER', orderId: order._id.toString(), expiresAt: Date.now() + ttlSec * 1000 },
+        { type: 'NEW_ORDER', orderId: order._id.toString(), expiresAt: Date.now() + ttlSec * 1000, customerName },
         { ttlSec },
       );
     }
