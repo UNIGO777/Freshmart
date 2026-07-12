@@ -590,6 +590,43 @@ const getVendorIncoming = async (req, res) => {
   }
 };
 
+// ── M1: stand down vendors displaced by a group claim ─────────────
+// When `winnerId` claims `wonGroups`, any OTHER vendor that was offered one of those
+// groups AND now has NO group still open in this order can no longer win anything —
+// stand them down: FCM ORDER_CANCELLED (stops the siren on a backgrounded/killed phone,
+// reusing the working handler) + socket order:taken (clears the popup if foreground).
+// A vendor that still has another open group is left alone (their remaining offer stands).
+// Pure: which vendors can no longer win anything (displaced from a claimed group AND with
+// no group still open for them). Exported for tests.
+const computeStandDownVendors = (allGroups, wonGroups, winnerId) => {
+  const winner = winnerId.toString();
+  const displaced = new Set();
+  for (const g of wonGroups) {
+    for (const vid of g.offeredVendorIds || []) {
+      if (vid.toString() !== winner) displaced.add(vid.toString());
+    }
+  }
+  if (displaced.size === 0) return [];
+  const openGroups = (allGroups || []).filter((g) => g.status === 'open');
+  const stillWanted = (vid) => openGroups.some((g) => (g.offeredVendorIds || []).some((v) => v.toString() === vid));
+  return [...displaced].filter((vid) => !stillWanted(vid));
+};
+
+const standDownDisplacedVendors = async (order, wonGroups, winnerId) => {
+  const toStandDown = computeStandDownVendors(order.routingMeta?.groups, wonGroups, winnerId);
+  if (toStandDown.length === 0) return;
+
+  const orderId = order._id.toString();
+  const vendors = await Vendor.find({ _id: { $in: toStandDown } }).select('fcmToken').lean();
+  for (const v of vendors) {
+    const vid = v._id.toString();
+    emitToVendor(vid, 'order:taken', { orderId }).catch(() => {}); // foreground popup clear
+    if (v.fcmToken) {
+      sendDataOnly(v.fcmToken, { type: 'ORDER_CANCELLED', orderId }, { ttlSec: 60 }); // stop siren on backgrounded phone
+    }
+  }
+};
+
 // ── PATCH /api/orders/vendor/:id/accept ──────────────────────────
 // Vendor: accept entire order → build sub-order → trigger rider assignment.
 const vendorAcceptOrder = async (req, res) => {
@@ -655,6 +692,7 @@ const vendorAcceptOrder = async (req, res) => {
       // below can never fire on a half-built order. A vendor covering multiple categories
       // gets one sub-order per group (co-located pickup stops merged in the route, MR-2).
       let lastClaimed = null;
+      const wonGroups = [];
       for (const g of myOpenGroups) {
         const groupItems = order.items.filter((it) => g.productIds.some((p) => p.toString() === it.productId.toString()));
         const won = await claimGroup(
@@ -663,7 +701,7 @@ const vendorAcceptOrder = async (req, res) => {
           vendorId,
           { pickupLocation, dropLocation: order.deliveryAddress },
         );
-        if (won) lastClaimed = won;
+        if (won) { lastClaimed = won; wonGroups.push(g); }
       }
       if (!lastClaimed) {
         return sendError(res, 409, 'Order already taken by another store', ERROR_CODES.VALIDATION_ERROR);
@@ -677,6 +715,12 @@ const vendorAcceptOrder = async (req, res) => {
         { new: true },
       );
       acceptedSubOrder = claimed.subOrders[claimed.subOrders.length - 1];
+
+      // M1: stand down the OTHER vendors who were offered these now-claimed groups and have
+      // nothing left open in this order — stops their siren on a backgrounded phone (FCM) and
+      // clears the popup on a foreground one (socket). Best-effort, non-blocking.
+      standDownDisplacedVendors(claimed, wonGroups, vendorId)
+        .catch((err) => logger.warn(`standDownDisplacedVendors failed for order ${claimed._id}: ${err.message}`));
     }
 
     // ── Shared side-effects (both paths), scoped to the accepted sub-order ──
@@ -1275,6 +1319,7 @@ const vendorResetAllOrders = async (req, res) => {
 };
 
 module.exports = {
+  computeStandDownVendors, // exported for tests (M1)
   checkStockController,
   placeOrder,
   getOrders,
