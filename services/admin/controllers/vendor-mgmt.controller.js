@@ -128,7 +128,7 @@ const blockVendor = async (req, res) => {
 const createVendor = async (req, res) => {
   try {
     const {
-      businessName, ownerName, phone, email, password,
+      businessName, ownerName, phone, email,
       lat, lng, address, serviceRadiusKm, categories,
       bankDetails,
       aadhaarUrl, panUrl, profilePhoto,
@@ -161,18 +161,10 @@ const createVendor = async (req, res) => {
       logger.info(`Auto-created customer account for vendor phone ${normalizedPhone}`);
     }
 
-    // Password is OPTIONAL — vendors log in via phone OTP (as their linked customer) and
-    // switch to the vendor role; the vendor password is not used for login. Only set a hash
-    // if one was explicitly provided.
-    let passwordHash;
-    if (password) {
-      const bcrypt = require('bcryptjs');
-      passwordHash = await bcrypt.hash(password, 12);
-    }
-
+    // No password — vendors log in via phone OTP (as their linked customer) and switch to
+    // the vendor role; a vendor password is never used for login.
     const vendor = await Vendor.create({
       businessName, ownerName, phone: normalizedPhone, email,
-      ...(passwordHash ? { passwordHash } : {}),
       profilePhoto: profilePhoto || '',
       location: { type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] },
       address: address || '',
