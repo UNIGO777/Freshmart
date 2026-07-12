@@ -532,32 +532,32 @@ const handleRiderAccept = async (jobId, riderId) => {
     riderName: riderDoc?.name,
   });
 
-  // Sync Order Service sub-order
-  await syncSubOrderStatus(job.orderId, job.subOrderId, {
-    riderId,
-    status: 'rider_assigned',
-    riderAssignedAt: job.assignedAt,
-  });
+  const orderShort = job.orderId.toString().slice(-4);
+  const notifyVendorAssigned = (vendorId, otp) => {
+    emitToVendor(vendorId.toString(), 'order:pickup-otp', { orderId: job.orderId, jobId: job._id, otp, riderName: riderDoc?.name });
+    triggerNotification('order:pickup-otp', vendorId.toString(), 'vendor', { orderId: job.orderId.toString(), otp, riderName: riderDoc?.name });
+    notifyVendor(vendorId.toString(), 'order:rider_assigned', 'Rider Assigned',
+      `Rider ${riderDoc?.name || ''} is heading to pick up order #${orderShort}`, job.orderId.toString());
+  };
+
+  if ((job.pickups || []).length > 0) {
+    // Multi-pickup: the ONE rider serves the whole order — link it to EVERY sub-order and
+    // give EACH vendor its own stop OTP (each stop may cover multiple sub-orders).
+    for (const stop of job.pickups) {
+      for (const soId of stop.subOrderIds || []) {
+        await syncSubOrderStatus(job.orderId, soId, { riderId, status: 'rider_assigned', riderAssignedAt: job.assignedAt });
+      }
+      await notifyVendorAssigned(stop.vendorId, stop.pickupOtp);
+    }
+    logger.info(`Multi-pickup job ${jobId} assigned to rider ${riderId}; ${job.pickups.length} vendors notified with their stop OTP`);
+  } else {
+    // Single-pickup (unchanged)
+    await syncSubOrderStatus(job.orderId, job.subOrderId, { riderId, status: 'rider_assigned', riderAssignedAt: job.assignedAt });
+    await notifyVendorAssigned(job.vendorId, job.pickupOtp);
+    logger.info(`Job ${jobId} assigned to rider ${riderId}, pickup OTP sent to vendor`);
+  }
 
   // Inventory is already deducted on vendor accept — no need to deduct again here.
-
-  // Send pickup OTP to vendor (in-app display, not SMS/WhatsApp)
-  await emitToVendor(job.vendorId.toString(), 'order:pickup-otp', {
-    orderId: job.orderId,
-    jobId:   job._id,
-    otp:     job.pickupOtp,
-    riderName: riderDoc?.name,
-  });
-  triggerNotification('order:pickup-otp', job.vendorId.toString(), 'vendor', {
-    orderId:   job.orderId.toString(),
-    otp:       job.pickupOtp,
-    riderName: riderDoc?.name,
-  });
-  notifyVendor(job.vendorId.toString(), 'order:rider_assigned', 'Rider Assigned',
-    `Rider ${riderDoc?.name || ''} is heading to pick up order #${job.orderId.toString().slice(-4)}`,
-    job.orderId.toString());
-
-  logger.info(`Job ${jobId} assigned to rider ${riderId}, pickup OTP sent to vendor`);
   return { success: true, job };
 };
 
