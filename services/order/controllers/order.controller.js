@@ -327,6 +327,9 @@ const getOrderById = async (req, res) => {
     if (req.user.role === ROLES.VENDOR) {
       const isAssigned = order.subOrders.some((so) => (so.vendorId?._id ?? so.vendorId)?.toString() === req.user.id);
       if (!isAssigned) return sendError(res, 403, 'Access denied', ERROR_CODES.FORBIDDEN);
+      // A split vendor only sees THEIR items in the detail view (their sub-order's items).
+      order.items = vendorScopedItems(order, req.user.id);
+      order.subOrders = order.subOrders.filter((so) => (so.vendorId?._id ?? so.vendorId)?.toString() === req.user.id);
     }
     if (req.user.role === ROLES.RIDER) {
       const isAssigned = order.subOrders.some((so) => (so.riderId?._id ?? so.riderId)?.toString() === req.user.id);
@@ -571,18 +574,19 @@ const rateOrder = async (req, res) => {
 // they've claimed, else the items of the category-groups they were offered. Filters the
 // top-level order.items (which carry name/category) so a split vendor only ever sees/earns
 // their own part. Legacy single-vendor orders (no groups/sub-order match) → all items.
+const pidStr = (x) => ((x && (x._id ?? x)) || '').toString(); // handles raw ObjectId AND populated productId
 const vendorScopedItems = (order, vendorId) => {
-  const vid = vendorId.toString();
-  const sub = (order.subOrders || []).find((s) => s.vendorId?.toString() === vid);
+  const vid = ((vendorId && (vendorId._id ?? vendorId)) || '').toString();
+  const sub = (order.subOrders || []).find((s) => pidStr(s.vendorId) === vid);
   let pids = null;
   if (sub && (sub.items || []).length) {
-    pids = new Set(sub.items.map((i) => i.productId.toString()));
+    pids = new Set(sub.items.map((i) => pidStr(i.productId)));
   } else {
-    const groups = (order.routingMeta?.groups || []).filter((g) => (g.offeredVendorIds || []).some((v) => v.toString() === vid));
-    if (groups.length) pids = new Set(groups.flatMap((g) => (g.productIds || []).map((p) => p.toString())));
+    const groups = (order.routingMeta?.groups || []).filter((g) => (g.offeredVendorIds || []).some((v) => pidStr(v) === vid));
+    if (groups.length) pids = new Set(groups.flatMap((g) => (g.productIds || []).map((p) => pidStr(p))));
   }
   if (!pids) return order.items || [];
-  return (order.items || []).filter((it) => pids.has(it.productId.toString()));
+  return (order.items || []).filter((it) => pids.has(pidStr(it.productId)));
 };
 
 const getVendorIncoming = async (req, res) => {
