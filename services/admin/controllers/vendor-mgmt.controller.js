@@ -2,27 +2,10 @@ const Vendor        = require('../../user/models/Vendor.model');
 const Customer      = require('../../user/models/Customer.model');
 const VendorEarning = require('../../vendor/models/VendorEarning.model');
 const Order         = require('../../order/models/Order.model');
-const Inventory     = require('../../vendor/models/Inventory.model');
-const Product       = require('../../product/models/Product.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const logger = require('../../../shared/utils/logger');
-
-// Delete a vendor's inventory rows for products whose category is NOT in `categories`.
-// Keeps inventory in sync when a vendor's served categories are reduced/changed, so the
-// vendor is never offered (or shown) stock in a category they no longer serve.
-const pruneVendorInventoryToCategories = async (vendorId, categories) => {
-  const inv = await Inventory.find({ vendorId }).select('productId').lean();
-  if (inv.length === 0) return 0;
-  const productIds = inv.map((i) => i.productId);
-  const products = await Product.find({ _id: { $in: productIds } }).select('_id category').lean();
-  const allowed = new Set(categories);
-  const toRemove = products.filter((p) => !allowed.has(p.category)).map((p) => p._id);
-  if (toRemove.length === 0) return 0;
-  const { deletedCount } = await Inventory.deleteMany({ vendorId, productId: { $in: toRemove } });
-  logger.info(`Pruned ${deletedCount} inventory item(s) for vendor ${vendorId} outside categories [${categories.join(', ')}]`);
-  return deletedCount || 0;
-};
+const { pruneVendorInventoryToCategories } = require('../../../shared/utils/vendorInventory');
 
 // ── GET /vendors ──────────────────────────────────────────────────
 // List all vendors with optional filters: approved, active, search by name/phone

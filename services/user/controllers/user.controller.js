@@ -6,6 +6,7 @@ const { sendSuccess, sendError } = require('../../../shared/utils/response.util'
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const ROLES = require('../../../shared/constants/roles');
 const logger = require('../../../shared/utils/logger');
+const { pruneVendorInventoryToCategories } = require('../../../shared/utils/vendorInventory');
 
 // ── Helper — pick the right model for the authenticated user ──────
 const getModel = (role) => {
@@ -75,6 +76,13 @@ const updateProfile = async (req, res) => {
 
     const updated = await Model.findByIdAndUpdate(req.user.id, updates, { new: true, runValidators: true }).lean();
     if (!updated) return sendError(res, 404, 'User not found', ERROR_CODES.USER_NOT_FOUND);
+
+    // If a vendor changed their served categories, prune inventory in dropped categories
+    // (same behaviour as the admin edit). Best-effort — profile is already saved.
+    if (req.user.role === ROLES.VENDOR && Array.isArray(updates.categories)) {
+      pruneVendorInventoryToCategories(req.user.id, updates.categories)
+        .catch((err) => logger.warn(`prune inventory (vendor self-update) failed for ${req.user.id}: ${err.message}`));
+    }
 
     return sendSuccess(res, 200, 'Profile updated', updated);
   } catch (err) {
