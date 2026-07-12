@@ -77,7 +77,7 @@ const getRiderJobs = async (req, res) => {
         riderId: req.user.id,
         status: { $in: [DELIVERY_JOB_STATUS.ACCEPTED, DELIVERY_JOB_STATUS.PICKED] },
       })
-        .select('-deliveryOtp -pickupOtp')
+        .select('-deliveryOtp -pickupOtp -pickups.pickupOtp') // never leak vendor pickup codes to the rider
         .sort({ createdAt: -1 })
         .lean(),
 
@@ -86,7 +86,7 @@ const getRiderJobs = async (req, res) => {
         status: DELIVERY_JOB_STATUS.OFFERED,
         offerExpiresAt: { $gt: new Date() }, // Only show offers still within window
       })
-        .select('-deliveryOtp -pickupOtp')
+        .select('-deliveryOtp -pickupOtp -pickups.pickupOtp') // never leak vendor pickup codes to the rider
         .sort({ createdAt: -1 })
         .lean(),
     ]);
@@ -128,11 +128,34 @@ const acceptJob = async (req, res) => {
       Customer.findById(result.job.customerId).select('name phone').lean(),
     ]);
 
+    // MR multi-pickup: return the ordered stops WITH vendor names (never the OTPs).
+    let pickupsOut = [];
+    const stops = result.job.pickups || [];
+    if (stops.length > 0) {
+      const vids = [...new Set(stops.map((s) => s.vendorId.toString()))];
+      const vdocs = await Vendor.find({ _id: { $in: vids } }).select('businessName phone').lean();
+      const vmap = Object.fromEntries(vdocs.map((v) => [v._id.toString(), v]));
+      pickupsOut = stops
+        .slice()
+        .sort((a, b) => (a.seq ?? 0) - (b.seq ?? 0))
+        .map((s) => ({
+          _id:            s._id,
+          vendorId:       s.vendorId,
+          vendorName:     vmap[s.vendorId.toString()]?.businessName || '',
+          vendorPhone:    vmap[s.vendorId.toString()]?.phone || '',
+          pickupLocation: s.pickupLocation,
+          status:         s.status,
+          seq:            s.seq,
+          // pickupOtp intentionally omitted — the vendor shows it, the rider enters it
+        }));
+    }
+
     return sendSuccess(res, 200, 'Job accepted', {
       jobId:          req.params.jobId,
       orderId:        result.job.orderId,
       pickupLocation: result.job.pickupLocation,
       dropLocation:   result.job.dropLocation,
+      pickups:        pickupsOut, // [] for single-pickup jobs
       earnings:       result.job.riderEarnings,
       distanceKm:     result.job.distanceKm,
       distanceRiderToVendor:    result.job.distanceRiderToVendor,
