@@ -567,6 +567,24 @@ const rateOrder = async (req, res) => {
 
 // ── GET /api/orders/vendor/incoming ──────────────────────────────
 // Vendor: see orders currently offered to them
+// Only the order items that belong to THIS vendor: their accepted sub-order's items if
+// they've claimed, else the items of the category-groups they were offered. Filters the
+// top-level order.items (which carry name/category) so a split vendor only ever sees/earns
+// their own part. Legacy single-vendor orders (no groups/sub-order match) → all items.
+const vendorScopedItems = (order, vendorId) => {
+  const vid = vendorId.toString();
+  const sub = (order.subOrders || []).find((s) => s.vendorId?.toString() === vid);
+  let pids = null;
+  if (sub && (sub.items || []).length) {
+    pids = new Set(sub.items.map((i) => i.productId.toString()));
+  } else {
+    const groups = (order.routingMeta?.groups || []).filter((g) => (g.offeredVendorIds || []).some((v) => v.toString() === vid));
+    if (groups.length) pids = new Set(groups.flatMap((g) => (g.productIds || []).map((p) => p.toString())));
+  }
+  if (!pids) return order.items || [];
+  return (order.items || []).filter((it) => pids.has(it.productId.toString()));
+};
+
 const getVendorIncoming = async (req, res) => {
   try {
     const mongoose = require('mongoose');
@@ -579,13 +597,18 @@ const getVendorIncoming = async (req, res) => {
       .populate('customerId', 'name phone')
       .lean();
 
-    // Add vendorAmount (buying price total) for each order
-    const enriched = orders.map((o) => ({
-      ...o,
-      vendorAmount: (o.items || []).reduce(
-        (sum, item) => sum + (item.buyingPrice ?? 0) * (item.quantity ?? 1), 0,
-      ),
-    }));
+    // Scope items + amount to THIS vendor's part (their offered category-group), so a split
+    // vendor sees/earns only their items — not the whole order.
+    const enriched = orders.map((o) => {
+      const myItems = vendorScopedItems(o, req.user.id);
+      return {
+        ...o,
+        items: myItems,
+        vendorAmount: myItems.reduce(
+          (sum, item) => sum + (item.buyingPrice ?? 0) * (item.quantity ?? 1), 0,
+        ),
+      };
+    });
 
     return sendSuccess(res, 200, 'Incoming orders fetched', enriched);
   } catch (err) {
@@ -889,8 +912,8 @@ const getVendorHistory = async (req, res) => {
 
     const mapped = orders.map((o) => {
       const vendorSub = o.subOrders?.find((s) => s.vendorId?.toString() === vendorId);
-      // Calculate vendor amount from buying prices
-      const vendorAmount = (vendorSub?.items || o.items || []).reduce(
+      const myItems = vendorScopedItems(o, vendorId); // only this vendor's part
+      const vendorAmount = myItems.reduce(
         (sum, item) => sum + (item.buyingPrice ?? 0) * (item.quantity ?? 1), 0,
       );
       return {
@@ -899,7 +922,7 @@ const getVendorHistory = async (req, res) => {
         subOrderStatus: vendorSub?.status,
         totalAmount: o.totalAmount,
         vendorAmount,
-        itemCount: o.items?.length || 0,
+        itemCount: myItems.length,
         customerName: o.customerId?.name || 'Customer',
         createdAt: o.createdAt,
         deliveredAt: vendorSub?.deliveredAt,
@@ -1064,11 +1087,12 @@ const getVendorActiveOrders = async (req, res) => {
 
     // Add vendorAmount and OTPs for each order
     const enriched = orders.map((o) => {
-      const vendorSub = o.subOrders?.find((s) => s.vendorId?.toString() === req.user.id);
       const otps = otpMap[o._id.toString()] || {};
+      const myItems = vendorScopedItems(o, req.user.id);
       return {
         ...o,
-        vendorAmount: (vendorSub?.items || o.items || []).reduce(
+        items: myItems, // only this vendor's part
+        vendorAmount: myItems.reduce(
           (sum, item) => sum + (item.buyingPrice ?? 0) * (item.quantity ?? 1), 0,
         ),
         pickupOtp: otps.pickupOtp || null,
