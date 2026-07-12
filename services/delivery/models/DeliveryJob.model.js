@@ -27,7 +27,7 @@ const locationSchema = new mongoose.Schema(
 const pickupStopSchema = new mongoose.Schema(
   {
     vendorId:       { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', required: true },
-    subOrderId:     { type: mongoose.Schema.Types.ObjectId, required: true },
+    subOrderIds:    [{ type: mongoose.Schema.Types.ObjectId }], // all of this vendor's sub-orders (co-located → one stop)
     pickupLocation: { type: locationSchema, required: true },
     pickupOtp:      { type: String, default: null },   // this vendor's pickup code
     status:         { type: String, enum: ['pending', 'picked'], default: 'pending' },

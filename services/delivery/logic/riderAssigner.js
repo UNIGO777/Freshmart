@@ -27,6 +27,52 @@ const haversineKm = (lat1, lng1, lat2, lng2) => {
 const ASSIGNMENT_TIMEOUT_SEC = Number(process.env.RIDER_ASSIGNMENT_TIMEOUT_SEC) || 30;
 const PORT_ORDER = process.env.PORT_ORDER || 3004;
 
+// ── MR multi-pickup route + earning ───────────────────────────────
+/**
+ * Greedy nearest-neighbour route for ONE rider:
+ *   rider → nearest stop → next-nearest → … → last stop → customer.
+ * Distance INCLUDES the rider→first-stop leg (the whole trip the rider signs up for).
+ *
+ * @param {{lat,lng}} riderLoc
+ * @param {Array<{pickupLocation:{lat,lng}}>} stops  (deduped per vendor)
+ * @param {{lat,lng}} dropLoc
+ * @returns {{ ordered: Array, distanceKm: number }}  ordered = stops in visit order
+ */
+const computeRouteFrom = (riderLoc, stops, dropLoc) => {
+  const remaining = stops.slice();
+  const ordered = [];
+  let cur = riderLoc;
+  let distanceKm = 0;
+  while (remaining.length) {
+    let best = 0, bestD = Infinity;
+    for (let k = 0; k < remaining.length; k++) {
+      const loc = remaining[k].pickupLocation;
+      const d = haversineKm(cur.lat, cur.lng, loc.lat, loc.lng);
+      if (d < bestD) { bestD = d; best = k; }
+    }
+    distanceKm += bestD;
+    cur = remaining[best].pickupLocation;
+    ordered.push(remaining[best]);
+    remaining.splice(best, 1);
+  }
+  distanceKm += haversineKm(cur.lat, cur.lng, dropLoc.lat, dropLoc.lng);
+  return { ordered, distanceKm: Math.round(distanceKm * 100) / 100 };
+};
+
+/** Per-km earning with the same config the single-pickup path uses. */
+const earningsFor = (distanceKm, config) => {
+  const ratePerKm = config.ratePerKm;
+  const surge = config.surgeActive ? config.surgeMultiplier : 1;
+  const minEarnings = config.minEarnings ?? 15;
+  return Math.max(minEarnings, Math.round(Math.max(1, distanceKm) * ratePerKm * surge));
+};
+
+/** Rider GeoJSON currentLocation.coordinates [lng,lat] → {lat,lng} (0,0 if missing). */
+const riderLatLng = (rider) => {
+  const [lng = 0, lat = 0] = rider?.currentLocation?.coordinates || [];
+  return { lat, lng };
+};
+
 // ── Redis key helpers ─────────────────────────────────────────────
 /** Tracks the current active batch for a job. TTL = ASSIGNMENT_TIMEOUT_SEC. */
 const jobOfferKey = (jobId) => `delivery:offer:${jobId}`;
@@ -191,36 +237,45 @@ const initiateMultiPickupAssignment = async ({
     return;
   }
 
-  const config = await DeliveryRateConfig.getConfig();
-  const ratePerKm = config.ratePerKm;
-  const surgeMultiplier = config.surgeActive ? config.surgeMultiplier : 1;
-  const minEarnings = config.minEarnings ?? 15;
+  // Dedupe by vendor: a vendor covering multiple categories has several sub-orders at
+  // ONE location → ONE physical stop carrying all its subOrderIds (one visit, one OTP).
+  const byVendor = new Map();
+  for (const p of pickups) {
+    const vid = p.vendorId.toString();
+    if (!byVendor.has(vid)) byVendor.set(vid, { vendorId: p.vendorId, pickupLocation: p.pickupLocation, subOrderIds: [] });
+    byVendor.get(vid).subOrderIds.push(p.subOrderId);
+  }
+  const stops = [...byVendor.values()];
 
-  // Provisional route distance: stops in claim order → customer (pickup-side legs).
+  const config = await DeliveryRateConfig.getConfig();
+
+  // Provisional distance/earning: stops in claim order → customer (pickup-side legs only;
+  // the per-rider route incl. rider→first-stop is computed at offer time & locked on accept).
   let distanceKm = 0;
-  for (let i = 0; i < pickups.length - 1; i++) {
+  for (let i = 0; i < stops.length - 1; i++) {
     distanceKm += haversineKm(
-      pickups[i].pickupLocation.lat, pickups[i].pickupLocation.lng,
-      pickups[i + 1].pickupLocation.lat, pickups[i + 1].pickupLocation.lng,
+      stops[i].pickupLocation.lat, stops[i].pickupLocation.lng,
+      stops[i + 1].pickupLocation.lat, stops[i + 1].pickupLocation.lng,
     );
   }
-  const last = pickups[pickups.length - 1].pickupLocation;
+  const last = stops[stops.length - 1].pickupLocation;
   distanceKm += haversineKm(last.lat, last.lng, dropLocation.lat, dropLocation.lng);
   distanceKm = Math.round(distanceKm * 100) / 100;
-  const effectiveDistance = Math.max(1, distanceKm);
-  const riderEarnings = Math.max(minEarnings, Math.round(effectiveDistance * ratePerKm * surgeMultiplier));
+  const riderEarnings = earningsFor(distanceKm, config);
+  const ratePerKm = config.ratePerKm;
+  const surgeMultiplier = config.surgeActive ? config.surgeMultiplier : 1;
 
   const job = await DeliveryJob.create({
     orderId, customerId,
     // top-level single-pickup requireds satisfied by the first stop (kept for back-compat)
-    subOrderId:     pickups[0].subOrderId,
-    vendorId:       pickups[0].vendorId,
-    pickupLocation: pickups[0].pickupLocation,
+    subOrderId:     stops[0].subOrderIds[0],
+    vendorId:       stops[0].vendorId,
+    pickupLocation: stops[0].pickupLocation,
     dropLocation,
-    pickups: pickups.map((p, i) => ({
-      vendorId:       p.vendorId,
-      subOrderId:     p.subOrderId,
-      pickupLocation: p.pickupLocation,
+    pickups: stops.map((s, i) => ({
+      vendorId:       s.vendorId,
+      subOrderIds:    s.subOrderIds,
+      pickupLocation: s.pickupLocation,
       status:         'pending',
       seq:            i,
     })),
@@ -273,17 +328,34 @@ const offerToRiderBatch = async (job, riders) => {
     { $inc: { 'performance.totalOffered': 1 } },
   );
 
+  // Multi-pickup: each rider sees THEIR OWN route (nearest-first from where they are) and
+  // the earning for that whole trip — so the number shown is what they'll actually get.
+  const isMulti = (job.pickups || []).length > 0;
+  const config = isMulti ? await DeliveryRateConfig.getConfig() : null;
+
   for (const rider of riders) {
     const riderId = rider._id.toString();
+
+    let pickupsForRider = job.pickups || [];
+    let earnings = job.riderEarnings;
+    let distanceKm = job.distanceKm;
+    if (isMulti) {
+      const stops = job.pickups.map((s) => (s.toObject ? s.toObject() : s));
+      const route = computeRouteFrom(riderLatLng(rider), stops, job.dropLocation);
+      pickupsForRider = route.ordered.map((s, i) => ({ ...s, seq: i }));
+      distanceKm = route.distanceKm;
+      earnings = earningsFor(distanceKm, config);
+    }
+
     await emitToRider(riderId, 'job:request', {
       jobId,
       orderId:              job.orderId,
       subOrderId:           job.subOrderId,
       pickupLocation:       job.pickupLocation,
-      pickups:              job.pickups || [], // MR: all vendor stops ([] for single-pickup jobs)
+      pickups:              pickupsForRider, // MR: this rider's ordered stops ([] for single-pickup)
       dropLocation:         job.dropLocation,
-      earnings:             job.riderEarnings,
-      distanceKm:           job.distanceKm,
+      earnings,                              // this rider's trip earning
+      distanceKm,
       ratePerKm:            job.ratePerKm,
       surgeMultiplier:      job.surgeMultiplier,
       deliveryInstructions: job.deliveryInstructions,
@@ -364,6 +436,23 @@ const handleRiderAccept = async (jobId, riderId) => {
   );
   if (!claimed) return { success: false, reason: 'Job already taken by another rider' };
   Object.assign(job, claimed.toObject());
+
+  // MR: for a multi-pickup job, LOCK this rider's actual route + earning. The route is the
+  // nearest-first order FROM this rider, distance incl. the rider→first-stop leg — the exact
+  // trip and pay shown in their offer. (Per-stop pickup OTPs are generated in MR-3.)
+  if ((claimed.pickups || []).length > 0) {
+    const riderDoc = await Rider.findById(riderId).select('currentLocation').lean();
+    const stops = claimed.pickups.map((s) => (s.toObject ? s.toObject() : s));
+    const route = computeRouteFrom(riderLatLng(riderDoc), stops, claimed.dropLocation);
+    const config = await DeliveryRateConfig.getConfig();
+    const distanceKm = route.distanceKm;
+    const riderEarnings = earningsFor(distanceKm, config);
+    const orderedPickups = route.ordered.map((s, i) => ({ ...s, seq: i }));
+    await DeliveryJob.updateOne({ _id: jobId }, { $set: { pickups: orderedPickups, distanceKm, riderEarnings } });
+    Object.assign(job, { pickups: orderedPickups, distanceKm, riderEarnings });
+    claimed.pickups = orderedPickups; claimed.distanceKm = distanceKm; claimed.riderEarnings = riderEarnings;
+    logger.info(`Multi-pickup job ${jobId} locked to rider ${riderId}: ${orderedPickups.length} stops, ${distanceKm}km, ₹${riderEarnings}`);
+  }
 
   await redisClient.del(jobOfferKey(jobId));
 
@@ -537,4 +626,8 @@ module.exports = {
   handleRiderAccept,
   handleRiderReject,
   sweepExpiredOffers,
+  // exported for tests
+  computeRouteFrom,
+  earningsFor,
+  riderLatLng,
 };
