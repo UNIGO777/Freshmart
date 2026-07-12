@@ -248,6 +248,20 @@ const switchRole = async (req, res) => {
       return sendError(res, 400, 'Already in this role', ERROR_CODES.VALIDATION_ERROR);
     }
 
+    // Cannot switch profiles while actively working the current role.
+    if (req.user.role === ROLES.VENDOR) {
+      const v = await Vendor.findById(req.user.id).select('isOnline').lean();
+      if (v?.isOnline) {
+        return sendError(res, 400, 'Go offline as a vendor before switching profiles.', ERROR_CODES.VALIDATION_ERROR);
+      }
+    }
+    if (req.user.role === ROLES.RIDER) {
+      const r = await Rider.findById(req.user.id).select('isOnDelivery').lean();
+      if (r?.isOnDelivery) {
+        return sendError(res, 400, 'Finish your current delivery before switching profiles.', ERROR_CODES.VALIDATION_ERROR);
+      }
+    }
+
     let targetId;
 
     if (req.user.role === ROLES.CUSTOMER && targetRole === ROLES.VENDOR) {

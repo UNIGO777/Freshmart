@@ -390,8 +390,12 @@ app.get('/internal/vendor-has-active-orders/:vendorId', async (req, res) => {
     const { vendorId } = req.params;
     const activeSubStatuses = [SUB_ORDER_STATUS.VENDOR_ACCEPTED, SUB_ORDER_STATUS.RIDER_ASSIGNED, SUB_ORDER_STATUS.PICKED];
     const count = await Order.countDocuments({
-      'subOrders.vendorId': vendorId,
-      'subOrders.status': { $in: activeSubStatuses },
+      $or: [
+        // Accepted / in-progress for this vendor
+        { 'subOrders.vendorId': vendorId, 'subOrders.status': { $in: activeSubStatuses } },
+        // Currently RINGING for this vendor (offered a still-open category-group)
+        { status: ORDER_STATUS.CONFIRMED, 'routingMeta.groups': { $elemMatch: { status: 'open', offeredVendorIds: vendorId } } },
+      ],
     });
     return res.json({ success: true, hasActive: count > 0, count });
   } catch (err) {
@@ -495,7 +499,7 @@ Promise.all([connectDB(), connectRedis()]).then(() => {
   app.listen(PORT, () => {
     logger.info(`Order Service running on port ${PORT}`);
     resumeStuckOrders();
-    setInterval(sweepUnacceptedOrders, 15000);
+    setInterval(sweepUnacceptedOrders, 3000); // tight: cancel within ~3s of an expired deadline
   });
 });
 
