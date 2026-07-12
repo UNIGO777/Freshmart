@@ -38,7 +38,7 @@ const Inventory = require('../../vendor/models/Inventory.model');
 const checkStockController = async (req, res) => {
   try {
     const schema = z.object({
-      items: z.array(z.object({ productId: z.string(), quantity: z.number().min(1) })).min(1),
+      items: z.array(z.object({ productId: z.string(), quantity: z.number().positive() })).min(1),
       deliveryAddress: z.object({ lat: z.number(), lng: z.number(), fullAddress: z.string() }),
     });
 
@@ -75,7 +75,7 @@ const checkStockController = async (req, res) => {
 const placeOrder = async (req, res) => {
   try {
     const schema = z.object({
-      items: z.array(z.object({ productId: z.string(), quantity: z.number().min(1) })).min(1),
+      items: z.array(z.object({ productId: z.string(), quantity: z.number().positive() })).min(1),
       deliveryAddress: z.object({
         lat: z.number(),
         lng: z.number(),

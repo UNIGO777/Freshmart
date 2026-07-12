@@ -46,7 +46,7 @@ const subOrderSchema = new mongoose.Schema(
 const orderItemSchema = new mongoose.Schema(
   {
     productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-    quantity: { type: Number, required: true, min: 1 },
+    quantity: { type: Number, required: true, min: 0 }, // kg (fractional: 0.25 = 250g); positivity enforced at the API
     sellingPrice: { type: Number, required: true },
     buyingPrice: { type: Number, required: true },
     name: String,        // Snapshot at time of order
