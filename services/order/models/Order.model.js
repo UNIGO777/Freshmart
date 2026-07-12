@@ -144,6 +144,10 @@ const orderSchema = new mongoose.Schema(
         status: { type: String, enum: ['open', 'claimed', 'failed'], default: 'open' },
         deadline: Date,                                            // per-group TTL (M3)
       }],
+      // MR once-only guard: the accept that COMPLETES coverage (all groups claimed)
+      // flips this false→true atomically and is the sole trigger of rider assignment,
+      // so a simultaneous last-two-accepts race assigns exactly one rider (never two, never zero).
+      riderAssignmentTriggered: { type: Boolean, default: false },
     },
 
     ratings: ratingSchema,

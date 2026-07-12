@@ -19,7 +19,7 @@ const { connectRedis } = require('../../shared/db/redis');
 const deliveryRoutes = require('./routes/delivery.routes');
 const RiderLocation = require('./models/RiderLocation.model');
 const Rider = require('../user/models/Rider.model');
-const { initiateRiderAssignment, sweepExpiredOffers } = require('./logic/riderAssigner');
+const { initiateRiderAssignment, initiateMultiPickupAssignment, sweepExpiredOffers } = require('./logic/riderAssigner');
 const { authenticate } = require('../../gateway/middleware/auth.middleware');
 const logger = require('../../shared/utils/logger');
 
@@ -92,6 +92,32 @@ app.post('/internal/assign-rider', async (req, res) => {
     return res.json({ success: true });
   } catch (err) {
     logger.error('internal/assign-rider error:', err);
+    return res.status(500).json({ success: false });
+  }
+});
+
+// ── Internal: assign ONE rider to a multi-vendor split order (MR) ────
+// Body: { orderId, customerId, pickups:[{vendorId, subOrderId, pickupLocation}], dropLocation, deliveryFee, ... }
+app.post('/internal/assign-rider-multi', async (req, res) => {
+  try {
+    const { orderId, customerId, pickups, dropLocation, deliveryFee, deliveryInstructions, paymentMethod, totalAmount } = req.body;
+
+    if (!orderId || !Array.isArray(pickups) || pickups.length === 0 || !dropLocation) {
+      return res.status(400).json({ success: false, message: 'orderId, non-empty pickups[], dropLocation required' });
+    }
+
+    // Fire-and-forget — caller does not wait for rider assignment to complete
+    initiateMultiPickupAssignment({
+      orderId, customerId, pickups, dropLocation,
+      deliveryFee: deliveryFee || 0,
+      deliveryInstructions: deliveryInstructions || '',
+      paymentMethod: paymentMethod || 'cod',
+      totalAmount: totalAmount || 0,
+    }).catch((err) => logger.error(`assign-rider-multi failed for order ${orderId}:`, err));
+
+    return res.json({ success: true });
+  } catch (err) {
+    logger.error('internal/assign-rider-multi error:', err);
     return res.status(500).json({ success: false });
   }
 });

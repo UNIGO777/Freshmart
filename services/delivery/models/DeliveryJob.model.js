@@ -19,6 +19,24 @@ const locationSchema = new mongoose.Schema(
   { _id: false },
 );
 
+// ── Multi-vendor split (MR): one ordered pickup stop per accepted vendor ──
+// A job is "multi-pickup" when `pickups.length > 0`. Single-vendor jobs leave it
+// empty and keep using the top-level pickupLocation/subOrderId/pickupOtp fields —
+// the existing single-pickup path is unchanged. `seq` is the route order, set on
+// rider accept (nearest-vendor-to-rider first).
+const pickupStopSchema = new mongoose.Schema(
+  {
+    vendorId:       { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', required: true },
+    subOrderId:     { type: mongoose.Schema.Types.ObjectId, required: true },
+    pickupLocation: { type: locationSchema, required: true },
+    pickupOtp:      { type: String, default: null },   // this vendor's pickup code
+    status:         { type: String, enum: ['pending', 'picked'], default: 'pending' },
+    pickedAt:       { type: Date, default: null },
+    seq:            { type: Number, default: 0 },       // visit order on the accepted route
+  },
+  { _id: true },
+);
+
 const deliveryJobSchema = new mongoose.Schema(
   {
     // ── References ─────────────────────────────────────────────────
@@ -55,8 +73,11 @@ const deliveryJobSchema = new mongoose.Schema(
     },
 
     // ── Locations ──────────────────────────────────────────────────
-    pickupLocation: { type: locationSchema, required: true },  // Vendor location
+    pickupLocation: { type: locationSchema, required: true },  // Vendor location (single-pickup / first stop)
     dropLocation:   { type: locationSchema, required: true },  // Customer address
+
+    // ── Multi-pickup route (MR) — empty for single-vendor jobs ─────
+    pickups: { type: [pickupStopSchema], default: [] },        // ordered vendor stops (nearest-first, set on accept)
 
     // ── Status ─────────────────────────────────────────────────────
     status: {

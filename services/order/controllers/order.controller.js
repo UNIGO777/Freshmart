@@ -19,7 +19,7 @@ const {
   findEligibleVendorsForGroup,
 } = require('../logic/vendorRouter');
 const { buildSubOrders } = require('../logic/orderSplitter');
-const { splitByCategory, markGroupClaimed } = require('../logic/orderGrouping');
+const { splitByCategory, claimGroup } = require('../logic/orderGrouping');
 const Rider = require('../../user/models/Rider.model');
 const DeliveryRateConfig = require('../../admin/models/DeliveryRateConfig.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
@@ -649,24 +649,31 @@ const vendorAcceptOrder = async (req, res) => {
       if (myOpenGroups.length === 0) {
         return sendError(res, 409, 'Order already taken by another store', ERROR_CODES.VALIDATION_ERROR);
       }
-      // Atomically win each group (per-group $elemMatch; the loser of a race gets null).
-      const wonGroups = [];
+      // Claim each won group with claimGroup: the group's status flip AND its sub-order
+      // push are ONE atomic op. This is the key invariant for MR — "all groups claimed"
+      // therefore always implies "all sub-orders present", so the rider-assignment trigger
+      // below can never fire on a half-built order. A vendor covering multiple categories
+      // gets one sub-order per group (co-located pickup stops merged in the route, MR-2).
+      let lastClaimed = null;
       for (const g of myOpenGroups) {
-        const won = await markGroupClaimed(Order, order._id, g.groupKey, vendorId);
-        if (won) wonGroups.push(g);
+        const groupItems = order.items.filter((it) => g.productIds.some((p) => p.toString() === it.productId.toString()));
+        const won = await claimGroup(
+          Order, order._id,
+          { groupKey: g.groupKey, items: groupItems },
+          vendorId,
+          { pickupLocation, dropLocation: order.deliveryAddress },
+        );
+        if (won) lastClaimed = won;
       }
-      if (wonGroups.length === 0) {
+      if (!lastClaimed) {
         return sendError(res, 409, 'Order already taken by another store', ERROR_CODES.VALIDATION_ERROR);
       }
-      // One vendor = one pickup = one rider: merge all groups this vendor won into ONE sub-order.
-      const wonPids = new Set(wonGroups.flatMap((g) => g.productIds.map((p) => p.toString())));
-      const wonItems = order.items.filter((it) => wonPids.has(it.productId.toString()));
-      // NOTE (M0): cancelDeadline is reset on each vendor's accept — for a 2-vendor split
-      // the customer's cancel window restarts on the 2nd accept. Acceptable for M0; the
-      // per-sub-order stage model is refined in M4 (multi-pickup tracking).
+      // Order-level stage/deadlines (idempotent across a vendor's groups). NOTE (M0):
+      // cancelDeadline resets on each vendor's accept — 2-vendor split restarts the
+      // customer's cancel window on the 2nd accept. Acceptable for M0; refined in M4.
       claimed = await Order.findByIdAndUpdate(
         order._id,
-        { $push: { subOrders: buildSub(wonItems) }, $set: { stage: 'finding_rider', stageDeadline, cancelDeadline } },
+        { $set: { stage: 'finding_rider', stageDeadline, cancelDeadline } },
         { new: true },
       );
       acceptedSubOrder = claimed.subOrders[claimed.subOrders.length - 1];
@@ -695,25 +702,67 @@ const vendorAcceptOrder = async (req, res) => {
       orderId: claimed._id.toString(),
     });
 
-    // Trigger rider assignment for THIS sub-order (each accepted sub-order → its own rider).
-    axios
-      .post(
-        `http://localhost:${process.env.PORT_DELIVERY || 3006}/internal/assign-rider`,
+    // ── Rider assignment — ONE rider per order, fired EXACTLY ONCE when coverage completes ──
+    // Legacy orders (no groups) assign immediately, as today. For the group model, only the
+    // accept that atomically flips riderAssignmentTriggered false→true dispatches assignment —
+    // so a last-two-accepts race dispatches exactly one rider (never two, never zero). Because
+    // claimGroup makes claim+sub-order-push atomic, "every group claimed" guarantees every
+    // sub-order is present before this fires.
+    let assignOrder = null;
+    if (groups.length === 0) {
+      assignOrder = claimed; // legacy single sub-order, single pickup
+    } else {
+      assignOrder = await Order.findOneAndUpdate(
         {
-          orderId:              claimed._id.toString(),
-          subOrderId:           acceptedSubOrder._id.toString(),
-          vendorId:             vendorId,
-          customerId:           claimed.customerId.toString(),
-          pickupLocation:       acceptedSubOrder.pickupLocation,
-          dropLocation:         acceptedSubOrder.dropLocation,
-          deliveryFee:          claimed.deliveryFee, // NOTE: order-level fee; splits pay it per rider (economics flag)
-          deliveryInstructions: claimed.deliveryInstructions || '',
-          paymentMethod:        claimed.paymentMethod || 'cod',
-          totalAmount:          claimed.totalAmount || 0,
+          _id: order._id,
+          'routingMeta.riderAssignmentTriggered': { $ne: true },
+          'routingMeta.groups': { $not: { $elemMatch: { status: { $ne: 'claimed' } } } }, // all groups claimed
         },
-        { timeout: 5000 },
-      )
-      .catch((err) => logger.warn(`assign-rider call failed for subOrder ${acceptedSubOrder._id}: ${err.message}`));
+        { $set: { 'routingMeta.riderAssignmentTriggered': true } },
+        { new: true },
+      );
+      // null → coverage not complete yet, or another accept already dispatched → do nothing here
+    }
+
+    if (assignOrder) {
+      const subs = assignOrder.subOrders;
+      const dropLocation = subs[0].dropLocation;
+      if (subs.length === 1) {
+        // Single pickup — unchanged endpoint + payload (the live single-vendor path).
+        axios
+          .post(`http://localhost:${process.env.PORT_DELIVERY || 3006}/internal/assign-rider`, {
+            orderId:              assignOrder._id.toString(),
+            subOrderId:           subs[0]._id.toString(),
+            vendorId:             subs[0].vendorId.toString(),
+            customerId:           assignOrder.customerId.toString(),
+            pickupLocation:       subs[0].pickupLocation,
+            dropLocation,
+            deliveryFee:          assignOrder.deliveryFee,
+            deliveryInstructions: assignOrder.deliveryInstructions || '',
+            paymentMethod:        assignOrder.paymentMethod || 'cod',
+            totalAmount:          assignOrder.totalAmount || 0,
+          }, { timeout: 5000 })
+          .catch((err) => logger.warn(`assign-rider (single) failed for order ${assignOrder._id}: ${err.message}`));
+      } else {
+        // Multi-pickup — ONE rider visits every vendor, then the customer.
+        axios
+          .post(`http://localhost:${process.env.PORT_DELIVERY || 3006}/internal/assign-rider-multi`, {
+            orderId:              assignOrder._id.toString(),
+            customerId:           assignOrder.customerId.toString(),
+            pickups:              subs.map((so) => ({
+              vendorId:       so.vendorId.toString(),
+              subOrderId:     so._id.toString(),
+              pickupLocation: so.pickupLocation,
+            })),
+            dropLocation,
+            deliveryFee:          assignOrder.deliveryFee,
+            deliveryInstructions: assignOrder.deliveryInstructions || '',
+            paymentMethod:        assignOrder.paymentMethod || 'cod',
+            totalAmount:          assignOrder.totalAmount || 0,
+          }, { timeout: 5000 })
+          .catch((err) => logger.warn(`assign-rider-multi failed for order ${assignOrder._id}: ${err.message}`));
+      }
+    }
 
     return sendSuccess(res, 200, 'Order accepted', { orderId: claimed._id });
   } catch (err) {

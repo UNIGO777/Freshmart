@@ -174,6 +174,79 @@ const initiateRiderAssignment = async ({
 };
 
 /**
+ * MR: assign ONE rider to a whole split order (multi-pickup).
+ *
+ * pickups = [{ vendorId, subOrderId, pickupLocation }], one per accepted sub-order.
+ * Creates a single DeliveryJob carrying all stops, then offers it. The rider→first-vendor
+ * leg, nearest-first ordering, and per-rider earning are added at offer/accept time in
+ * MR-2; here the job's distance/earning is a provisional pickup-side route
+ * (stop → stop → … → customer) so nothing is left at zero.
+ */
+const initiateMultiPickupAssignment = async ({
+  orderId, customerId, pickups, dropLocation, deliveryFee,
+  deliveryInstructions, paymentMethod, totalAmount,
+}) => {
+  if (!Array.isArray(pickups) || pickups.length === 0) {
+    logger.error(`assign-rider-multi: no pickups for order ${orderId}`);
+    return;
+  }
+
+  const config = await DeliveryRateConfig.getConfig();
+  const ratePerKm = config.ratePerKm;
+  const surgeMultiplier = config.surgeActive ? config.surgeMultiplier : 1;
+  const minEarnings = config.minEarnings ?? 15;
+
+  // Provisional route distance: stops in claim order → customer (pickup-side legs).
+  let distanceKm = 0;
+  for (let i = 0; i < pickups.length - 1; i++) {
+    distanceKm += haversineKm(
+      pickups[i].pickupLocation.lat, pickups[i].pickupLocation.lng,
+      pickups[i + 1].pickupLocation.lat, pickups[i + 1].pickupLocation.lng,
+    );
+  }
+  const last = pickups[pickups.length - 1].pickupLocation;
+  distanceKm += haversineKm(last.lat, last.lng, dropLocation.lat, dropLocation.lng);
+  distanceKm = Math.round(distanceKm * 100) / 100;
+  const effectiveDistance = Math.max(1, distanceKm);
+  const riderEarnings = Math.max(minEarnings, Math.round(effectiveDistance * ratePerKm * surgeMultiplier));
+
+  const job = await DeliveryJob.create({
+    orderId, customerId,
+    // top-level single-pickup requireds satisfied by the first stop (kept for back-compat)
+    subOrderId:     pickups[0].subOrderId,
+    vendorId:       pickups[0].vendorId,
+    pickupLocation: pickups[0].pickupLocation,
+    dropLocation,
+    pickups: pickups.map((p, i) => ({
+      vendorId:       p.vendorId,
+      subOrderId:     p.subOrderId,
+      pickupLocation: p.pickupLocation,
+      status:         'pending',
+      seq:            i,
+    })),
+    deliveryFee:          deliveryFee || 0,
+    deliveryInstructions: deliveryInstructions || '',
+    paymentMethod:        paymentMethod || 'cod',
+    totalAmount:          totalAmount || 0,
+    riderEarnings, ratePerKm, surgeMultiplier, distanceKm,
+    status: DELIVERY_JOB_STATUS.PENDING,
+    batchIndex: 0,
+  });
+
+  logger.info(`Multi-pickup DeliveryJob ${job._id} created for order ${orderId} (${pickups.length} stops)`);
+
+  const riders = await findNearbyRiders(pickups[0].pickupLocation, [], BATCH_SIZE);
+  if (riders.length === 0) {
+    logger.warn(`No available riders for multi-pickup job ${job._id} — cancelling order`);
+    job.status = DELIVERY_JOB_STATUS.FAILED;
+    await job.save();
+    await autoCancelOrder(job);
+    return;
+  }
+  await offerToRiderBatch(job, riders);
+};
+
+/**
  * Send `job:request` to a batch of riders and arm the 30s Redis TTL.
  */
 const offerToRiderBatch = async (job, riders) => {
@@ -207,6 +280,7 @@ const offerToRiderBatch = async (job, riders) => {
       orderId:              job.orderId,
       subOrderId:           job.subOrderId,
       pickupLocation:       job.pickupLocation,
+      pickups:              job.pickups || [], // MR: all vendor stops ([] for single-pickup jobs)
       dropLocation:         job.dropLocation,
       earnings:             job.riderEarnings,
       distanceKm:           job.distanceKm,
@@ -459,6 +533,7 @@ const sweepExpiredOffers = async () => {
 
 module.exports = {
   initiateRiderAssignment,
+  initiateMultiPickupAssignment,
   handleRiderAccept,
   handleRiderReject,
   sweepExpiredOffers,
