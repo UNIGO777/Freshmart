@@ -315,8 +315,7 @@ const getOrderById = async (req, res) => {
       .populate('items.productId', 'name nameHi image unit')
       .populate('subOrders.vendorId', 'businessName phone location')
       .populate('subOrders.riderId', 'name phone currentLocation')
-      .select('-routingMeta')
-      .lean();
+      .lean(); // routingMeta kept for access/scoping below, stripped before responding
 
     if (!order) return sendError(res, 404, 'Order not found', ERROR_CODES.NOT_FOUND);
 
@@ -325,17 +324,26 @@ const getOrderById = async (req, res) => {
       return sendError(res, 403, 'Access denied', ERROR_CODES.FORBIDDEN);
     }
     if (req.user.role === ROLES.VENDOR) {
-      const isAssigned = order.subOrders.some((so) => (so.vendorId?._id ?? so.vendorId)?.toString() === req.user.id);
-      if (!isAssigned) return sendError(res, 403, 'Access denied', ERROR_CODES.FORBIDDEN);
-      // A split vendor only sees THEIR items in the detail view (their sub-order's items).
-      order.items = vendorScopedItems(order, req.user.id);
-      order.subOrders = order.subOrders.filter((so) => (so.vendorId?._id ?? so.vendorId)?.toString() === req.user.id);
+      const vid = req.user.id;
+      const isAssigned = order.subOrders.some((so) => (so.vendorId?._id ?? so.vendorId)?.toString() === vid);
+      // Also allow a vendor still OFFERED an open group (a waiting order they haven't accepted yet)
+      // so they can open its detail and Accept/Reject from there.
+      const isOffered = (order.routingMeta?.groups || []).some(
+        (g) => g.status === 'open' && (g.offeredVendorIds || []).some((v) => v.toString() === vid),
+      );
+      if (!isAssigned && !isOffered) return sendError(res, 403, 'Access denied', ERROR_CODES.FORBIDDEN);
+      // A split vendor only sees THEIR items + THEIR sub-order. For a waiting (offered, not yet
+      // accepted) order this leaves subOrders empty, so the detail's status falls back to the
+      // parent 'confirmed' → the Accept/Reject bar shows.
+      order.items = vendorScopedItems(order, vid);
+      order.subOrders = order.subOrders.filter((so) => (so.vendorId?._id ?? so.vendorId)?.toString() === vid);
     }
     if (req.user.role === ROLES.RIDER) {
       const isAssigned = order.subOrders.some((so) => (so.riderId?._id ?? so.riderId)?.toString() === req.user.id);
       if (!isAssigned) return sendError(res, 403, 'Access denied', ERROR_CODES.FORBIDDEN);
     }
 
+    delete order.routingMeta; // never expose routing internals to any client
     return sendSuccess(res, 200, 'Order fetched', order);
   } catch (err) {
     logger.error('getOrderById error:', err);
@@ -597,22 +605,39 @@ const getVendorIncoming = async (req, res) => {
       'routingMeta.offeredVendorIds': vendorOid,
       status: { $in: [ORDER_STATUS.CONFIRMED, ORDER_STATUS.AWAITING_PAYMENT] },
     })
-      .select('items deliveryAddress totalAmount createdAt subOrders customerId deliveryInstructions paymentMethod paymentStatus')
+      .select('items deliveryAddress totalAmount createdAt subOrders customerId deliveryInstructions paymentMethod paymentStatus routingMeta')
       .populate('customerId', 'name phone')
       .lean();
 
-    // Scope items + amount to THIS vendor's part (their offered category-group), so a split
-    // vendor sees/earns only their items — not the whole order.
-    const enriched = orders.map((o) => {
-      const myItems = vendorScopedItems(o, req.user.id);
-      return {
-        ...o,
-        items: myItems,
-        vendorAmount: myItems.reduce(
-          (sum, item) => sum + (item.buyingPrice ?? 0) * (item.quantity ?? 1), 0,
-        ),
-      };
-    });
+    const ttl = Number(process.env.VENDOR_OFFER_TTL_SEC) || 90;
+    const vid = req.user.id;
+
+    // Only orders where this vendor still has an OPEN offered group (a group taken by another
+    // store, or one they rejected, must not appear). Legacy (no-groups) orders always pass.
+    const enriched = orders
+      .filter((o) => {
+        const groups = o.routingMeta?.groups || [];
+        if (groups.length === 0) return true;
+        return groups.some((g) => g.status === 'open' && (g.offeredVendorIds || []).some((v) => v.toString() === vid));
+      })
+      .map((o) => {
+        // Scope items to THIS vendor's part (needs routingMeta.groups, now selected).
+        const myItems = vendorScopedItems(o, vid);
+        const elapsed = Math.floor((Date.now() - new Date(o.createdAt).getTime()) / 1000);
+        const { routingMeta, ...rest } = o; // don't leak routing internals to the client
+        return {
+          ...rest,
+          items: myItems,
+          vendorAmount: myItems.reduce((sum, item) => sum + (item.buyingPrice ?? 0) * (item.quantity ?? 1), 0),
+          expiresIn: Math.max(0, ttl - elapsed), // remaining seconds — drives the overlay countdown
+          // All of a vendor's offered items are in-stock (eligibility guaranteed it) — lets the
+          // overlay render without a separate socket payload (e.g. when opened from an FCM push).
+          inventoryContext: myItems.map((it) => ({
+            productId: it.productId, name: it.name, orderedQty: it.quantity,
+            availableQty: it.quantity, extraNeeded: 0, inStock: true,
+          })),
+        };
+      });
 
     return sendSuccess(res, 200, 'Incoming orders fetched', enriched);
   } catch (err) {
