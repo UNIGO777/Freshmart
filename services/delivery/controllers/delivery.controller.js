@@ -184,6 +184,78 @@ const markPickedUp = async (req, res) => {
       return sendError(res, 400, 'Job must be in accepted state to mark pickup', ERROR_CODES.VALIDATION_ERROR);
     }
 
+    // ── MR multi-pickup: mark ONE vendor stop; the job only becomes PICKED (out for
+    //    delivery) once EVERY stop is done. Single-pickup jobs (pickups empty) fall through
+    //    to the unchanged path below. ──
+    if ((job.pickups || []).length > 0) {
+      const { stopId, vendorId: bodyVendorId } = req.body;
+      const stop = stopId
+        ? job.pickups.id(stopId)
+        : bodyVendorId
+          ? job.pickups.find((s) => s.vendorId.toString() === String(bodyVendorId) && s.status === 'pending')
+          : job.pickups.find((s) => s.status === 'pending');
+      if (!stop) return sendError(res, 400, 'No matching pending pickup stop', ERROR_CODES.VALIDATION_ERROR);
+      if (stop.status === 'picked') return sendError(res, 400, 'This stop is already picked up', ERROR_CODES.VALIDATION_ERROR);
+      if (!otp || String(otp) !== String(stop.pickupOtp)) {
+        return sendError(res, 400, 'Invalid pickup OTP for this stop', ERROR_CODES.VALIDATION_ERROR);
+      }
+
+      stop.status = 'picked';
+      stop.pickedAt = new Date();
+
+      const riderDoc = await Rider.findById(req.user.id).select('name').lean();
+
+      // Vendor earning for this stop's sub-orders (each vendor earns at its own pickup)
+      for (const soId of stop.subOrderIds || []) {
+        axios.post(
+          `http://localhost:${process.env.PORT_ORDER || 3004}/internal/vendor-earning`,
+          { orderId: job.orderId.toString(), subOrderId: soId.toString(), vendorId: stop.vendorId.toString() },
+          { timeout: 5000 },
+        ).catch((err) => logger.warn(`vendor-earning (stop) failed: ${err.message}`));
+      }
+      // Retire this stop's pickup OTP + tell the vendor
+      await DeliveryOtp.deleteOne({ jobId: job._id, type: 'pickup', vendorId: stop.vendorId }).catch(() => {});
+      emitToRoom(`vendor:${stop.vendorId}`, 'order:status', { orderId: job.orderId, status: 'picked' });
+      notifyVendor(stop.vendorId.toString(), 'order:picked', 'Order Picked Up',
+        `Rider ${riderDoc?.name || ''} picked up order #${job.orderId.toString().slice(-4)}`, job.orderId.toString());
+
+      const pickedCount = job.pickups.filter((s) => s.status === 'picked').length;
+      const allPicked = pickedCount === job.pickups.length;
+
+      if (!allPicked) {
+        await job.save();
+        emitToRoom(`order:tracking:${job.orderId}`, 'order:status', {
+          orderId: job.orderId, status: 'picking', pickedStops: pickedCount, totalStops: job.pickups.length,
+        });
+        return sendSuccess(res, 200, 'Stop picked up', {
+          jobId: job._id, stopId: stop._id, allPicked: false, remaining: job.pickups.length - pickedCount,
+        });
+      }
+
+      // Every stop done → order is on the way. Issue the single delivery OTP to the customer.
+      job.status = DELIVERY_JOB_STATUS.PICKED;
+      job.pickedAt = new Date();
+      job.deliveryOtp = String(Math.floor(1000 + Math.random() * 9000));
+      await job.save();
+      try {
+        await DeliveryOtp.create({
+          orderId: job.orderId, jobId: job._id, vendorId: job.vendorId, customerId: job.customerId,
+          riderId: req.user.id, type: 'delivery', code: job.deliveryOtp, recipientType: 'customer',
+        });
+      } catch (e) { logger.warn(`DeliveryOtp (delivery) failed job ${job._id}: ${e.message}`); }
+
+      syncOrderService(job, 'picked', { pickedAt: job.pickedAt });
+      emitOrderStatus(job, 'picked');
+      emitToRoom(`customer:${job.customerId}`, 'order:status', { orderId: job.orderId, status: 'on_the_way' });
+      emitToRoom(`order:tracking:${job.orderId}`, 'order:status', { orderId: job.orderId, status: 'on_the_way' });
+      triggerNotification('order:picked', job.customerId.toString(), 'customer', { orderId: job.orderId.toString() });
+      emitToRoom(`customer:${job.customerId}`, 'order:delivery-otp', { orderId: job.orderId, jobId: job._id, otp: job.deliveryOtp, riderName: riderDoc?.name });
+      emitToRoom(`order:tracking:${job.orderId}`, 'order:delivery-otp', { orderId: job.orderId, jobId: job._id, otp: job.deliveryOtp, riderName: riderDoc?.name });
+      triggerNotification('order:delivery-otp', job.customerId.toString(), 'customer', { orderId: job.orderId.toString(), otp: job.deliveryOtp, riderName: riderDoc?.name });
+
+      return sendSuccess(res, 200, 'All pickups complete — out for delivery', { jobId: job._id, allPicked: true });
+    }
+
     // Verify pickup OTP (coerce to string for type-safe comparison)
     if (!otp || String(otp) !== String(job.pickupOtp)) {
       return sendError(res, 400, 'Invalid pickup OTP', ERROR_CODES.VALIDATION_ERROR);
@@ -548,17 +620,25 @@ const emitToRiderSocket = (riderId, event, payload) => {
 };
 
 const syncOrderService = (job, status, extra = {}) => {
-  axios
-    .post(
-      `http://localhost:${process.env.PORT_ORDER || 3004}/internal/update-suborder`,
-      {
-        orderId:    job.orderId.toString(),
-        subOrderId: job.subOrderId.toString(),
-        update:     { status, ...extra },
-      },
-      { timeout: 5000 },
-    )
-    .catch((err) => logger.warn(`syncOrderService(${status}) failed: ${err.message}`));
+  // Multi-pickup: one rider/drop covers EVERY vendor sub-order, so sync them all (else the
+  // other sub-orders never reach picked/delivered and the parent order never completes).
+  // Single-pickup: just job.subOrderId, exactly as before.
+  const subOrderIds = (job.pickups && job.pickups.length > 0)
+    ? job.pickups.flatMap((s) => (s.subOrderIds || []).map((id) => id.toString()))
+    : [job.subOrderId.toString()];
+  for (const subOrderId of subOrderIds) {
+    axios
+      .post(
+        `http://localhost:${process.env.PORT_ORDER || 3004}/internal/update-suborder`,
+        {
+          orderId:    job.orderId.toString(),
+          subOrderId,
+          update:     { status, ...extra },
+        },
+        { timeout: 5000 },
+      )
+      .catch((err) => logger.warn(`syncOrderService(${status}) failed for subOrder ${subOrderId}: ${err.message}`));
+  }
 };
 
 const emitOrderStatus = (job, status) => {

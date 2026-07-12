@@ -447,29 +447,46 @@ const handleRiderAccept = async (jobId, riderId) => {
     const config = await DeliveryRateConfig.getConfig();
     const distanceKm = route.distanceKm;
     const riderEarnings = earningsFor(distanceKm, config);
-    const orderedPickups = route.ordered.map((s, i) => ({ ...s, seq: i }));
+    // Order stops nearest-first AND give each its own pickup OTP (one code per vendor visit).
+    const orderedPickups = route.ordered.map((s, i) => ({
+      ...s, seq: i, status: 'pending', pickedAt: null,
+      pickupOtp: String(Math.floor(1000 + Math.random() * 9000)),
+    }));
     await DeliveryJob.updateOne({ _id: jobId }, { $set: { pickups: orderedPickups, distanceKm, riderEarnings } });
     Object.assign(job, { pickups: orderedPickups, distanceKm, riderEarnings });
     claimed.pickups = orderedPickups; claimed.distanceKm = distanceKm; claimed.riderEarnings = riderEarnings;
+
+    // One pickup-OTP record per stop (recipientType vendor), so each vendor can show its code.
+    for (const stop of orderedPickups) {
+      try {
+        await DeliveryOtp.create({
+          orderId: claimed.orderId, jobId: claimed._id, vendorId: stop.vendorId,
+          customerId: claimed.customerId, riderId, type: 'pickup', code: stop.pickupOtp, recipientType: 'vendor',
+        });
+      } catch (err) { logger.warn(`DeliveryOtp (stop) failed job ${jobId} vendor ${stop.vendorId}: ${err.message}`); }
+    }
     logger.info(`Multi-pickup job ${jobId} locked to rider ${riderId}: ${orderedPickups.length} stops, ${distanceKm}km, ₹${riderEarnings}`);
   }
 
   await redisClient.del(jobOfferKey(jobId));
 
-  // Persist pickup OTP in separate OTP model
-  try {
-    await DeliveryOtp.create({
-      orderId: job.orderId,
-      jobId: job._id,
-      vendorId: job.vendorId,
-      customerId: job.customerId,
-      riderId,
-      type: 'pickup',
-      code: pickupOtp,
-      recipientType: 'vendor',
-    });
-  } catch (err) {
-    logger.warn(`DeliveryOtp create (pickup) failed for job ${jobId}: ${err.message}`);
+  // Persist pickup OTP in separate OTP model — SINGLE-pickup jobs only. Multi-pickup jobs
+  // got one record per stop above; skip the single one so no bogus vendor OTP is created.
+  if ((claimed.pickups || []).length === 0) {
+    try {
+      await DeliveryOtp.create({
+        orderId: job.orderId,
+        jobId: job._id,
+        vendorId: job.vendorId,
+        customerId: job.customerId,
+        riderId,
+        type: 'pickup',
+        code: pickupOtp,
+        recipientType: 'vendor',
+      });
+    } catch (err) {
+      logger.warn(`DeliveryOtp create (pickup) failed for job ${jobId}: ${err.message}`);
+    }
   }
 
   // Mark rider as busy + update performance
