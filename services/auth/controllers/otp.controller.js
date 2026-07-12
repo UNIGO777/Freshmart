@@ -31,6 +31,17 @@ const sendOtp = async (req, res) => {
     }
 
     const phone = normalizePhone(raw);
+
+    // Login-only guard: verify-otp requires an existing account, so an OTP to an
+    // unregistered number can never succeed. Reject here — BEFORE spending an SMS —
+    // instead of letting the user enter a code that's doomed to "no account found".
+    // The sign-up flow calls POST /register first, so a genuine new user already
+    // has a Customer record by the time it requests an OTP and passes this check.
+    const existing = await Customer.findOne({ phone }).select('_id').lean();
+    if (!existing) {
+      return sendError(res, 404, 'No account found for this number. Please sign up first.', ERROR_CODES.NOT_FOUND);
+    }
+
     const otp = generateOtp();
     const expiresAt = new Date(Date.now() + OTP_EXPIRY_MS);
 
