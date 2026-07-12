@@ -81,21 +81,11 @@ io.on('connection', (socket) => {
   socket.on('disconnect', async (reason) => {
     logger.info(`Socket disconnected: ${socket.id} (${role}:${userId}) — ${reason}`);
 
-    // Auto-offline vendors when they disconnect (app killed / network lost)
-    if (role === 'vendor') {
-      try {
-        const axios = require('axios');
-        const USER_URL = `http://localhost:${process.env.PORT_USER || 3002}`;
-        await axios.patch(
-          `${USER_URL}/set-offline`,
-          { vendorId: userId },
-          { headers: { 'x-internal-secret': process.env.INTERNAL_SECRET || 'internal' }, timeout: 5000 },
-        );
-        logger.info(`Vendor ${userId} auto-set offline on disconnect`);
-      } catch (err) {
-        logger.warn(`Failed to auto-offline vendor ${userId}: ${err.message}`);
-      }
-    }
+    // M5: do NOT auto-offline a vendor on socket disconnect. A backgrounded/killed vendor
+    // app drops its socket but MUST stay isOnline:true so it keeps being offered orders and
+    // its phone-off FCM siren fires (findEligibleVendorsForGroup requires isOnline). Only the
+    // Go-Offline toggle takes a vendor offline; a genuinely-dead vendor is handled by the
+    // per-group timeout (M3), which fails the order rather than silently skipping the vendor.
 
     // Auto-offline riders on disconnect + close open session
     if (role === 'rider') {
