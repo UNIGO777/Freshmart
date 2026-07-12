@@ -135,8 +135,8 @@ const createVendor = async (req, res) => {
       customerId,
     } = req.body;
 
-    if (!businessName || !ownerName || !phone || !password) {
-      return sendError(res, 400, 'businessName, ownerName, phone and password are required', ERROR_CODES.MISSING_FIELDS);
+    if (!businessName || !ownerName || !phone) {
+      return sendError(res, 400, 'businessName, ownerName and phone are required', ERROR_CODES.MISSING_FIELDS);
     }
     if (!lat || !lng) {
       return sendError(res, 400, 'Shop location (lat, lng) is required', ERROR_CODES.MISSING_FIELDS);
@@ -161,12 +161,18 @@ const createVendor = async (req, res) => {
       logger.info(`Auto-created customer account for vendor phone ${normalizedPhone}`);
     }
 
-    const bcrypt = require('bcryptjs');
-    const passwordHash = await bcrypt.hash(password, 12);
+    // Password is OPTIONAL — vendors log in via phone OTP (as their linked customer) and
+    // switch to the vendor role; the vendor password is not used for login. Only set a hash
+    // if one was explicitly provided.
+    let passwordHash;
+    if (password) {
+      const bcrypt = require('bcryptjs');
+      passwordHash = await bcrypt.hash(password, 12);
+    }
 
     const vendor = await Vendor.create({
       businessName, ownerName, phone: normalizedPhone, email,
-      passwordHash,
+      ...(passwordHash ? { passwordHash } : {}),
       profilePhoto: profilePhoto || '',
       location: { type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] },
       address: address || '',
