@@ -7,7 +7,7 @@ const { getAnalytics, getRevenueOverTime, getOrdersOverTime,
         getOrdersByHour }                           = require('../controllers/analytics.controller');
 const { listVendors, getVendorDetail,
         approveVendor, blockVendor,
-        createVendor, getVendorEarnings }           = require('../controllers/vendor-mgmt.controller');
+        createVendor, updateVendor, getVendorEarnings } = require('../controllers/vendor-mgmt.controller');
 const { listRiders, getRiderDetail,
         approveRider, blockRider,
         createRider, getRiderEarnings }             = require('../controllers/rider-mgmt.controller');
@@ -65,6 +65,7 @@ router.get('/vendors',                listVendors);
 router.post('/vendors',               createVendor);
 router.get('/vendors/:id',            getVendorDetail);
 router.get('/vendors/:id/earnings',   getVendorEarnings);
+router.patch('/vendors/:id',          updateVendor);
 router.patch('/vendors/:id/approve',  approveVendor);
 router.patch('/vendors/:id/block',    blockVendor);
 

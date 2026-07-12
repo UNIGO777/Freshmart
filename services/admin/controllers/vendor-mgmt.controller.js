@@ -2,9 +2,27 @@ const Vendor        = require('../../user/models/Vendor.model');
 const Customer      = require('../../user/models/Customer.model');
 const VendorEarning = require('../../vendor/models/VendorEarning.model');
 const Order         = require('../../order/models/Order.model');
+const Inventory     = require('../../vendor/models/Inventory.model');
+const Product       = require('../../product/models/Product.model');
 const { sendSuccess, sendError } = require('../../../shared/utils/response.util');
 const ERROR_CODES = require('../../../shared/constants/errorCodes');
 const logger = require('../../../shared/utils/logger');
+
+// Delete a vendor's inventory rows for products whose category is NOT in `categories`.
+// Keeps inventory in sync when a vendor's served categories are reduced/changed, so the
+// vendor is never offered (or shown) stock in a category they no longer serve.
+const pruneVendorInventoryToCategories = async (vendorId, categories) => {
+  const inv = await Inventory.find({ vendorId }).select('productId').lean();
+  if (inv.length === 0) return 0;
+  const productIds = inv.map((i) => i.productId);
+  const products = await Product.find({ _id: { $in: productIds } }).select('_id category').lean();
+  const allowed = new Set(categories);
+  const toRemove = products.filter((p) => !allowed.has(p.category)).map((p) => p._id);
+  if (toRemove.length === 0) return 0;
+  const { deletedCount } = await Inventory.deleteMany({ vendorId, productId: { $in: toRemove } });
+  logger.info(`Pruned ${deletedCount} inventory item(s) for vendor ${vendorId} outside categories [${categories.join(', ')}]`);
+  return deletedCount || 0;
+};
 
 // ── GET /vendors ──────────────────────────────────────────────────
 // List all vendors with optional filters: approved, active, search by name/phone
@@ -220,4 +238,43 @@ const getVendorEarnings = async (req, res) => {
   }
 };
 
-module.exports = { listVendors, getVendorDetail, approveVendor, blockVendor, createVendor, getVendorEarnings };
+// ── PATCH /vendors/:id ────────────────────────────────────────────
+// Admin edits a vendor. When `categories` is changed, prune inventory to the new set —
+// items in dropped categories are removed so the vendor no longer stocks/serves them.
+const VENDOR_CATEGORIES = ['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other'];
+const updateVendor = async (req, res) => {
+  try {
+    const vendor = await Vendor.findById(req.params.id);
+    if (!vendor) return sendError(res, 404, 'Vendor not found', ERROR_CODES.NOT_FOUND);
+
+    const { businessName, ownerName, serviceRadiusKm, address, categories } = req.body;
+    const updates = {};
+    if (businessName !== undefined)   updates.businessName = businessName;
+    if (ownerName !== undefined)      updates.ownerName = ownerName;
+    if (address !== undefined)        updates.address = address;
+    if (serviceRadiusKm !== undefined) updates.serviceRadiusKm = parseFloat(serviceRadiusKm);
+
+    let prunedCount = 0;
+    if (categories !== undefined) {
+      if (!Array.isArray(categories) || categories.some((c) => !VENDOR_CATEGORIES.includes(c))) {
+        return sendError(res, 400, `categories must be a subset of: ${VENDOR_CATEGORIES.join(', ')}`, ERROR_CODES.VALIDATION_ERROR);
+      }
+      updates.categories = categories;
+      // Prune BEFORE/together with the category change so inventory never lags behind.
+      prunedCount = await pruneVendorInventoryToCategories(vendor._id, categories);
+    }
+
+    const updated = await Vendor.findByIdAndUpdate(req.params.id, updates, { new: true, runValidators: true })
+      .select('-passwordHash').lean();
+
+    const msg = prunedCount > 0
+      ? `Vendor updated — removed ${prunedCount} inventory item(s) in dropped categories`
+      : 'Vendor updated';
+    return sendSuccess(res, 200, msg, { vendor: updated, prunedInventory: prunedCount });
+  } catch (err) {
+    logger.error('updateVendor error:', err);
+    return sendError(res, 500, 'Failed to update vendor', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+module.exports = { listVendors, getVendorDetail, approveVendor, blockVendor, createVendor, updateVendor, getVendorEarnings };
