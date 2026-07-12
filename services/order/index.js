@@ -445,27 +445,41 @@ const VENDOR_OFFER_TTL_SEC = Number(process.env.VENDOR_OFFER_TTL_SEC) || 90;
 
 const sweepUnacceptedOrders = async () => {
   try {
-    const cutoff = new Date(Date.now() - VENDOR_OFFER_TTL_SEC * 1000);
+    const now = new Date();
+    const legacyCutoff = new Date(Date.now() - VENDOR_OFFER_TTL_SEC * 1000);
     const stale = await Order.find({
       status: ORDER_STATUS.CONFIRMED,
-      'subOrders.0': { $exists: false }, // no vendor has accepted yet
-      createdAt: { $lt: cutoff },
-    }).select('_id customerId').lean();
+      $or: [
+        // Split model (all-or-nothing): ANY category-group still open past its deadline —
+        // whether nobody accepted or only SOME parts did — fails the whole order.
+        { 'routingMeta.groups': { $elemMatch: { status: 'open', deadline: { $lt: now } } } },
+        // Legacy orders (no groups): no vendor accepted within the window.
+        { 'routingMeta.groups': { $exists: false }, 'subOrders.0': { $exists: false }, createdAt: { $lt: legacyCutoff } },
+        { 'routingMeta.groups': { $size: 0 },       'subOrders.0': { $exists: false }, createdAt: { $lt: legacyCutoff } },
+      ],
+    }).select('_id customerId routingMeta.groups').lean();
 
     for (const o of stale) {
       const orderId = o._id.toString();
-      logger.info(`[sweep] No vendor accepted order ${orderId} within ${VENDOR_OFFER_TTL_SEC}s — cancelling`);
+      // "partial" = at least one part was accepted but another timed out (all-or-nothing fail).
+      const partial = (o.routingMeta?.groups || []).some((g) => g.status === 'claimed');
+      const reason = partial ? 'part_unfilled' : 'no_vendor_response';
+      const status = partial ? 'failed' : 'no_vendor_response';
+      const msg = partial
+        ? 'Some items in your order were unavailable, so the whole order was cancelled. Please try again.'
+        : 'No store accepted your order in time. Please try again in a few minutes.';
+      logger.info(`[sweep] failing order ${orderId} (${reason}) — an unfilled part passed its window`);
 
-      // Tell the customer explicitly first — this drives the "please try again"
-      // popup on the app before the generic cancel event lands.
-      const msg = 'No store accepted your order in time. Please try again in a few minutes.';
-      emitToRoom(`customer:${o.customerId.toString()}`, 'order:status', { orderId, status: 'no_vendor_response', message: msg });
-      emitToRoom(`order:tracking:${orderId}`, 'order:status', { orderId, status: 'no_vendor_response', message: msg });
+      // Tell the customer first — drives the "please try again" popup before the cancel lands.
+      emitToRoom(`customer:${o.customerId.toString()}`, 'order:status', { orderId, status, message: msg });
+      emitToRoom(`order:tracking:${orderId}`, 'order:status', { orderId, status, message: msg });
 
       try {
+        // internalCancelOrder cancels the order, marks every accepted sub-order FAILED,
+        // restores that vendor's stock, releases the coupon, refunds, and notifies the customer.
         await axios.post(
           `http://localhost:${PORT}/internal/cancel-order`,
-          { orderId, reason: 'no_vendor_response' },
+          { orderId, reason },
           { timeout: 5000 },
         );
       } catch (err) {

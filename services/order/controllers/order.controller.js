@@ -143,6 +143,9 @@ const placeOrder = async (req, res) => {
     const groups = splitByCategory(orderItems);
     const routingGroups = [];
     const offerMap = new Map(); // vendorId(str) -> { vendor, items:[] }  union across the groups a vendor is offered
+    // Per-group offer window: a group unfilled past this → the whole order fails (M3).
+    const groupTtlSec = Number(process.env.VENDOR_OFFER_TTL_SEC) || 90;
+    const groupDeadline = new Date(Date.now() + groupTtlSec * 1000);
 
     for (const g of groups) {
       // area + category + CARRIES all group items (no quantity gate — vendor decides on accept)
@@ -154,12 +157,9 @@ const placeOrder = async (req, res) => {
         productIds: g.productIds,
         offeredVendorIds,
         claimedByVendorId: null,
-        status: offeredVendorIds.length ? 'open' : 'failed', // no vendor → flagged (M3 will fail the order)
+        status: offeredVendorIds.length ? 'open' : 'failed',
+        deadline: groupDeadline,
       });
-      if (offeredVendorIds.length === 0) {
-        logger.warn(`placeOrder: category-group '${g.groupKey}' has NO eligible vendors — order will be un-fulfillable (all-or-nothing fail lands in M3)`);
-        continue;
-      }
       for (const v of vendors) {
         const vid = v._id.toString();
         if (!offerMap.has(vid)) offerMap.set(vid, { vendor: v, items: [] });
@@ -167,9 +167,13 @@ const placeOrder = async (req, res) => {
       }
     }
 
-    // If not a single group could be offered, this is the old "no vendors in your area".
-    if (!routingGroups.some((rg) => rg.status === 'open')) {
-      return sendError(res, 400, 'No vendors available in your area', ERROR_CODES.NO_VENDOR_FOUND);
+    // ── All-or-nothing at placement ──
+    // If ANY category-group has no eligible vendor, the order can never be fully filled →
+    // reject upfront (cleaner than accepting and failing it via the sweep later).
+    if (routingGroups.some((rg) => rg.status === 'failed')) {
+      const missing = routingGroups.filter((rg) => rg.status === 'failed').map((rg) => rg.category).join(', ');
+      logger.info(`placeOrder: rejecting — no store covers category-group(s): ${missing}`);
+      return sendError(res, 400, 'Some items in your cart are not available from any store in your area right now', ERROR_CODES.NO_VENDOR_FOUND);
     }
 
     const unionVendorIds = [...offerMap.keys()].map((id) => new mongoose.Types.ObjectId(id));
