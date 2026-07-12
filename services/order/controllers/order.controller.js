@@ -857,20 +857,53 @@ const vendorRejectOrder = async (req, res) => {
     }
 
     const vendorId = req.user.id;
+    const orderId = order._id.toString();
+    const groups = order.routingMeta?.groups || [];
 
-    // Verify vendor was offered this order
-    const wasOffered = order.routingMeta?.currentVendorId?.toString() === vendorId
-      || order.routingMeta?.offeredVendorIds?.map((id) => id.toString()).includes(vendorId);
-    if (!wasOffered) {
-      return sendError(res, 403, 'This order was not offered to you', ERROR_CODES.FORBIDDEN);
+    if (groups.length > 0) {
+      // Drop this vendor from every OPEN category-group they were offered.
+      let removed = false;
+      for (const g of groups) {
+        if (g.status !== 'open') continue;
+        const before = g.offeredVendorIds.length;
+        g.offeredVendorIds = g.offeredVendorIds.filter((v) => v.toString() !== vendorId);
+        if (g.offeredVendorIds.length !== before) removed = true;
+      }
+      if (!removed) return sendError(res, 403, 'This order was not offered to you', ERROR_CODES.FORBIDDEN);
+
+      if (!order.routingMeta.rejectedVendorIds.some((v) => v.toString() === vendorId)) {
+        order.routingMeta.rejectedVendorIds.push(new mongoose.Types.ObjectId(vendorId));
+      }
+      // Keep the top-level union in sync so this vendor no longer sees the order.
+      order.routingMeta.offeredVendorIds = [...new Set(groups.flatMap((g) => g.offeredVendorIds.map((v) => v.toString())))]
+        .map((id) => new mongoose.Types.ObjectId(id));
+      await order.save();
+
+      // If a still-open group now has NO store left, the order can't be filled → fail it NOW
+      // (real-time), don't wait for the timeout. Otherwise other stores can still take that part.
+      const deadGroup = groups.find((g) => g.status === 'open' && g.offeredVendorIds.length === 0);
+      if (deadGroup) {
+        const msg = 'A store declined and no other store has those items — your order was cancelled. Please try again.';
+        await emitToCustomer(order.customerId.toString(), 'order:status', { orderId, status: 'failed', message: msg });
+        axios
+          .post(`http://localhost:${process.env.PORT_ORDER || 3004}/internal/cancel-order`,
+            { orderId, reason: 'vendor_rejected_no_coverage' }, { timeout: 5000 })
+          .catch((err) => logger.warn(`cancel-order (reject) failed for ${orderId}: ${err.message}`));
+      } else {
+        await emitToCustomer(order.customerId.toString(), 'order:status',
+          { orderId, status: 'finding_vendor', message: 'A store declined — finding another store for your order.' });
+      }
+      return sendSuccess(res, 200, 'Order rejected');
     }
 
-    order.routingMeta.rejectedVendorIds.push(vendorId);
+    // ── Legacy orders (no groups) ──
+    const wasOffered = order.routingMeta?.offeredVendorIds?.some((v) => v.toString() === vendorId);
+    if (!wasOffered) return sendError(res, 403, 'This order was not offered to you', ERROR_CODES.FORBIDDEN);
+    order.routingMeta.rejectedVendorIds.push(new mongoose.Types.ObjectId(vendorId));
     await order.save();
-
-    // Try to cascade to next vendor via routing logic
     await handleVendorResponse(order, vendorId);
-
+    await emitToCustomer(order.customerId.toString(), 'order:status',
+      { orderId, status: 'finding_vendor', message: 'A store declined — finding another store.' });
     return sendSuccess(res, 200, 'Order rejected');
   } catch (err) {
     logger.error('vendorRejectOrder error:', err);
