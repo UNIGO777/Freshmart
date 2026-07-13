@@ -9,6 +9,7 @@ const { findNearbyRiders, BATCH_SIZE } = require('./nearbyFinder');
 const { redisClient } = require('../../../shared/db/redis');
 const { calculateRouteDistance } = require('./distanceCalculator');
 const { triggerNotification } = require('../../../shared/utils/notify');
+const { sendDataOnly } = require('../../../shared/utils/dataPush');
 const { notifyVendor } = require('../../../shared/utils/vendorNotify');
 const logger = require('../../../shared/utils/logger');
 
@@ -365,6 +366,27 @@ const offerToRiderBatch = async (job, riders) => {
     });
     // FCM push so rider is alerted even if the app is in the background
     triggerNotification('job:request', riderId, 'rider', { jobId, orderId: job.orderId.toString(), expiresIn: ASSIGNMENT_TIMEOUT_SEC });
+
+    // Phone-off siren: DATA-ONLY high-priority push wakes a killed/locked app so the
+    // native siren + lock-screen popup fire (mirrors the vendor NEW_ORDER path). All
+    // fields are primitives — sendDataOnly string-coerces, so no nested objects.
+    const firstStop = pickupsForRider[0];
+    const pickupAddr = firstStop?.pickupLocation?.fullAddress || job.pickupLocation?.fullAddress || 'Store';
+    const dropAddr = job.dropLocation?.fullAddress || '';
+    sendDataOnly(
+      rider.fcmToken,
+      {
+        type: 'NEW_JOB',
+        jobId,
+        orderId: job.orderId.toString(),
+        expiresAt: expiresAt.getTime(),
+        earnings: Math.round(earnings || 0),
+        distance: Number(distanceKm || 0).toFixed(1),
+        pickup: pickupAddr,
+        drop: dropAddr,
+      },
+      { ttlSec: ASSIGNMENT_TIMEOUT_SEC },
+    );
     logger.info(`Job ${jobId} offered to rider ${riderId}`);
   }
 };
@@ -378,9 +400,17 @@ const handleOfferExpiry = async (job) => {
   job = await DeliveryJob.findById(job._id);
   if (!job || ![DELIVERY_JOB_STATUS.OFFERED, DELIVERY_JOB_STATUS.PENDING].includes(job.status)) return;
 
-  // Notify all offered riders their window has closed
+  // Notify all offered riders their window has closed — socket + data-only JOB_TAKEN
+  // push so a backgrounded/locked rider's native siren stops when the offer expires.
+  const jobIdStr = job._id.toString();
   for (const riderId of job.offeredRiderIds) {
-    await emitToRider(riderId.toString(), 'job:expired', { jobId: job._id.toString() });
+    await emitToRider(riderId.toString(), 'job:expired', { jobId: jobIdStr });
+  }
+  if (job.offeredRiderIds.length > 0) {
+    const offered = await Rider.find({ _id: { $in: job.offeredRiderIds } }).select('fcmToken').lean();
+    for (const r of offered) {
+      if (r.fcmToken) sendDataOnly(r.fcmToken, { type: 'JOB_TAKEN', jobId: jobIdStr }, { ttlSec: 60 });
+    }
   }
 
   // No cascade — fail immediately
@@ -501,10 +531,17 @@ const handleRiderAccept = async (jobId, riderId) => {
     await Rider.findByIdAndUpdate(riderId, { 'performance.acceptanceRate': rate });
   }
 
-  // Dismiss other offered riders
+  // Dismiss other offered riders — socket for live apps, data-only JOB_TAKEN push
+  // to stop the native siren on a backgrounded/locked rider (mirrors ORDER_CANCELLED).
   const otherRiderIds = offer.riderIds.filter((id) => id !== riderId);
   for (const otherRiderId of otherRiderIds) {
     await emitToRider(otherRiderId, 'job:cancelled', { jobId, reason: 'assigned_to_another_rider' });
+  }
+  if (otherRiderIds.length > 0) {
+    const others = await Rider.find({ _id: { $in: otherRiderIds } }).select('fcmToken').lean();
+    for (const r of others) {
+      if (r.fcmToken) sendDataOnly(r.fcmToken, { type: 'JOB_TAKEN', jobId }, { ttlSec: 60 });
+    }
   }
 
   // Get rider profile to share with customer
