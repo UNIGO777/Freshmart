@@ -81,27 +81,13 @@ io.on('connection', (socket) => {
   socket.on('disconnect', async (reason) => {
     logger.info(`Socket disconnected: ${socket.id} (${role}:${userId}) — ${reason}`);
 
-    // M5: do NOT auto-offline a vendor on socket disconnect. A backgrounded/killed vendor
-    // app drops its socket but MUST stay isOnline:true so it keeps being offered orders and
-    // its phone-off FCM siren fires (findEligibleVendorsForGroup requires isOnline). Only the
-    // Go-Offline toggle takes a vendor offline; a genuinely-dead vendor is handled by the
-    // per-group timeout (M3), which fails the order rather than silently skipping the vendor.
-
-    // Auto-offline riders on disconnect + close open session
-    if (role === 'rider') {
-      try {
-        const axios = require('axios');
-        const DELIVERY_URL = `http://localhost:${process.env.PORT_DELIVERY || 3006}`;
-        await axios.post(
-          `${DELIVERY_URL}/internal/rider-disconnect`,
-          { riderId: userId },
-          { timeout: 5000 },
-        );
-        logger.info(`Rider ${userId} auto-set offline on disconnect`);
-      } catch (err) {
-        logger.warn(`Failed to auto-offline rider ${userId}: ${err.message}`);
-      }
-    }
+    // Do NOT auto-offline a vendor OR a rider on socket disconnect. A backgrounded/
+    // killed app drops its socket but MUST stay isOnline:true so it keeps being
+    // offered orders/jobs and its phone-off FCM siren fires (the routing queries
+    // require isOnline). Only the manual Go-Offline toggle / logout takes them
+    // offline; a genuinely-dead rider/vendor is handled by the offer timeout
+    // (the offer cascades to the next candidate or fails), not by silently
+    // dropping them here — which would kill the FCM job notification.
   });
 
   socket.on('error', (err) => {
