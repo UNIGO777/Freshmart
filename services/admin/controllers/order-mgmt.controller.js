@@ -16,6 +16,7 @@ const listOrders = async (req, res) => {
     if (req.query.status)        filter.status        = req.query.status;
     if (req.query.paymentMethod) filter.paymentMethod = req.query.paymentMethod;
     if (req.query.paymentStatus) filter.paymentStatus = req.query.paymentStatus;
+    if (req.query.customerId)    filter.customerId    = req.query.customerId;
 
     if (req.query.dateFrom || req.query.dateTo) {
       filter.createdAt = {};

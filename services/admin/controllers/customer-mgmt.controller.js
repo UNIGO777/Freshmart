@@ -30,6 +30,31 @@ const listCustomers = async (req, res) => {
       Customer.countDocuments(filter),
     ]);
 
+    // The list view shows Orders + Total Spent per customer, but those aren't stored on
+    // the Customer doc. Compute them in ONE grouped aggregation over just this page's
+    // customers (totalSpent = sum of PAID orders, matching the detail endpoint).
+    const customerIds = customers.map((c) => c._id);
+    if (customerIds.length > 0) {
+      const orderStats = await Order.aggregate([
+        { $match: { customerId: { $in: customerIds } } },
+        {
+          $group: {
+            _id: '$customerId',
+            totalOrders: { $sum: 1 },
+            totalSpent: {
+              $sum: { $cond: [{ $eq: ['$paymentStatus', 'paid'] }, '$totalAmount', 0] },
+            },
+          },
+        },
+      ]);
+      const statsById = new Map(orderStats.map((s) => [String(s._id), s]));
+      for (const c of customers) {
+        const s = statsById.get(String(c._id));
+        c.totalOrders = s?.totalOrders ?? 0;
+        c.totalSpent  = s?.totalSpent ?? 0;
+      }
+    }
+
     return sendSuccess(res, 200, 'Customers fetched', { customers, total, page, limit });
   } catch (err) {
     logger.error('listCustomers error:', err);

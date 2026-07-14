@@ -642,16 +642,23 @@ const emitToRiderSocket = (riderId, event, payload) => {
     .catch((err) => logger.warn(`emitToRiderSocket(${event}) failed: ${err.message}`));
 };
 
-const syncOrderService = (job, status, extra = {}) => {
+const syncOrderService = async (job, status, extra = {}) => {
   // Multi-pickup: one rider/drop covers EVERY vendor sub-order, so sync them all (else the
   // other sub-orders never reach picked/delivered and the parent order never completes).
   // Single-pickup: just job.subOrderId, exactly as before.
   const subOrderIds = (job.pickups && job.pickups.length > 0)
     ? job.pickups.flatMap((s) => (s.subOrderIds || []).map((id) => id.toString()))
     : [job.subOrderId.toString()];
+  // Run these SEQUENTIALLY, never in parallel: /internal/update-suborder does a
+  // read-modify-write on the SAME order doc, so two concurrent calls race and the
+  // second save clobbers the first's sub-order change — leaving one sub-order
+  // never-delivered and the parent order stuck at 'partially_delivered'. Awaiting
+  // each in turn means the order service sees the previous sub-order already
+  // delivered when it promotes the parent status → the last one flips it to
+  // 'delivered' and emits the realtime event.
   for (const subOrderId of subOrderIds) {
-    axios
-      .post(
+    try {
+      await axios.post(
         `http://localhost:${process.env.PORT_ORDER || 3004}/internal/update-suborder`,
         {
           orderId:    job.orderId.toString(),
@@ -659,8 +666,10 @@ const syncOrderService = (job, status, extra = {}) => {
           update:     { status, ...extra },
         },
         { timeout: 5000 },
-      )
-      .catch((err) => logger.warn(`syncOrderService(${status}) failed for subOrder ${subOrderId}: ${err.message}`));
+      );
+    } catch (err) {
+      logger.warn(`syncOrderService(${status}) failed for subOrder ${subOrderId}: ${err.message}`);
+    }
   }
 };
 
