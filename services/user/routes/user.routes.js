@@ -1,11 +1,12 @@
 const { Router } = require('express');
-const { getProfile, updateProfile, getAddresses, addAddress, updateAddress, deleteAddress, toggleOnline, getWishlist, addToWishlist, removeFromWishlist, getCart, syncCart, updateBankDetails, submitSupportTicket } = require('../controllers/user.controller');
+const { getProfile, updateProfile, getAddresses, addAddress, updateAddress, deleteAddress, toggleOnline, getWishlist, addToWishlist, removeFromWishlist, getCart, syncCart, updateBankDetails, submitSupportTicket, deleteAccount } = require('../controllers/user.controller');
 
 const router = Router();
 
 // Profile
 router.get('/me', getProfile);
 router.patch('/me', updateProfile);
+router.delete('/me', deleteAccount); // Google Play mandated account deletion
 
 // Addresses (customer-only, enforced in controller)
 router.get('/me/addresses', getAddresses);

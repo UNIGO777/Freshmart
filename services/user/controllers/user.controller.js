@@ -527,4 +527,36 @@ const submitSupportTicket = async (req, res) => {
   }
 };
 
-module.exports = { getProfile, updateProfile, getAddresses, addAddress, updateAddress, deleteAddress, checkServiceability, toggleOnline, getWishlist, addToWishlist, removeFromWishlist, getCart, syncCart, updateBankDetails, submitSupportTicket };
+// ── DELETE /api/users/me — permanently delete the authenticated account ──
+// Google Play requires an in-app account-deletion path for apps with sign-up.
+// Customers self-delete here. Vendor/rider records tie into wallets, payouts and
+// settlements, so those must be closed via support (returned as a clear message,
+// not a silent failure) so finances can be reconciled first.
+const deleteAccount = async (req, res) => {
+  try {
+    if (req.user.role !== ROLES.CUSTOMER) {
+      return sendError(
+        res, 403,
+        'Vendor and rider accounts must be closed via support so pending payouts and settlements can be reconciled first.',
+        ERROR_CODES.FORBIDDEN,
+      );
+    }
+
+    const customer = await Customer.findById(req.user.id);
+    if (!customer) return sendError(res, 404, 'User not found', ERROR_CODES.USER_NOT_FOUND);
+
+    // Hard-delete the customer record. Embedded personal data — cart, wishlist,
+    // saved addresses and the FCM token — is stored on this document and goes with
+    // it. Past orders are financial records: they are retained (per the privacy
+    // policy) and, with the PII record gone, are no longer joinable to a person.
+    await Customer.deleteOne({ _id: customer._id });
+
+    logger.info(`Customer account deleted (self-service): ${customer._id}`);
+    return sendSuccess(res, 200, 'Account deleted', { deleted: true });
+  } catch (err) {
+    logger.error('deleteAccount error:', err);
+    return sendError(res, 500, 'Failed to delete account', ERROR_CODES.INTERNAL_ERROR);
+  }
+};
+
+module.exports = { getProfile, updateProfile, getAddresses, addAddress, updateAddress, deleteAddress, checkServiceability, toggleOnline, getWishlist, addToWishlist, removeFromWishlist, getCart, syncCart, updateBankDetails, submitSupportTicket, deleteAccount };
