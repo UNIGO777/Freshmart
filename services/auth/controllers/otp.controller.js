@@ -12,6 +12,14 @@ const logger = require('../../../shared/utils/logger');
 const OTP_EXPIRY_MS = 5 * 60 * 1000; // 5 minutes
 const MAX_ATTEMPTS = 5;
 
+// Google Play reviewer test account (see scripts/seed-play-test-account.js and
+// docs/release-signing.md). Fixed OTP, no real SMS ever sent for this number.
+// Gated to NODE_ENV !== 'production' so it can NEVER work against a real prod
+// deployment — only against a review/staging backend deliberately run outside
+// production mode for the review window.
+const PLAY_TEST_PHONE = '9999999999';
+const PLAY_TEST_OTP = '000000';
+
 /** Generate a 6-digit OTP */
 const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -42,14 +50,19 @@ const sendOtp = async (req, res) => {
       return sendError(res, 404, 'No account found for this number. Please sign up first.', ERROR_CODES.NOT_FOUND);
     }
 
-    const otp = generateOtp();
-    const expiresAt = new Date(Date.now() + OTP_EXPIRY_MS);
-
     const isProd = process.env.NODE_ENV === 'production';
+    const isPlayTestPhone = phone === PLAY_TEST_PHONE && !isProd;
+
+    const otp = isPlayTestPhone ? PLAY_TEST_OTP : generateOtp();
+    const expiresAt = new Date(Date.now() + OTP_EXPIRY_MS);
 
     // Send OTP via Fast2SMS WhatsApp route. With no token: log to console in
     // dev, but FAIL CLOSED in production — never fall back to leaking the OTP.
-    if (process.env.FAST2SMS_API_KEY) {
+    if (isPlayTestPhone) {
+      // Reviewer test number: never send a real SMS (it isn't a real phone), the
+      // OTP is always fixed.
+      logger.info(`[play-test] Fixed OTP issued for reviewer test number ${phone}`);
+    } else if (process.env.FAST2SMS_API_KEY) {
       try {
         const { data } = await axios.request({
           method: 'POST',
@@ -93,8 +106,9 @@ const sendOtp = async (req, res) => {
 
     logger.info(`OTP sent to ${phone}`);
 
-    // Return the OTP in the response only in non-production dev mode.
-    const devPayload = (!process.env.FAST2SMS_API_KEY && !isProd) ? { devOtp: otp } : {};
+    // Return the OTP in the response only in non-production dev mode (or for the
+    // Play reviewer test number, where there's no real phone to receive an SMS).
+    const devPayload = (isPlayTestPhone || (!process.env.FAST2SMS_API_KEY && !isProd)) ? { devOtp: otp } : {};
     return sendSuccess(res, 200, 'OTP sent successfully', devPayload);
   } catch (err) {
     logger.error('sendOtp error:', err);
