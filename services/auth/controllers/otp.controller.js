@@ -15,8 +15,8 @@ const MAX_ATTEMPTS = 5;
 // Google Play reviewer test account (see scripts/seed-play-test-account.js and
 // docs/release-signing.md). Fixed OTP, no real SMS ever sent for this number.
 // Gated to NODE_ENV !== 'production' so it can NEVER work against a real prod
-// deployment — only against a review/staging backend deliberately run outside
-// production mode for the review window.
+// deployment — only against the production server when it's deliberately set to
+// a non-production NODE_ENV for the review window (the user's own call).
 const PLAY_TEST_PHONE = '9999999999';
 const PLAY_TEST_OTP = '000000';
 
