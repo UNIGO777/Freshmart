@@ -37,7 +37,7 @@ const submitQuery = async (req, res) => {
     if (!SUPPORT_ROLES.includes(req.user.role)) {
       return sendError(res, 403, 'Only app users can submit queries', ERROR_CODES.FORBIDDEN);
     }
-    const parsed = z.object({ message: z.string().min(5).max(2000) }).safeParse(req.body);
+    const parsed = z.object({ message: z.string().trim().min(1).max(2000) }).safeParse(req.body);
     if (!parsed.success) {
       return sendError(res, 400, 'Validation failed', ERROR_CODES.VALIDATION_ERROR, parsed.error.flatten());
     }
