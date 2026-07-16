@@ -43,7 +43,11 @@ const invalidateProductCache = async () => {
 };
 
 // ── Nearby inventory helpers ─────────────────────────────────────
-const MAX_SEARCH_RADIUS_KM = 15; // upper bound matching check-serviceability tiers
+// Pre-filter upper bound only. Each vendor is STILL gated by its own
+// serviceRadiusKm below, so real vendors stay local — but a vendor that
+// deliberately sets a very large radius (e.g. the demo/test store) can serve
+// from anywhere. Kept large so the per-vendor radius is the real limit.
+const MAX_SEARCH_RADIUS_KM = 20000;
 
 function haversineKm(lat1, lng1, lat2, lng2) {
   const toRad = (d) => (d * Math.PI) / 180;

@@ -204,8 +204,25 @@ const RADIUS_TIERS = [
   { maxKm: 10, estimatedMinutes: 30 },
   { maxKm: 15, estimatedMinutes: 45 },
 ];
+// ETA fallback for a serviceable vendor that sits beyond the normal tiers
+// (only possible when the vendor itself opts into a large serviceRadiusKm).
+const FAR_ETA_MINUTES = 60;
+// Pre-filter cap only — the real gate is each vendor's own serviceRadiusKm.
+// Large so a vendor with a big radius (e.g. the demo/test store) is considered
+// from anywhere, while normal vendors stay limited by their own radius.
+const GLOBAL_PREFILTER_KM = 20000;
 
 const ALL_CATEGORIES = ['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'other'];
+
+// Great-circle distance in km.
+function svcHaversineKm(lat1, lng1, lat2, lng2) {
+  const toRad = (d) => (d * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 
 const checkServiceability = async (req, res) => {
   try {
@@ -219,39 +236,44 @@ const checkServiceability = async (req, res) => {
     const availableCategories = [];
     const unavailableCategories = [];
 
-    // For each category, find the closest vendor that serves it
+    // For each category, find the nearest online vendor whose OWN service radius
+    // covers this location. $nearSphere returns nearest-first, so the first
+    // vendor within its own serviceRadiusKm is the closest serviceable one.
     for (const category of ALL_CATEGORIES) {
-      let found = false;
-
-      for (const tier of RADIUS_TIERS) {
-        const vendors = await Vendor.find({
-          isApproved: true,
-          isActive: true,
-          isOnline: true,
-          categories: category,
-          location: {
-            $nearSphere: {
-              $geometry: { type: 'Point', coordinates: [lng, lat] },
-              $maxDistance: tier.maxKm * 1000,
-            },
+      const vendors = await Vendor.find({
+        isApproved: true,
+        isActive: true,
+        isOnline: true,
+        categories: category,
+        location: {
+          $nearSphere: {
+            $geometry: { type: 'Point', coordinates: [lng, lat] },
+            $maxDistance: GLOBAL_PREFILTER_KM * 1000,
           },
-        })
-          .limit(1)
-          .select('_id')
-          .lean();
+        },
+      })
+        .limit(20)
+        .select('location serviceRadiusKm')
+        .lean();
 
-        if (vendors.length > 0) {
-          availableCategories.push({
-            category,
-            radiusKm: tier.maxKm,
-            estimatedMinutes: tier.estimatedMinutes,
-          });
-          found = true;
-          break;
+      let matchedDist = null;
+      for (const v of vendors) {
+        const [vLng, vLat] = v.location.coordinates;
+        const distKm = svcHaversineKm(lat, lng, vLat, vLng);
+        if (distKm <= (v.serviceRadiusKm || 5)) {
+          matchedDist = distKm;
+          break; // nearest-first, so this is the closest serviceable vendor
         }
       }
 
-      if (!found) {
+      if (matchedDist !== null) {
+        const tier = RADIUS_TIERS.find((t) => matchedDist <= t.maxKm);
+        availableCategories.push({
+          category,
+          radiusKm: Math.max(1, Math.ceil(matchedDist)),
+          estimatedMinutes: tier ? tier.estimatedMinutes : FAR_ETA_MINUTES,
+        });
+      } else {
         unavailableCategories.push(category);
       }
     }

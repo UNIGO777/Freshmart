@@ -82,7 +82,7 @@ const ALL_CATEGORIES = ['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'ot
       phone: PHONE,
       location: { type: 'Point', coordinates: [TEST_LNG, TEST_LAT] },
       address: TEST_ADDRESS,
-      serviceRadiusKm: 15,
+      serviceRadiusKm: 20000, // global — demo/test store is serviceable from ANY location
       categories: ALL_CATEGORIES,
       isApproved: true,
       isActive: true,
@@ -95,6 +95,7 @@ const ALL_CATEGORIES = ['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'ot
     vendor.isApproved = true;
     vendor.isActive = true;
     vendor.isOnline = true;
+    vendor.serviceRadiusKm = 20000; // global — serviceable from ANY location
     await vendor.save();
     console.log(`✅ Vendor already existed, refreshed: ${vendor._id}`);
   }
