@@ -123,12 +123,8 @@ const createRider = async (req, res) => {
     if (!customerId && !password) {
       return sendError(res, 400, 'password is required when no customerId is provided', ERROR_CODES.MISSING_FIELDS);
     }
-    if (!drivingLicenseNumber || !drivingLicenseNumber.trim()) {
-      return sendError(res, 400, 'Driving license number is required', ERROR_CODES.MISSING_FIELDS);
-    }
-    if (!drivingLicenseUrl || !drivingLicenseUrl.trim()) {
-      return sendError(res, 400, 'Driving license photo is required', ERROR_CODES.MISSING_FIELDS);
-    }
+    // KYC / driving-license are no longer required — riders are vetted manually
+    // by the admin at onboarding.
 
     const normalizedPhone = phone.replace(/^\+?91(?=\d{10}$)/, '');
 
@@ -159,11 +155,15 @@ const createRider = async (req, res) => {
       vehicleType: vehicleType || 'bike',
       isApproved: true,
       isActive: true,
-      kyc: { aadhaarUrl: aadhaarUrl || '', panUrl: panUrl || '', status: 'pending' },
-      drivingLicense: {
-        number:   drivingLicenseNumber.trim(),
-        photoUrl: drivingLicenseUrl.trim(),
-      },
+      kyc: { aadhaarUrl: aadhaarUrl || '', panUrl: panUrl || '', status: 'verified' },
+      ...(drivingLicenseNumber?.trim() || drivingLicenseUrl?.trim()
+        ? {
+            drivingLicense: {
+              number:   drivingLicenseNumber?.trim() || '',
+              photoUrl: drivingLicenseUrl?.trim() || '',
+            },
+          }
+        : {}),
     });
 
     const r = rider.toObject();
