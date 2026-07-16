@@ -12,11 +12,11 @@ const logger = require('../../../shared/utils/logger');
 const OTP_EXPIRY_MS = 5 * 60 * 1000; // 5 minutes
 const MAX_ATTEMPTS = 5;
 
-// Google Play reviewer test account (see scripts/seed-play-test-account.js and
-// docs/release-signing.md). Fixed OTP, no real SMS ever sent for this number.
-// Gated to NODE_ENV !== 'production' so it can NEVER work against a real prod
-// deployment — only against the production server when it's deliberately set to
-// a non-production NODE_ENV for the review window (the user's own call).
+// Google Play reviewer / QA test account (see scripts/seed-play-test-account.js
+// and docs/release-signing.md). Fixed OTP, no real SMS is ever sent for this
+// number — it isn't a real phone. Works in EVERY environment (including the live
+// production backend) so the reviewer/testers can always log in. This is a single
+// hardcoded number that never receives a real code, so the fixed OTP leaks nothing.
 const PLAY_TEST_PHONE = '9999999999';
 const PLAY_TEST_OTP = '000000';
 
@@ -51,7 +51,8 @@ const sendOtp = async (req, res) => {
     }
 
     const isProd = process.env.NODE_ENV === 'production';
-    const isPlayTestPhone = phone === PLAY_TEST_PHONE && !isProd;
+    // Fixed test number works in ALL environments (prod included) — never gated.
+    const isPlayTestPhone = phone === PLAY_TEST_PHONE;
 
     const otp = isPlayTestPhone ? PLAY_TEST_OTP : generateOtp();
     const expiresAt = new Date(Date.now() + OTP_EXPIRY_MS);
