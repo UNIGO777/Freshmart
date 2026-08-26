@@ -1,4 +1,4 @@
-# ZipBasket — Backend Architecture & Development Plan
+# Khetan Mart — Backend Architecture & Development Plan
 
 > **Stack:** Node.js + Express · MongoDB · Socket.io · Redis · Firebase FCM · PhonePe PG · Google Maps API  
 > **Architecture:** Microservices (service-based, single codebase, one deployment per service)  
@@ -662,4 +662,4 @@ MAX_VENDOR_ATTEMPTS=3
 
 ---
 
-*Document version 1.0 · ZipBasket Backend Plan · May 2026*
+*Document version 1.0 · Khetan Mart Backend Plan · May 2026*

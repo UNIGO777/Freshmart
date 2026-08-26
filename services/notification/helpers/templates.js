@@ -129,7 +129,7 @@ const TEMPLATES = {
   /** Admin sends a promotional notification — title/body provided directly */
   'promo': (data) => ({
     title: data.title ?? 'Special Offer 🎉',
-    body:  data.body  ?? 'Check out the latest deals on ZipBasket!',
+    body:  data.body  ?? 'Check out the latest deals on Khetan Mart!',
     data:  { screen: data.screen ?? 'Offers' },
   }),
 };

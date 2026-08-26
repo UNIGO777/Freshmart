@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * ZipBasket — Order-flow smoke test
+ * Khetan Mart — Order-flow smoke test
  * ---------------------------------
  * Exercises the customer happy path end-to-end against a RUNNING API gateway:
  *
@@ -72,7 +72,7 @@ async function call(method, path, { token, body } = {}) {
 const data = (r) => (r.body && typeof r.body === 'object' && 'data' in r.body ? r.body.data : r.body);
 
 async function main() {
-  console.log(`${C.cyan}ZipBasket order-flow smoke test${C.reset}`);
+  console.log(`${C.cyan}Khetan Mart order-flow smoke test${C.reset}`);
   console.log(`${C.dim}gateway=${GATEWAY_URL}  phone=${PHONE}  coords=${LAT},${LNG}${C.reset}`);
 
   // ── 1. Gateway health ───────────────────────────────────────────

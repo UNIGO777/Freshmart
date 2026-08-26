@@ -1,4 +1,4 @@
-# ZipBasket — Bug Report
+# Khetan Mart — Bug Report
 
 > **Audit Date:** 2026-05-09  
 > **Coverage:** All 11 services, gateway middleware, shared utilities  

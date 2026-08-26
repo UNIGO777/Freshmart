@@ -192,14 +192,14 @@ const adminReply = async (req, res) => {
     if (query.customerEmail) {
       sendEmail({
         to:      query.customerEmail,
-        subject: 'ZipBasket Support — Reply to your query',
+        subject: 'Khetan Mart Support — Reply to your query',
         html:    `<p>Hi ${query.customerName},</p>
                   <p>Our support team has replied to your query:</p>
                   <blockquote style="border-left:3px solid #10d876;padding:8px 12px;margin:12px 0;background:#f8f9fa;">
                     ${parsed.data.text}
                   </blockquote>
                   <p style="color:#888;font-size:12px;">Original query: "${query.message.slice(0, 100)}${query.message.length > 100 ? '…' : ''}"</p>
-                  <p>Open the ZipBasket app to continue the conversation.</p>`,
+                  <p>Open the Khetan Mart app to continue the conversation.</p>`,
       });
     }
 

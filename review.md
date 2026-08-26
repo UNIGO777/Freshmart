@@ -1,4 +1,4 @@
-# ZipBasket Backend — Full App Review
+# Khetan Mart Backend — Full App Review
 
 > **Reviewer:** Claude Code (claude-sonnet-4-6)  
 > **Review Date:** 2026-05-09  
@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-ZipBasket is a well-structured microservices grocery delivery backend for the Indian market. The architecture is thoughtful — 11 services with clean separation of concerns, a dedicated API gateway, real-time delivery tracking via Socket.io, and a sophisticated multi-vendor order routing system with batched vendor offers and cascading fallback. The developer clearly understands the domain.
+Khetan Mart is a well-structured microservices grocery delivery backend for the Indian market. The architecture is thoughtful — 11 services with clean separation of concerns, a dedicated API gateway, real-time delivery tracking via Socket.io, and a sophisticated multi-vendor order routing system with batched vendor offers and cascading fallback. The developer clearly understands the domain.
 
 However, the app has **3 critical bugs that would make it unshippable**: the PhonePe webhook is blocked by authentication (UPI payments never confirm), Apple OAuth tokens are not verified (account takeover possible), and JWT secrets are "change_me". There are also several HIGH-severity issues, placeholder implementations, and scalability gaps.
 

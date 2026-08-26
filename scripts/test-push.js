@@ -22,7 +22,7 @@ admin.messaging().send({
   android: { priority: 'high' },
   // notification block is ONLY here so something is visible to tap.
   // Production orderPush.js must never include it.
-  notification: { title: 'ZipBasket', body: `Tap to test: ${TYPE}` },
+  notification: { title: 'Khetan Mart', body: `Tap to test: ${TYPE}` },
   data: { type: TYPE, orderId: 'test123' },
 })
   .then(id => console.log('✅ sent:', id))

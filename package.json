@@ -1,7 +1,7 @@
 {
   "name": "zipbasket-backend",
   "version": "1.0.0",
-  "description": "ZipBasket backend microservices scaffold",
+  "description": "Khetan Mart backend microservices scaffold",
   "main": "gateway/index.js",
   "scripts": {
     "dev:gateway": "nodemon gateway/index.js",

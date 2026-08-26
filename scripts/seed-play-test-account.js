@@ -77,7 +77,7 @@ const ALL_CATEGORIES = ['fruits', 'vegetables', 'spices', 'dairy', 'bakery', 'ot
   let vendor = await Vendor.findOne({ phone: PHONE });
   if (!vendor) {
     vendor = new Vendor({
-      businessName: 'ZipBasket Test Store',
+      businessName: 'Khetan Mart Test Store',
       ownerName: NAME,
       phone: PHONE,
       location: { type: 'Point', coordinates: [TEST_LNG, TEST_LAT] },
